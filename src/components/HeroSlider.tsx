@@ -113,12 +113,12 @@ export function HeroSlider() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="space-y-1"
+            className="space-y-1.5"
           >
-            <span className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-white block leading-none drop-shadow-lg">
+            <span className="text-3xl sm:text-5xl md:text-6xl lg:text-6xl font-black tracking-tight text-white block leading-tight drop-shadow-lg whitespace-nowrap">
               {slide.title}
             </span>
-            <span className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight text-red-gradient block leading-none drop-shadow-[0_0_25px_rgba(220,38,38,0.6)]">
+            <span className="text-3xl sm:text-5xl md:text-6xl lg:text-6xl font-black tracking-tight text-red-gradient block leading-tight drop-shadow-[0_0_25px_rgba(220,38,38,0.6)] whitespace-nowrap">
               {slide.highlightTitle}
             </span>
           </motion.div>
