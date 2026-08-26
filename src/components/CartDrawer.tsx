@@ -25,7 +25,7 @@ export function CartDrawer() {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 overflow-hidden">
+      <div className="fixed inset-0 z-50 overflow-hidden font-mono">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -70,19 +70,19 @@ export function CartDrawer() {
                     <ShoppingBag className="w-10 h-10" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-black text-white">Your Order is Empty</h3>
-                    <p className="text-xs text-zinc-400 mt-1 max-w-xs">
+                    <h3 className="text-lg font-black text-white">Your Cart is Empty</h3>
+                    <p className="text-xs text-zinc-400 mt-1 max-w-xs font-sans">
                       Explore our smash burger menu and stack up your ultimate feast.
                     </p>
                   </div>
-                  <Link
-                    href="/menu"
+                  <a
+                    href="#menu-section"
                     onClick={() => setIsCartOpen(false)}
-                    className="mt-2 bg-gradient-to-r from-red-600 to-red-800 text-white font-black px-6 py-2.5 rounded-full text-xs uppercase tracking-wider shadow-lg hover:shadow-red-600/40 transition-all flex items-center gap-1.5"
+                    className="mt-2 bg-gradient-to-r from-red-600 to-red-800 text-white font-bold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider shadow-lg hover:shadow-red-600/40 transition-all flex items-center gap-1.5"
                   >
                     <Flame className="w-4 h-4 text-amber-400" />
                     <span>EXPLORE MENU</span>
-                  </Link>
+                  </a>
                 </div>
               ) : (
                 cart.map((item) => {
@@ -109,7 +109,7 @@ export function CartDrawer() {
                       {/* Content details */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between">
-                          <h4 className="font-bold text-sm text-white truncate pr-2">
+                          <h4 className="font-bold text-sm text-white truncate pr-2 uppercase">
                             {item.product.name}
                           </h4>
                           <button
@@ -122,26 +122,26 @@ export function CartDrawer() {
                         </div>
 
                         {/* Badges for Meal option & additions */}
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {item.options.type === 'combo' && (
+                        <div className="flex flex-wrap gap-1 mt-1 font-sans">
+                          {item.options.variant === 'combo' && (
                             <span className="text-[10px] font-extrabold bg-amber-950/80 text-amber-400 border border-amber-800/60 px-2 py-0.5 rounded-full flex items-center gap-0.5">
-                              <Utensils className="w-2.5 h-2.5" /> Combo Meal (+45)
+                              <Utensils className="w-2.5 h-2.5" /> Combo
                             </span>
                           )}
-                          {item.options.size === 'large' && (
+                          {item.options.size && (
                             <span className="text-[10px] font-extrabold bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded-full">
-                              Large Share
+                              Size: {item.options.size}
                             </span>
                           )}
-                          {item.options.addedAdditions.map((add) => (
+                          {item.options.addedAdditions?.map((add) => (
                             <span
                               key={add.id}
                               className="text-[10px] font-semibold bg-red-950/60 text-red-300 border border-red-900/50 px-2 py-0.5 rounded-full"
                             >
-                              +{add.name}
+                              +{add.name} (+{add.price} EGP)
                             </span>
                           ))}
-                          {item.options.removedIngredients.map((ing) => (
+                          {item.options.removedIngredients?.map((ing) => (
                             <span
                               key={ing}
                               className="text-[10px] line-through text-red-400 bg-zinc-800/80 px-1.5 py-0.5 rounded"
@@ -187,7 +187,7 @@ export function CartDrawer() {
               <div className="p-6 bg-zinc-900 border-t border-zinc-800 space-y-4">
                 <div className="space-y-2 text-xs text-zinc-400">
                   <div className="flex justify-between">
-                    <span>Subtotal</span>
+                    <span>Subtotal (VAT Inclusive)</span>
                     <span className="font-bold text-zinc-200">{subtotalPrice} EGP</span>
                   </div>
                   <div className="flex justify-between">
@@ -205,7 +205,7 @@ export function CartDrawer() {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
                   }}
-                  className="w-full bg-gradient-to-r from-red-600 via-red-700 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-black py-4 rounded-2xl text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(220,38,38,0.5)] border border-red-500/30 transition-all flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-red-600 via-red-700 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-4 rounded-2xl text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(220,38,38,0.5)] border border-red-500/30 transition-all flex items-center justify-center gap-2"
                 >
                   <span>PROCEED TO CHECKOUT</span>
                   <ArrowRight className="w-4 h-4" />

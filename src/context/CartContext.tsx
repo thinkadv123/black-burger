@@ -1,20 +1,20 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Product, Addition } from '@/data/menu';
+import { ProductItem, AdditionItem } from '@/data/menu';
 import { toast } from 'sonner';
 
 export interface CartItemOption {
-  type: 'solo' | 'combo'; // combo +45 EGP (includes fries + soft drink)
-  size?: 'regular' | 'large'; // for onion rings: 60 or 80 EGP
+  variant: 'solo' | 'combo'; // combo price calculation: product.comboPrice or solo + 40/50 EGP
+  size?: 'Large' | 'X-Large'; // for onion rings: 60 or 80 EGP
   removedIngredients: string[];
-  addedAdditions: Addition[];
+  addedAdditions: AdditionItem[];
   specialInstructions?: string;
 }
 
 export interface CartItem {
   cartItemId: string; // unique key in cart
-  product: Product;
+  product: ProductItem;
   quantity: number;
   options: CartItemOption;
   unitPrice: number;
@@ -22,7 +22,7 @@ export interface CartItem {
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (product: Product, quantity: number, options: CartItemOption) => void;
+  addToCart: (product: ProductItem, quantity: number, options: CartItemOption) => void;
   removeFromCart: (cartItemId: string) => void;
   updateQuantity: (cartItemId: string, newQty: number) => void;
   clearCart: () => void;
@@ -34,8 +34,8 @@ interface CartContextType {
   subtotalPrice: number;
   deliveryFee: number;
   totalPrice: number;
-  customizingProduct: Product | null;
-  setCustomizingProduct: (product: Product | null) => void;
+  customizingProduct: ProductItem | null;
+  setCustomizingProduct: (product: ProductItem | null) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -44,7 +44,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [customizingProduct, setCustomizingProduct] = useState<Product | null>(null);
+  const [customizingProduct, setCustomizingProduct] = useState<ProductItem | null>(null);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -67,17 +67,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [cart]);
 
-  const calculateUnitPrice = (product: Product, options: CartItemOption): number => {
-    let price = product.price;
+  const calculateUnitPrice = (product: ProductItem, options: CartItemOption): number => {
+    let price = product.soloPrice;
 
-    // Handle Onion Rings size
-    if (product.id === 'onion-rings' && options.size === 'large') {
-      price = product.priceLarge || 80;
-    }
-
-    // Handle Combo (+45 EGP for crisp golden fries & ice-cold drink)
-    if (options.type === 'combo') {
-      price += 45;
+    // Handle Onion Rings sizes
+    if (product.id === 'onion-rings' && product.sizePrices) {
+      const sizeObj = product.sizePrices.find((s) => s.label === options.size);
+      if (sizeObj) price = sizeObj.price;
+    } else if (options.variant === 'combo' && product.comboPrice) {
+      price = product.comboPrice;
     }
 
     // Add cost of extra additions
@@ -89,9 +87,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return price;
   };
 
-  const addToCart = (product: Product, quantity: number, options: CartItemOption) => {
+  const addToCart = (product: ProductItem, quantity: number, options: CartItemOption) => {
     const unitPrice = calculateUnitPrice(product, options);
-    const cartItemId = `${product.id}-${options.type}-${options.size || 'reg'}-${options.removedIngredients.sort().join('-')}-${options.addedAdditions.map(a => a.id).sort().join('-')}-${options.specialInstructions || ''}`;
+    const cartItemId = `${product.id}-${options.variant}-${options.size || 'reg'}-${options.removedIngredients.sort().join('-')}-${options.addedAdditions.map((a) => a.id).sort().join('-')}-${options.specialInstructions || ''}`;
 
     setCart((prevCart) => {
       const existingIndex = prevCart.findIndex((item) => item.cartItemId === cartItemId);
@@ -134,7 +132,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const totalItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const subtotalPrice = cart.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
-  const deliveryFee = subtotalPrice > 0 ? 30 : 0; // 30 EGP flat delivery fee in Faisal area
+  const deliveryFee = subtotalPrice > 0 ? 30 : 0; // 30 EGP flat delivery fee in Faisal
   const totalPrice = subtotalPrice + deliveryFee;
 
   return (

@@ -52,8 +52,8 @@ export function CheckoutModal() {
     const itemsList = cart
       .map((item, idx) => {
         let details = `${idx + 1}. *${item.product.name}* (x${item.quantity}) - ${item.unitPrice * item.quantity} EGP`;
-        if (item.options.type === 'combo') details += `\n   ↳ [COMBO MEAL]`;
-        if (item.options.size === 'large') details += `\n   ↳ [LARGE PORTION]`;
+        if (item.options.variant === 'combo') details += `\n   ↳ [COMBO MEAL]`;
+        if (item.options.size) details += `\n   ↳ [SIZE: ${item.options.size}]`;
         if (item.options.addedAdditions.length > 0) {
           details += `\n   ↳ Additions: ${item.options.addedAdditions.map((a) => a.name).join(', ')}`;
         }
