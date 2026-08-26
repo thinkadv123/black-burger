@@ -7,6 +7,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CartDrawer } from "@/components/CartDrawer";
 import { CheckoutModal } from "@/components/CheckoutModal";
+import { GlobalProductModal } from "@/components/GlobalProductModal";
 import { Toaster } from "sonner";
 
 const geistSans = Geist({
@@ -45,6 +46,7 @@ export default function RootLayout({
             <Footer />
 
             {/* Interactive Modals & Drawers */}
+            <GlobalProductModal />
             <CartDrawer />
             <CheckoutModal />
 

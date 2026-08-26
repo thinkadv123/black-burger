@@ -154,8 +154,9 @@ export function TalabatMenu() {
                     return (
                       <div
                         key={product.id}
-                        className={`bg-neutral-900/80 border rounded-2xl p-4 flex flex-col justify-between transition-all duration-300 hover:border-red-600/60 hover:shadow-xl hover:shadow-red-950/20 group relative overflow-hidden ${
-                          !product.isAvailable ? 'opacity-50 grayscale border-neutral-800' : 'border-neutral-800'
+                        onClick={() => product.isAvailable && setCustomizingProduct(product)}
+                        className={`bg-neutral-900/80 border rounded-2xl p-4 flex flex-col justify-between transition-all duration-300 hover:border-red-600/60 hover:shadow-xl hover:shadow-red-950/20 group relative overflow-hidden cursor-pointer ${
+                          !product.isAvailable ? 'opacity-50 grayscale border-neutral-800 cursor-not-allowed' : 'border-neutral-800'
                         }`}
                       >
                         <div>
@@ -171,7 +172,7 @@ export function TalabatMenu() {
 
                             {/* Spicy badge */}
                             {product.spicy && (
-                              <div className="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase flex items-center gap-1 shadow-md">
+                              <div className="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase flex items-center gap-1 shadow-md font-mono">
                                 <Flame className="w-3 h-3 text-yellow-300 fill-yellow-300" />
                                 Spicy
                               </div>
@@ -194,13 +195,13 @@ export function TalabatMenu() {
                               </h4>
                             </div>
 
-                            <p className="text-xs text-neutral-400 line-clamp-2 leading-relaxed">
+                            <p className="text-xs text-neutral-400 line-clamp-2 leading-relaxed font-sans">
                               {ingredientsText}
                             </p>
                           </div>
                         </div>
 
-                        {/* Price & Add Button Bar */}
+                        {/* Price & Customize Button Bar */}
                         <div className="pt-4 mt-3 border-t border-neutral-800/80 flex items-center justify-between gap-2">
                           <div>
                             <span className="text-[10px] text-neutral-500 font-mono block uppercase">
@@ -214,8 +215,11 @@ export function TalabatMenu() {
                           <button
                             type="button"
                             disabled={!product.isAvailable}
-                            onClick={() => setCustomizingProduct(product)}
-                            className="bg-neutral-800 hover:bg-red-600 text-white font-mono font-bold text-xs uppercase px-3.5 py-2 rounded-xl transition-all border border-neutral-700 hover:border-red-500 flex items-center gap-1.5 shadow-md active:scale-95 disabled:opacity-50"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (product.isAvailable) setCustomizingProduct(product);
+                            }}
+                            className="bg-red-600 hover:bg-red-700 text-white font-mono font-bold text-xs uppercase px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-red-950/50 flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             <span>Customize & Order</span>
