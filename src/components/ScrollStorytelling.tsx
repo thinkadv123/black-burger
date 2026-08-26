@@ -177,7 +177,7 @@ export function ScrollStorytelling() {
             >
               <div className="relative h-44 w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800">
                 <Image
-                  src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f6?q=80&w=800&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=800&auto=format&fit=crop"
                   alt="Fresh Buns"
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-500"

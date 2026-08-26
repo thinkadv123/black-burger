@@ -19,6 +19,9 @@ export default function HomePage() {
       {/* Hero Slider Section */}
       <HeroSlider />
 
+      {/* Scroll Storytelling Section (WE DON'T CUT CORNERS. WE SMASH THEM.) */}
+      <ScrollStorytelling />
+
       {/* Featured Top Sellers Section */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-zinc-800 pb-8">
@@ -50,9 +53,6 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-
-      {/* Scroll Storytelling Section */}
-      <ScrollStorytelling />
 
       {/* Brand Pillars Section */}
       <BrandSection />

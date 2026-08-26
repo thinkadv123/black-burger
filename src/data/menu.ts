@@ -73,7 +73,7 @@ export const MENU_ITEMS: Product[] = [
     category: 'SMASH BURGERS',
     price: 200,
     description: 'Double smashed Angus beef patty, fresh house guacamole cream, melted cheddar, pico de gallo, smoky chipotle drizzle.',
-    image: 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f6?q=80&w=1000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=1000&auto=format&fit=crop',
     defaultIngredients: ['Double Angus Patty', 'House Guacamole', 'Melted Cheddar', 'Pico de Gallo', 'Chipotle Drizzle'],
   },
   {
