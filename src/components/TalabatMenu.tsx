@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { ProductItem, CATEGORIES_LIST } from '@/data/menu';
 import { useMenu } from '@/context/MenuContext';
 import { useCart } from '@/context/CartContext';
-import { Search, Flame, Plus, ShieldCheck, Sparkles, AlertCircle } from 'lucide-react';
+import { Search, Flame, Plus, ShieldCheck, Sparkles, Filter } from 'lucide-react';
 
 export function TalabatMenu() {
   const { products } = useMenu();
   const { setCustomizingProduct } = useCart();
-  const [activeCategory, setActiveCategory] = useState<string>(CATEGORIES_LIST[0]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('Smash Burgers');
   const [searchQuery, setSearchQuery] = useState('');
 
   const categoryNotes: Record<string, string> = {
@@ -18,30 +18,32 @@ export function TalabatMenu() {
       'Served in a 5-inch brioche bun without sesame. Every beef sandwich contains two 150g pure Angus beef smash patties. Combo includes sandwich, fries, and soft drink.',
     'Chicken Collection':
       'Made with a large crispy fried chicken piece. Combo includes sandwich, fries, and soft drink.',
+    'Salads': 'Fresh, crisp salads made to order.',
+    'Appetizers': 'Crispy sides and loaded chaos fries.',
+    'Sauces': 'Dipper sauce cups made in-house.',
+    'Additions': 'Extra toppings and sides.',
   };
 
-  const categoryRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
-  const scrollToCategory = (cat: string) => {
-    setActiveCategory(cat);
-    const element = categoryRefs.current[cat];
-    if (element) {
-      const yOffset = -140; // Account for sticky navbar & category bar
-      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
+  // Filter products based on search query AND active category
+  const visibleCategories = CATEGORIES_LIST.filter((cat) => {
+    if (searchQuery.trim().length > 0) return true; // Show matching across all if searching
+    return cat === selectedCategory;
+  });
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.ingredients.some((ing) => ing.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (product.description && product.description.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesSearch;
+    
+    if (searchQuery.trim().length > 0) {
+      return matchesSearch;
+    }
+    return product.category === selectedCategory;
   });
 
   return (
-    <section id="menu-section" className="bg-[#0A0A0C] text-white py-16 border-t border-neutral-800 relative">
+    <section id="menu-section" className="bg-[#0A0A0C] text-white py-16 border-t border-neutral-800 relative min-h-[80vh]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Section Title Header */}
@@ -66,7 +68,7 @@ export function TalabatMenu() {
             placeholder="Search burgers, chicken, sauces, chaos fries..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-11 pr-4 py-3 text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-red-600 transition-colors shadow-lg"
+            className="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-11 pr-4 py-3 text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-red-600 transition-colors shadow-lg font-mono"
           />
           {searchQuery && (
             <button
@@ -78,48 +80,53 @@ export function TalabatMenu() {
           )}
         </div>
 
-        {/* Talabat-Style Sticky Horizontal Category Bar */}
+        {/* Talabat-Style Category Filter Bar (Hides non-selected categories) */}
         <div className="sticky top-16 z-30 bg-[#0A0A0C]/95 backdrop-blur-md py-3 border-y border-neutral-800 shadow-xl overflow-x-auto custom-scrollbar">
           <div className="flex items-center gap-2 px-2 max-w-7xl mx-auto min-w-max">
             {CATEGORIES_LIST.map((cat) => {
-              const isActive = activeCategory === cat;
+              const isSelected = selectedCategory === cat && !searchQuery;
+              let displayLabel: string = cat;
+              if (cat === 'Smash Burgers') displayLabel = '🍔 Beef Burgers';
+              else if (cat === 'Chicken Collection') displayLabel = '🍗 Chicken';
+              else if (cat === 'Salads') displayLabel = '🥗 Salads';
+              else if (cat === 'Appetizers') displayLabel = '🍟 Appetizers';
+              else if (cat === 'Sauces') displayLabel = '🌶️ Sauces';
+              else if (cat === 'Additions') displayLabel = '🧀 Additions';
+
               return (
                 <button
                   key={cat}
-                  onClick={() => scrollToCategory(cat)}
-                  className={`px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                    isActive
-                      ? 'bg-red-600 text-white shadow-lg shadow-red-900/50'
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSelectedCategory(cat);
+                  }}
+                  className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-mono font-bold uppercase transition-all whitespace-nowrap flex items-center gap-2 ${
+                    isSelected
+                      ? 'bg-red-600 text-white shadow-lg shadow-red-900/60 scale-105 border border-red-500'
                       : 'bg-neutral-900 text-neutral-400 hover:text-white hover:bg-neutral-800 border border-neutral-800'
                   }`}
                 >
-                  <span>{cat}</span>
+                  <span>{displayLabel}</span>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Menu Items Grouped by Category */}
-        <div className="space-y-16 pt-4">
-          {CATEGORIES_LIST.map((category) => {
+        {/* Display Filtered Category Items */}
+        <div className="space-y-12 pt-2">
+          {visibleCategories.map((category) => {
             const categoryProducts = filteredProducts.filter((p) => p.category === category);
-            if (categoryProducts.length === 0 && searchQuery) return null;
+            if (categoryProducts.length === 0) return null;
 
             return (
-              <div
-                key={category}
-                ref={(el) => {
-                  categoryRefs.current[category] = el;
-                }}
-                className="space-y-6 scroll-mt-36"
-              >
+              <div key={category} className="space-y-6">
                 {/* Category Header */}
                 <div className="border-b border-neutral-800 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                   <div>
                     <h3 className="text-2xl font-black text-white uppercase tracking-tight font-mono flex items-center gap-2">
                       <span className="w-2.5 h-6 bg-red-600 rounded-sm" />
-                      {category}
+                      {category === 'Smash Burgers' ? 'Beef Smash Burgers' : category}
                     </h3>
                     {categoryNotes[category] && (
                       <p className="text-xs text-neutral-400 mt-1 max-w-2xl leading-relaxed">
@@ -128,7 +135,7 @@ export function TalabatMenu() {
                     )}
                   </div>
                   <span className="text-xs text-neutral-500 font-mono">
-                    {categoryProducts.length} {categoryProducts.length === 1 ? 'item' : 'items'}
+                    Showing {categoryProducts.length} {categoryProducts.length === 1 ? 'item' : 'items'}
                   </span>
                 </div>
 
@@ -139,7 +146,6 @@ export function TalabatMenu() {
                       ? product.ingredients.join(', ')
                       : product.description || '';
 
-                    // Display Starting Price formatted e.g., "From 180 EGP" or "180 EGP"
                     const hasVariants = product.comboPrice || product.hasSizes;
                     const startingPriceText = hasVariants
                       ? `From ${product.soloPrice} EGP`
@@ -149,7 +155,7 @@ export function TalabatMenu() {
                       <div
                         key={product.id}
                         className={`bg-neutral-900/80 border rounded-2xl p-4 flex flex-col justify-between transition-all duration-300 hover:border-red-600/60 hover:shadow-xl hover:shadow-red-950/20 group relative overflow-hidden ${
-                          !product.isAvailable ? 'opacity-50 grayscale' : 'border-neutral-800'
+                          !product.isAvailable ? 'opacity-50 grayscale border-neutral-800' : 'border-neutral-800'
                         }`}
                       >
                         <div>
@@ -165,7 +171,7 @@ export function TalabatMenu() {
 
                             {/* Spicy badge */}
                             {product.spicy && (
-                              <div className="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase flex items-center gap-1 shadow-md">
+                              <div className="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase flex items-center gap-1 shadow-md">
                                 <Flame className="w-3 h-3 text-yellow-300 fill-yellow-300" />
                                 Spicy
                               </div>
@@ -222,6 +228,21 @@ export function TalabatMenu() {
               </div>
             );
           })}
+
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-16 bg-neutral-900/50 rounded-2xl border border-neutral-800">
+              <p className="text-neutral-400 font-mono text-sm">No items found matching your search.</p>
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedCategory('Smash Burgers');
+                }}
+                className="mt-3 text-xs text-red-400 hover:underline font-mono uppercase"
+              >
+                Reset Filter
+              </button>
+            </div>
+          )}
         </div>
 
         {/* VAT Inclusive & Security Notice */}

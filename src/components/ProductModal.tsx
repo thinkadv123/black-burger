@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { ProductItem, AdditionItem } from '@/data/menu';
 import { useCart, CartItemOption } from '@/context/CartContext';
 import { useMenu } from '@/context/MenuContext';
-import { Plus, Minus, Flame, Check, AlertTriangle, X, ShoppingBag } from 'lucide-react';
+import { Plus, Minus, Flame, Check, AlertTriangle, X, ShoppingBag, MessageSquare } from 'lucide-react';
 
 interface ProductModalProps {
   product: ProductItem | null;
@@ -17,7 +17,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   const { addToCart } = useCart();
   const { additions } = useMenu();
 
-  const [variant, setVariant] = useState<'solo' | 'combo'>('solo');
+  const [variant, setVariant] = useState<'solo' | 'combo'>('combo');
   const [selectedSize, setSelectedSize] = useState<'Large' | 'X-Large'>('Large');
   const [activeIngredients, setActiveIngredients] = useState<string[]>([]);
   const [selectedAdditions, setSelectedAdditions] = useState<AdditionItem[]>([]);
@@ -27,7 +27,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   // Reset modal state when product changes
   useEffect(() => {
     if (product) {
-      setVariant('solo');
+      setVariant('combo');
       setSelectedSize('Large');
       setActiveIngredients(product.ingredients || []);
       setSelectedAdditions([]);
@@ -94,7 +94,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
         <DialogTitle className="sr-only">{product.name}</DialogTitle>
 
         {/* Header Image */}
-        <div className="relative h-64 sm:h-72 w-full bg-neutral-900 overflow-hidden">
+        <div className="relative h-60 sm:h-64 w-full bg-neutral-900 overflow-hidden">
           <Image
             src={product.image}
             alt={product.name}
@@ -116,12 +116,12 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           {/* Badges */}
           <div className="absolute top-4 left-4 flex flex-wrap gap-2">
             {product.spicy && (
-              <span className="px-3 py-1 rounded-full bg-red-600 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1 shadow-lg shadow-red-900/40">
+              <span className="px-3 py-1 rounded-full bg-red-600 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1 shadow-lg shadow-red-900/40 font-mono">
                 <Flame className="w-3.5 h-3.5 fill-yellow-300 text-yellow-300" />
                 Spicy
               </span>
             )}
-            <span className="px-3 py-1 rounded-full bg-neutral-900/80 backdrop-blur-md border border-neutral-700 text-neutral-300 text-xs font-semibold">
+            <span className="px-3 py-1 rounded-full bg-neutral-900/80 backdrop-blur-md border border-neutral-700 text-neutral-300 text-xs font-semibold font-mono">
               {product.category}
             </span>
           </div>
@@ -140,57 +140,61 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-7 font-sans">
           {/* Spicy Warning Notice */}
           {product.spicyWarning && (
-            <div className="p-3.5 rounded-xl bg-red-950/60 border border-red-600/50 text-red-200 text-xs sm:text-sm flex items-center gap-3">
+            <div className="p-3.5 rounded-xl bg-red-950/80 border border-red-600/60 text-red-200 text-xs sm:text-sm flex items-center gap-3 shadow-md">
               <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />
               <span className="font-semibold">{product.spicyWarning}</span>
             </div>
           )}
 
-          {/* 1. Size / Variant Selection */}
+          {/* SECTION 1: CHOOSE YOUR SIZE / VARIANT */}
           {isBurgerOrChicken && product.comboPrice && (
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-neutral-200 uppercase tracking-wider font-mono">
-                  Select Option <span className="text-red-500">*</span>
+              <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
+                <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                  <span className="w-2 h-4 bg-red-600 rounded-sm" />
+                  1. Choose your size
                 </h3>
-                <span className="text-xs text-neutral-400">Required</span>
+                <span className="text-[10px] bg-red-950 text-red-400 border border-red-800 px-2 py-0.5 rounded font-mono font-bold uppercase">
+                  Required
+                </span>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setVariant('solo')}
-                  className={`p-4 rounded-xl border text-left transition-all ${
-                    variant === 'solo'
-                      ? 'border-red-600 bg-red-950/20 text-white ring-1 ring-red-600'
-                      : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
-                  }`}
-                >
-                  <div className="font-black text-sm uppercase tracking-wide">SOLO</div>
-                  <div className="text-xs text-neutral-400 mt-1">Sandwich only</div>
-                  <div className="text-sm font-bold text-red-500 mt-2">
-                    {product.soloPrice} EGP
-                  </div>
-                </button>
 
+              <div className="grid grid-cols-2 gap-3 pt-1">
                 <button
                   type="button"
                   onClick={() => setVariant('combo')}
                   className={`p-4 rounded-xl border text-left transition-all relative ${
                     variant === 'combo'
-                      ? 'border-red-600 bg-red-950/20 text-white ring-1 ring-red-600'
+                      ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600 shadow-md'
                       : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
                   }`}
                 >
-                  <span className="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full bg-red-600 text-[10px] font-bold text-white uppercase tracking-wider">
+                  <span className="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full bg-red-600 text-[10px] font-bold text-white uppercase tracking-wider font-mono">
                     BEST VALUE
                   </span>
-                  <div className="font-black text-sm uppercase tracking-wide">COMBO</div>
+                  <div className="font-mono font-black text-sm uppercase tracking-wide">COMBO</div>
                   <div className="text-xs text-neutral-300 mt-1">Includes fries & soft drink</div>
-                  <div className="text-sm font-bold text-red-500 mt-2">
+                  <div className="text-sm font-bold font-mono text-yellow-400 mt-2">
                     {product.comboPrice} EGP
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setVariant('solo')}
+                  className={`p-4 rounded-xl border text-left transition-all ${
+                    variant === 'solo'
+                      ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600 shadow-md'
+                      : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
+                  }`}
+                >
+                  <div className="font-mono font-black text-sm uppercase tracking-wide">SOLO</div>
+                  <div className="text-xs text-neutral-400 mt-1">Sandwich only</div>
+                  <div className="text-sm font-bold font-mono text-yellow-400 mt-2">
+                    {product.soloPrice} EGP
                   </div>
                 </button>
               </div>
@@ -200,12 +204,13 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           {/* Onion Rings Size Selection */}
           {product.id === 'onion-rings' && product.sizePrices && (
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-neutral-200 uppercase tracking-wider font-mono">
-                  Select Portion Size <span className="text-red-500">*</span>
+              <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
+                <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                  <span className="w-2 h-4 bg-red-600 rounded-sm" />
+                  1. Choose your size
                 </h3>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3 pt-1">
                 {product.sizePrices.map((sp) => (
                   <button
                     key={sp.label}
@@ -213,31 +218,32 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                     onClick={() => setSelectedSize(sp.label as 'Large' | 'X-Large')}
                     className={`p-4 rounded-xl border text-left transition-all ${
                       selectedSize === sp.label
-                        ? 'border-red-600 bg-red-950/20 text-white ring-1 ring-red-600'
+                        ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600'
                         : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
                     }`}
                   >
-                    <div className="font-black text-sm uppercase tracking-wide">{sp.label}</div>
-                    <div className="text-sm font-bold text-red-500 mt-2">{sp.price} EGP</div>
+                    <div className="font-mono font-black text-sm uppercase tracking-wide">{sp.label}</div>
+                    <div className="text-sm font-bold font-mono text-yellow-400 mt-2">{sp.price} EGP</div>
                   </button>
                 ))}
               </div>
             </div>
           )}
 
-          {/* 2. Removable Ingredients */}
+          {/* SECTION 2: REMOVE INGREDIENTS */}
           {product.ingredients && product.ingredients.length > 0 && (
-            <div className="space-y-3 pt-2 border-t border-neutral-800/80">
-              <div>
-                <h3 className="text-sm font-bold text-neutral-200 uppercase tracking-wider font-mono">
-                  Customization (Remove Ingredients)
+            <div className="space-y-3">
+              <div className="border-b border-neutral-800 pb-2">
+                <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                  <span className="w-2 h-4 bg-red-600 rounded-sm" />
+                  2. Remove ingredients
                 </h3>
-                <p className="text-xs text-neutral-400 mt-0.5">
-                  Uncheck any item you don&apos;t want in your meal.
+                <p className="text-xs text-neutral-400 mt-0.5 font-sans">
+                  Tap anything you don&apos;t want
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                 {product.ingredients.map((ing) => {
                   const isChecked = activeIngredients.includes(ing);
                   return (
@@ -248,24 +254,28 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                       className={`flex items-center justify-between p-3 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
                         isChecked
                           ? 'border-neutral-800 bg-neutral-900 text-neutral-200 hover:border-neutral-700'
-                          : 'border-red-900/50 bg-red-950/20 text-red-400 font-semibold'
+                          : 'border-red-900/60 bg-red-950/30 text-red-400 font-semibold shadow-inner'
                       }`}
                     >
-                      <span className="flex items-center gap-2">
+                      <span className="flex items-center gap-2.5">
                         <div
-                          className={`w-4 h-4 rounded flex items-center justify-center border ${
+                          className={`w-4 h-4 rounded flex items-center justify-center border transition-colors ${
                             isChecked
                               ? 'bg-neutral-800 border-neutral-600 text-green-400'
-                              : 'bg-red-900/40 border-red-600 text-red-400'
+                              : 'bg-red-900/50 border-red-600 text-red-400'
                           }`}
                         >
                           {isChecked ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
                         </div>
-                        <span className={!isChecked ? 'line-through text-red-400' : ''}>
+                        <span className={!isChecked ? 'line-through text-red-400 font-bold' : ''}>
                           {ing}
                         </span>
                       </span>
-                      {!isChecked && <span className="text-[10px] text-red-400 font-mono uppercase">Removed</span>}
+                      {!isChecked && (
+                        <span className="text-[10px] text-red-400 font-mono uppercase font-bold bg-red-950/80 px-2 py-0.5 rounded">
+                          Removed
+                        </span>
+                      )}
                     </button>
                   );
                 })}
@@ -273,19 +283,20 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             </div>
           )}
 
-          {/* 3. Paid Additions */}
+          {/* SECTION 3: ADD EXTRAS */}
           {additions && additions.length > 0 && (
-            <div className="space-y-3 pt-2 border-t border-neutral-800/80">
-              <div>
-                <h3 className="text-sm font-bold text-neutral-200 uppercase tracking-wider font-mono">
-                  Extra Paid Additions
+            <div className="space-y-3">
+              <div className="border-b border-neutral-800 pb-2">
+                <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                  <span className="w-2 h-4 bg-red-600 rounded-sm" />
+                  3. Add extras
                 </h3>
-                <p className="text-xs text-neutral-400 mt-0.5">
-                  Enhance your sandwich with extra toppings.
+                <p className="text-xs text-neutral-400 mt-0.5 font-sans">
+                  Make it yours
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                 {additions.map((add) => {
                   const isSelected = selectedAdditions.some((a) => a.id === add.id);
                   return (
@@ -295,13 +306,13 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                       onClick={() => toggleAddition(add)}
                       className={`flex items-center justify-between p-3 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
                         isSelected
-                          ? 'border-red-600 bg-red-950/30 text-white'
+                          ? 'border-red-600 bg-red-950/40 text-white shadow-md'
                           : 'border-neutral-800 bg-neutral-900/50 text-neutral-300 hover:border-neutral-700'
                       }`}
                     >
-                      <span className="flex items-center gap-2">
+                      <span className="flex items-center gap-2.5">
                         <div
-                          className={`w-4 h-4 rounded flex items-center justify-center border ${
+                          className={`w-4 h-4 rounded flex items-center justify-center border transition-colors ${
                             isSelected
                               ? 'bg-red-600 border-red-500 text-white'
                               : 'bg-neutral-800 border-neutral-700 text-transparent'
@@ -311,7 +322,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                         </div>
                         <span className="font-semibold">{add.name}</span>
                       </span>
-                      <span className="font-mono text-xs font-bold text-red-400">
+                      <span className="font-mono text-xs font-bold text-yellow-400">
                         +{add.price} EGP
                       </span>
                     </button>
@@ -321,17 +332,18 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             </div>
           )}
 
-          {/* 4. Special Instructions */}
-          <div className="space-y-2 pt-2 border-t border-neutral-800/80">
-            <h3 className="text-xs font-bold text-neutral-400 uppercase tracking-wider font-mono">
-              Special Instructions
-            </h3>
-            <input
-              type="text"
-              placeholder="e.g. Extra napkins, sauce on the side..."
+          {/* SECTION 4: COMMENT BOX */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-xs font-bold text-neutral-300 uppercase tracking-wider font-mono">
+              <MessageSquare className="w-3.5 h-3.5 text-red-500" />
+              Comment Box / Special Instructions
+            </div>
+            <textarea
+              rows={2}
+              placeholder="e.g., Please make it extra crispy, sauce on the side..."
               value={specialInstructions}
               onChange={(e) => setSpecialInstructions(e.target.value)}
-              className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-red-600 transition-colors"
+              className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-red-600 transition-colors font-sans resize-none"
             />
           </div>
 
@@ -364,7 +376,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             <button
               type="button"
               onClick={handleAddToCart}
-              className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-red-950/50 flex items-center justify-between group active:scale-[0.99]"
+              className="flex-1 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-red-950/50 flex items-center justify-between group active:scale-[0.99]"
             >
               <span className="flex items-center gap-2 font-mono uppercase tracking-wider text-sm">
                 <ShoppingBag className="w-4 h-4" />
