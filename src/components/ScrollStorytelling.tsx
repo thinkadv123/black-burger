@@ -1,35 +1,12 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Flame, ShieldCheck, CheckCircle2, ChevronRight, Zap, Sparkles } from 'lucide-react';
+import { Flame, ShieldCheck, CheckCircle2, ChevronRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 export function ScrollStorytelling() {
-  const [transformationStage, setTransformationStage] = useState<'raw' | 'sear' | 'finished'>('finished');
-
-  const transformationStages = {
-    raw: {
-      title: '1. Hand-Rolled 100% Angus Beef',
-      desc: 'Fresh 100% grass-fed Angus beef chuck patty, perfectly seasoned with coarse sea salt and cracked black pepper before touching the griddle.',
-      image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?q=80&w=1000&auto=format&fit=crop',
-      badge: 'STRIATED MARBLING',
-    },
-    sear: {
-      title: '2. High-Heat Smash Sear',
-      desc: 'Smashed ultra-thin on 450°F cast iron to lock in natural juices and create our iconic lacy caramelized crispy crust.',
-      image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1000&auto=format&fit=crop',
-      badge: '450°F CAST IRON',
-    },
-    finished: {
-      title: '3. The Masterpiece Assembled',
-      desc: 'Double melted American cheddar, grilled balsamic onions, pickles, and proprietary BB sauce tucked inside butter-toasted brioche.',
-      image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop',
-      badge: 'BLACK BURGER CLASSIC',
-    },
-  };
-
   const ingredientsList = [
     {
       step: '01',
@@ -230,87 +207,6 @@ export function ScrollStorytelling() {
                 </div>
               </motion.div>
             ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* 3. BURGER TRANSFORMATION SECTION (Raw ingredients -> Sear -> Finished Smash) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black border border-zinc-800 rounded-3xl p-8 sm:p-12 relative overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.2)]">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            
-            {/* Interactive Stage Selector Controls */}
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-400 text-xs font-black uppercase">
-                <Zap className="w-3.5 h-3.5" /> INTERACTIVE SMASH PROCESS
-              </div>
-
-              <h2 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">
-                RAW INGREDIENTS TO <span className="text-red-gradient">ICONIC SMASH</span>
-              </h2>
-
-              <p className="text-zinc-400 text-sm sm:text-base">
-                Click through the stages below to witness how we transform pure raw Angus beef into Cairo&apos;s crispiest smash burger.
-              </p>
-
-              {/* Controls */}
-              <div className="space-y-3">
-                {(['raw', 'sear', 'finished'] as const).map((stageKey) => {
-                  const isActive = transformationStage === stageKey;
-                  const currentInfo = transformationStages[stageKey];
-                  return (
-                    <button
-                      key={stageKey}
-                      onClick={() => setTransformationStage(stageKey)}
-                      className={`w-full p-4 rounded-2xl border text-left flex items-center justify-between transition-all ${
-                        isActive
-                          ? 'border-red-600 bg-red-950/40 text-white shadow-[0_0_20px_rgba(220,38,38,0.4)]'
-                          : 'border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:border-zinc-700'
-                      }`}
-                    >
-                      <div>
-                        <span className="font-extrabold text-sm sm:text-base block text-white">
-                          {currentInfo.title}
-                        </span>
-                        <span className="text-xs text-zinc-400 font-medium">{currentInfo.badge}</span>
-                      </div>
-                      <div className={`w-4 h-4 rounded-full border ${isActive ? 'bg-red-600 border-red-500' : 'border-zinc-600'}`} />
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Stage Preview Visual */}
-            <div className="relative h-[380px] sm:h-[450px] w-full rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-900 shadow-2xl">
-              <motion.div
-                key={transformationStage}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={transformationStages[transformationStage].image}
-                  alt={transformationStages[transformationStage].title}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
-                
-                <div className="absolute bottom-6 left-6 right-6 bg-black/80 backdrop-blur-md p-4 rounded-xl border border-zinc-800">
-                  <span className="text-[10px] font-black tracking-widest text-amber-400 uppercase block">
-                    STAGE PREVIEW
-                  </span>
-                  <p className="text-xs sm:text-sm text-zinc-200 mt-1">
-                    {transformationStages[transformationStage].desc}
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-
           </div>
 
         </div>
