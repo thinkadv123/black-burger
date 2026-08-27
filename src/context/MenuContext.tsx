@@ -20,16 +20,16 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<ProductItem[]>(INITIAL_PRODUCTS);
   const [additions, setAdditions] = useState<AdditionItem[]>(INITIAL_ADDITIONS);
 
-  // Load from localStorage on mount
+  // Load from localStorage on mount & sync fresh image paths
   useEffect(() => {
     try {
       const savedProductsStr = localStorage.getItem('black_burger_db_products');
       if (savedProductsStr) {
         const parsed: ProductItem[] = JSON.parse(savedProductsStr);
-        // Sync fresh local images from INITIAL_PRODUCTS if previously set to unsplash
+        // Sync fresh local images from INITIAL_PRODUCTS
         const synced = parsed.map((item) => {
           const init = INITIAL_PRODUCTS.find((p) => p.id === item.id);
-          if (init && init.image.startsWith('/images/') && !item.image.startsWith('/images/')) {
+          if (init && init.image.startsWith('/images/')) {
             return { ...item, image: init.image };
           }
           return item;

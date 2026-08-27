@@ -211,7 +211,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Barbecue sauce',
       'Mozzarella cheese',
     ],
-    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/menu/bb-bbsalad.jpg',
     isAvailable: true,
   },
   {
@@ -227,7 +227,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Parmesan cheese',
       'Caesar sauce',
     ],
-    image: 'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/menu/bb-cesarsalad.jpg',
     isAvailable: true,
   },
 
