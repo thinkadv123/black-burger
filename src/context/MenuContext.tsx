@@ -20,22 +20,32 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<ProductItem[]>(INITIAL_PRODUCTS);
   const [additions, setAdditions] = useState<AdditionItem[]>(INITIAL_ADDITIONS);
 
-  // Load from localStorage on mount & sync fresh image paths
+  // Load from localStorage on mount & sync missing items and image paths from INITIAL_PRODUCTS
   useEffect(() => {
     try {
       const savedProductsStr = localStorage.getItem('black_burger_db_products');
       if (savedProductsStr) {
         const parsed: ProductItem[] = JSON.parse(savedProductsStr);
-        // Sync fresh local images from INITIAL_PRODUCTS
-        const synced = parsed.map((item) => {
-          const init = INITIAL_PRODUCTS.find((p) => p.id === item.id);
-          if (init && init.image.startsWith('/images/')) {
-            return { ...item, image: init.image };
+        const parsedMap = new Map(parsed.map((p) => [p.id, p]));
+
+        // Merge initial products so any new products (e.g., Online Only Offers) are added automatically
+        const mergedProducts = INITIAL_PRODUCTS.map((init) => {
+          const existing = parsedMap.get(init.id);
+          if (existing) {
+            return {
+              ...existing,
+              image: init.image, // Always sync latest local image path
+              category: init.category, // Sync latest category ordering
+            };
           }
-          return item;
+          return init;
         });
-        setProducts(synced);
+
+        setProducts(mergedProducts);
+      } else {
+        setProducts(INITIAL_PRODUCTS);
       }
+
       const savedAdditions = localStorage.getItem('black_burger_db_additions');
       if (savedAdditions) {
         const parsedAdds: AdditionItem[] = JSON.parse(savedAdditions);

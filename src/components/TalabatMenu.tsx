@@ -10,12 +10,10 @@ import { Search, Flame, Plus, ShieldCheck } from 'lucide-react';
 export function TalabatMenu() {
   const { products } = useMenu();
   const { setCustomizingProduct } = useCart();
-  const [selectedCategory, setSelectedCategory] = useState<string>('Online Only Offers');
+  const [selectedCategory, setSelectedCategory] = useState<string>('Smash Burgers');
   const [searchQuery, setSearchQuery] = useState('');
 
   const categoryNotes: Record<string, string> = {
-    'Online Only Offers':
-      'Exclusive combo boxes and special deal meals available for online delivery in Faisal & Haram.',
     'Smash Burgers':
       'Served in a 5-inch brioche bun without sesame. Every beef sandwich contains two 150g pure Angus beef smash patties. Combo includes sandwich, fries, and soft drink.',
     'Chicken Collection':
@@ -24,11 +22,13 @@ export function TalabatMenu() {
     'Appetizers': 'Crispy sides and loaded chaos fries.',
     'Sauces': 'Dipper sauce cups made in-house.',
     'Additions': 'Extra toppings and sides.',
+    'Online Only Offers':
+      'Exclusive combo boxes and special deal meals available for online delivery in Faisal & Haram.',
   };
 
   // Filter products based on search query AND active category
   const visibleCategories = CATEGORIES_LIST.filter((cat) => {
-    if (searchQuery.trim().length > 0) return true; // Show matching across all if searching
+    if (searchQuery.trim().length > 0) return true;
     return cat === selectedCategory;
   });
 
@@ -88,13 +88,13 @@ export function TalabatMenu() {
             {CATEGORIES_LIST.map((cat) => {
               const isSelected = selectedCategory === cat && !searchQuery;
               let displayLabel: string = cat;
-              if (cat === 'Online Only Offers') displayLabel = '🔥 Online Only Offers';
-              else if (cat === 'Smash Burgers') displayLabel = '🍔 Beef Burgers';
+              if (cat === 'Smash Burgers') displayLabel = '🍔 Beef Burgers';
               else if (cat === 'Chicken Collection') displayLabel = '🍗 Chicken';
               else if (cat === 'Salads') displayLabel = '🥗 Salads';
               else if (cat === 'Appetizers') displayLabel = '🍟 Appetizers';
               else if (cat === 'Sauces') displayLabel = '🌶️ Sauces';
               else if (cat === 'Additions') displayLabel = '🧀 Additions';
+              else if (cat === 'Online Only Offers') displayLabel = '🔥 Online Only Offers';
 
               return (
                 <button
@@ -169,18 +169,17 @@ export function TalabatMenu() {
                         }`}
                       >
                         <div>
-                          {/* Image & Badges (full size object-contain for offers) */}
+                          {/* Image & Badges (full size uncropped object-contain for offer flyers) */}
                           <div className={`relative w-full rounded-xl overflow-hidden bg-neutral-950 mb-3 flex items-center justify-center ${
-                            isOfferCategory || product.category === 'Online Only Offers'
+                            isOfferCategory
                               ? 'aspect-[3/4]'
                               : 'aspect-square'
                           }`}>
-                            <Image
+                            <img
                               src={product.image}
                               alt={product.name}
-                              fill
-                              className={`${
-                                isOfferCategory || product.category === 'Online Only Offers'
+                              className={`w-full h-full ${
+                                isOfferCategory
                                   ? 'object-contain'
                                   : 'object-cover group-hover:scale-105'
                               } transition-transform duration-500`}
@@ -261,7 +260,7 @@ export function TalabatMenu() {
               <button
                 onClick={() => {
                   setSearchQuery('');
-                  setSelectedCategory('Online Only Offers');
+                  setSelectedCategory('Smash Burgers');
                 }}
                 className="mt-3 text-xs text-red-400 hover:underline font-mono uppercase"
               >
