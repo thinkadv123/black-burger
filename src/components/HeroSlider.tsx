@@ -103,7 +103,7 @@ export function HeroSlider() {
               muted
               loop
               playsInline
-              className="w-full h-full object-cover object-center brightness-75"
+              className="w-full h-full object-cover object-center brightness-90"
             />
           ) : (
             <Image
@@ -115,10 +115,10 @@ export function HeroSlider() {
             />
           )}
 
-          {/* Gradients Overlay for high contrast luxury look */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/80" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.25)_0%,transparent_70%)] pointer-events-none" />
+          {/* Gradients Overlay - lighter over video so it shows clearly */}
+          <div className={`absolute inset-0 bg-gradient-to-t ${slide.video ? 'from-black via-black/30 to-black/50' : 'from-black via-black/50 to-black/80'}`} />
+          <div className={`absolute inset-0 bg-gradient-to-r ${slide.video ? 'from-black/80 via-black/40 to-transparent' : 'from-black/95 via-black/60 to-transparent'}`} />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.15)_0%,transparent_70%)] pointer-events-none" />
         </motion.div>
       </AnimatePresence>
 
