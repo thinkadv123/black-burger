@@ -43,7 +43,7 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           {/* Left Brand Logo */}
           <Link href="/" className="relative flex items-center group shrink-0">
-            <div className="relative w-16 h-16 sm:w-20 sm:h-20 hover:scale-105 transition-transform">
+            <div className="relative w-20 h-20 sm:w-28 sm:h-28 hover:scale-105 transition-transform">
               <Image
                 src="/images/logo.png"
                 alt="BLACK BURGER"
