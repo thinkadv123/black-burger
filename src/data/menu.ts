@@ -7,7 +7,7 @@ export interface AdditionItem {
 export interface ProductItem {
   id: string;
   name: string;
-  category: 'Smash Burgers' | 'Chicken Collection' | 'Salads' | 'Appetizers' | 'Sauces' | 'Additions';
+  category: 'Online Only Offers' | 'Smash Burgers' | 'Chicken Collection' | 'Salads' | 'Appetizers' | 'Sauces' | 'Additions';
   soloPrice: number;
   comboPrice?: number; // For burgers & chicken
   hasSizes?: boolean; // For onion rings
@@ -21,6 +21,7 @@ export interface ProductItem {
 }
 
 export const CATEGORIES_LIST = [
+  'Online Only Offers',
   'Smash Burgers',
   'Chicken Collection',
   'Salads',
@@ -38,6 +39,77 @@ export const INITIAL_ADDITIONS: AdditionItem[] = [
 ];
 
 export const INITIAL_PRODUCTS: ProductItem[] = [
+  // 0. ONLINE ONLY OFFERS
+  {
+    id: 'bb-duo-box',
+    name: 'BB DUO BOX',
+    category: 'Online Only Offers',
+    soloPrice: 400,
+    description: '2 Sandwiches (1 BB Classic + 1 BB Chicken) + 1 XL Fries + 2 BB Sauces + 2 Soda Drinks.',
+    ingredients: [
+      '1 BB Classic Burger',
+      '1 BB Chicken Burger',
+      '1 XL Fries',
+      '2 BB Sauce Cups',
+      '2 Soda Drinks',
+    ],
+    image: '/images/offers/bb-duo-box.jpeg',
+    isAvailable: true,
+  },
+  {
+    id: 'chicken-box',
+    name: 'CHICKEN BOX',
+    category: 'Online Only Offers',
+    soloPrice: 725,
+    description: 'Choose any 3 Chicken Sandwiches + Large Fries + Large Cheese Fries + 3 BB Sauces + 3 Soda Drinks.',
+    ingredients: [
+      '3 Chicken Sandwiches of your choice',
+      '1 Large Fries',
+      '1 Large Cheese Fries',
+      '3 BB Sauces',
+      '3 Soda Drinks',
+    ],
+    image: '/images/offers/chicken-box.jpeg',
+    isAvailable: true,
+  },
+  {
+    id: 'hawaiian-family-box',
+    name: 'HAWAIIAN FAMILY BOX',
+    category: 'Online Only Offers',
+    soloPrice: 875,
+    description: '2 Hawaiian Beef + 2 Hawaiian Chicken Teriyaki + 1 XL Fries + 1 XL Cheese Fries + 4 Soda Drinks + 2 Hawaiian Sauces + 2 BB Sauces.',
+    ingredients: [
+      '2 Hawaiian Beef Burgers',
+      '2 Hawaiian Chicken Teriyaki',
+      '1 XL Fries',
+      '1 XL Cheese Fries',
+      '4 Soda Drinks',
+      '2 Hawaiian Sauces',
+      '2 BB Sauces',
+    ],
+    image: '/images/offers/hawaiian-family.jpeg',
+    isAvailable: true,
+  },
+  {
+    id: 'hawaiian-beef',
+    name: 'HAWAIIAN BEEF',
+    category: 'Online Only Offers',
+    soloPrice: 200,
+    comboPrice: 250,
+    description: 'Two 150g Angus beef patties with grilled pineapple, teriyaki sauce, caramelized onions, roast beef, cheddar cheese, and Batavia lettuce.',
+    ingredients: [
+      'Two 150g Angus beef patties',
+      'Grilled pineapple',
+      'Teriyaki sauce',
+      'Caramelized onions in Hawaiian sauce',
+      'Roast beef',
+      'Cheddar cheese',
+      'Batavia lettuce',
+    ],
+    image: '/images/offers/hawaiian-beef.jpeg',
+    isAvailable: true,
+  },
+
   // 1. SMASH BURGERS
   {
     id: 'bb-classic',
