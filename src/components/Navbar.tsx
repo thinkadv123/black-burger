@@ -41,14 +41,14 @@ export function Navbar() {
         
         {/* Left Side: Logo + Menu items right after */}
         <div className="flex items-center gap-4">
-          {/* Left Brand Logo Badge */}
-          <Link href="/" className="relative flex items-center gap-2 group shrink-0">
-            <div className="relative w-12 h-14 sm:w-14 sm:h-16 rounded-xl overflow-hidden bg-zinc-950 border-2 border-amber-500/80 p-1 shadow-[0_0_20px_rgba(220,38,38,0.5)] group-hover:border-amber-400 transition-all">
+          {/* Left Brand Logo */}
+          <Link href="/" className="relative flex items-center group shrink-0">
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 hover:scale-105 transition-transform">
               <Image
                 src="/images/logo.png"
                 alt="BLACK BURGER"
                 fill
-                className="object-contain p-0.5"
+                className="object-contain"
                 priority
               />
             </div>
