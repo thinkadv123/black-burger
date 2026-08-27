@@ -154,7 +154,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Mozzarella sticks',
       'BB Sauce',
     ],
-    image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/menu/bb-chicken.jpg',
     isAvailable: true,
   },
   {
@@ -171,7 +171,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Buffalo sauce',
       'Crispy onion rings',
     ],
-    image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/menu/buffalo-chicken.jpg',
     isAvailable: true,
   },
   {
@@ -190,7 +190,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Pepper Jack cheese',
       'Sriracha sauce',
     ],
-    image: 'https://images.unsplash.com/photo-1513185158878-8d8c2a2a3da3?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/menu/chickenito.jpg',
     isAvailable: true,
   },
 
