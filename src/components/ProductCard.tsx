@@ -30,7 +30,7 @@ export function ProductCard({ product }: { product: ProductItem }) {
       {/* Product Image */}
       <div
         onClick={() => setCustomizingProduct(product)}
-        className="relative h-52 sm:h-60 w-full overflow-hidden bg-zinc-950 cursor-pointer"
+        className="relative aspect-square w-full overflow-hidden bg-zinc-950 cursor-pointer"
       >
         <Image
           src={product.image}

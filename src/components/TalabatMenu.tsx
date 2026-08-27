@@ -161,7 +161,7 @@ export function TalabatMenu() {
                       >
                         <div>
                           {/* Image & Badges */}
-                          <div className="relative h-48 w-full rounded-xl overflow-hidden bg-neutral-950 mb-3">
+                          <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-neutral-950 mb-3">
                             <Image
                               src={product.image}
                               alt={product.name}
