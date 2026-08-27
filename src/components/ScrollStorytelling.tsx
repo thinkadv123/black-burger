@@ -1,12 +1,14 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { Flame, ShieldCheck, CheckCircle2, ChevronRight, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Flame, ShieldCheck, CheckCircle2, ChevronRight, Sparkles, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export function ScrollStorytelling() {
+  const [activeMobileTab, setActiveMobileTab] = useState(0);
+
   const ingredientsList = [
     {
       step: '01',
@@ -42,6 +44,8 @@ export function ScrollStorytelling() {
       bgGradient: 'from-red-950/80 via-zinc-900 to-zinc-950',
     },
   ];
+
+  const currentMobileCard = ingredientsList[activeMobileTab];
 
   return (
     <div className="bg-black text-white space-y-24 py-20 overflow-hidden">
@@ -138,7 +142,7 @@ export function ScrollStorytelling() {
         </div>
       </section>
 
-      {/* 2. INGREDIENTS CARDS SECTION: 1 Row on Desktop, Horizontal Scroll on Mobile */}
+      {/* 2. INGREDIENTS CARDS SECTION */}
       <section className="bg-zinc-950 border-y border-zinc-800/80 py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           
@@ -151,12 +155,12 @@ export function ScrollStorytelling() {
               WHAT MAKES IT <span className="text-red-gradient">UNFORGETTABLE?</span>
             </h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Explore our core pillars of flavor <span className="sm:hidden">(Swipe left/right)</span>.
+              Explore our core pillars of flavor.
             </p>
           </div>
 
-          {/* Cards Container: Grid in 1 Row on Desktop (md:grid-cols-3) | Horizontal Scroll on Mobile */}
-          <div className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-6 md:pb-0 custom-scrollbar px-2 sm:px-0">
+          {/* DESKTOP VIEW: 3-Column Row */}
+          <div className="hidden md:grid md:grid-cols-3 gap-6">
             {ingredientsList.map((item, idx) => (
               <motion.div
                 key={item.title}
@@ -164,10 +168,10 @@ export function ScrollStorytelling() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.15 }}
-                className={`min-w-[85vw] sm:min-w-[340px] md:min-w-0 flex-1 snap-center rounded-3xl bg-gradient-to-br ${item.bgGradient} border ${item.accentColor} p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-all group hover:-translate-y-2`}
+                className={`rounded-3xl bg-gradient-to-br ${item.bgGradient} border ${item.accentColor} p-8 flex flex-col justify-between space-y-6 transition-all group hover:-translate-y-2`}
               >
                 {/* Image */}
-                <div className="relative aspect-video sm:aspect-square w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-xl">
+                <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-xl">
                   <Image
                     src={item.image}
                     alt={item.title}
@@ -192,10 +196,10 @@ export function ScrollStorytelling() {
                     <span className="text-xs font-mono font-bold text-red-500 uppercase tracking-widest block">
                       {item.subtitle}
                     </span>
-                    <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight uppercase mt-0.5">
+                    <h3 className="text-2xl font-black text-white tracking-tight uppercase mt-0.5">
                       {item.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans mt-2">
+                    <p className="text-sm text-zinc-300 leading-relaxed font-sans mt-2">
                       {item.desc}
                     </p>
                   </div>
@@ -207,6 +211,104 @@ export function ScrollStorytelling() {
                 </div>
               </motion.div>
             ))}
+          </div>
+
+          {/* MOBILE VIEW ONLY: Interactive Tabbed Card Switcher */}
+          <div className="md:hidden space-y-5">
+            {/* Tab Pill Buttons */}
+            <div className="flex items-center justify-between gap-1.5 p-1.5 bg-zinc-900 border border-zinc-800 rounded-2xl">
+              {ingredientsList.map((item, index) => {
+                const isActive = activeMobileTab === index;
+                return (
+                  <button
+                    key={item.step}
+                    onClick={() => setActiveMobileTab(index)}
+                    className={`flex-1 py-2.5 rounded-xl font-mono text-[11px] font-bold uppercase transition-all flex items-center justify-center gap-1.5 ${
+                      isActive
+                        ? 'bg-red-600 text-white shadow-lg shadow-red-900/50'
+                        : 'text-zinc-400 hover:text-white'
+                    }`}
+                  >
+                    <span>{item.step}.</span>
+                    <span className="truncate">{item.title.split(' ')[1] || item.title}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Display Active Mobile Card */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeMobileTab}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
+                className={`rounded-3xl bg-gradient-to-br ${currentMobileCard.bgGradient} border ${currentMobileCard.accentColor} p-6 space-y-5 shadow-2xl relative overflow-hidden`}
+              >
+                {/* Image */}
+                <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-xl">
+                  <Image
+                    src={currentMobileCard.image}
+                    alt={currentMobileCard.title}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                  
+                  <div className="absolute top-3 left-3 flex items-center gap-2">
+                    <span className={`px-2.5 py-1 rounded-lg text-xs font-mono font-black uppercase ${currentMobileCard.badgeBg}`}>
+                      {currentMobileCard.step}
+                    </span>
+                    <span className="bg-black/80 text-amber-400 border border-amber-500/40 text-[10px] font-mono font-black px-2.5 py-1 rounded-lg uppercase">
+                      {currentMobileCard.tag}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Card Info */}
+                <div className="space-y-3 font-sans">
+                  <div>
+                    <span className="text-xs font-mono font-bold text-red-500 uppercase tracking-widest block">
+                      {currentMobileCard.subtitle}
+                    </span>
+                    <h3 className="text-2xl font-black text-white tracking-tight uppercase font-mono mt-1">
+                      {currentMobileCard.title}
+                    </h3>
+                  </div>
+
+                  <p className="text-xs text-zinc-300 leading-relaxed">
+                    {currentMobileCard.desc}
+                  </p>
+
+                  <div className="pt-3 border-t border-zinc-800/80 flex items-center justify-between text-xs font-mono font-bold text-amber-400">
+                    <span className="flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                      <span>Black Burger Master Standard</span>
+                    </span>
+                  </div>
+                </div>
+
+                {/* Prev / Next mobile arrows */}
+                <div className="flex items-center justify-between pt-2">
+                  <button
+                    onClick={() => setActiveMobileTab((prev) => (prev > 0 ? prev - 1 : ingredientsList.length - 1))}
+                    className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white flex items-center gap-1 text-xs font-mono font-bold"
+                  >
+                    <ChevronLeft className="w-4 h-4 text-red-500" /> Prev
+                  </button>
+                  <span className="text-xs font-mono text-zinc-500 font-bold">
+                    {activeMobileTab + 1} / {ingredientsList.length}
+                  </span>
+                  <button
+                    onClick={() => setActiveMobileTab((prev) => (prev < ingredientsList.length - 1 ? prev + 1 : 0))}
+                    className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white flex items-center gap-1 text-xs font-mono font-bold"
+                  >
+                    Next <ChevronRight className="w-4 h-4 text-red-500" />
+                  </button>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
         </div>
