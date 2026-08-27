@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Flame, Sparkles, ShieldCheck, CheckCircle2, ChevronRight, Zap } from 'lucide-react';
+import { Flame, ShieldCheck, CheckCircle2, ChevronRight, Zap } from 'lucide-react';
 import Link from 'next/link';
 
 export function ScrollStorytelling() {
@@ -29,6 +29,30 @@ export function ScrollStorytelling() {
       badge: 'BLACK BURGER CLASSIC',
     },
   };
+
+  const ingredientsList = [
+    {
+      title: '100% ANGUS BEEF',
+      desc: 'Zero fillers, zero soy. Pure coarse ground grass-fed Angus beef with optimal fat ratio for max juiciness.',
+      image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?q=80&w=800&auto=format&fit=crop',
+      borderHover: 'hover:border-red-600/50',
+      badge: '01',
+    },
+    {
+      title: 'FRESH BRIOCHE BUNS',
+      desc: 'Artisanal golden brioche baked fresh every morning, lightly slathered in butter and seared warm on the griddle.',
+      image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=800&auto=format&fit=crop',
+      borderHover: 'hover:border-amber-500/50',
+      badge: '02',
+    },
+    {
+      title: 'SIGNATURE SAUCES',
+      desc: 'Handcrafted in-house daily—from our secret BB smash drizzle to rich truffle aioli and fiery habanero glaze.',
+      image: 'https://images.unsplash.com/photo-1472476443507-c7a5948772fc?q=80&w=800&auto=format&fit=crop',
+      borderHover: 'hover:border-red-600/50',
+      badge: '03',
+    },
+  ];
 
   return (
     <div className="bg-black text-white space-y-24 py-20 overflow-hidden">
@@ -125,7 +149,7 @@ export function ScrollStorytelling() {
         </div>
       </section>
 
-      {/* 2. INGREDIENTS ANIMATION SECTION */}
+      {/* 2. INGREDIENTS ANIMATION SECTION (Mobile overlapping stack + Desktop grid) */}
       <section className="bg-zinc-950 border-y border-zinc-800/80 py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-12">
           
@@ -141,81 +165,79 @@ export function ScrollStorytelling() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            {/* Ingredient 1 */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="bg-zinc-900/60 border border-zinc-800 rounded-3xl p-8 space-y-4 hover:border-red-600/50 transition-all group"
-            >
-              <div className="relative h-44 w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800">
-                <Image
-                  src="https://images.unsplash.com/photo-1588168333986-5078d3ae3976?q=80&w=800&auto=format&fit=crop"
-                  alt="100% Angus Beef"
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-              </div>
-              <h3 className="text-xl font-black text-white tracking-wider uppercase">
-                100% ANGUS BEEF
-              </h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Zero fillers, zero soy. Pure coarse ground grass-fed Angus beef with optimal fat ratio for max juiciness.
-              </p>
-            </motion.div>
-
-            {/* Ingredient 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="bg-zinc-900/60 border border-zinc-800 rounded-3xl p-8 space-y-4 hover:border-amber-500/50 transition-all group"
-            >
-              <div className="relative h-44 w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800">
-                <Image
-                  src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=800&auto=format&fit=crop"
-                  alt="Fresh Buns"
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-              </div>
-              <h3 className="text-xl font-black text-white tracking-wider uppercase">
-                FRESH BRIOCHE BUNS
-              </h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Artisanal golden brioche baked fresh every morning, lightly slathered in butter and seared warm on the griddle.
-              </p>
-            </motion.div>
-
-            {/* Ingredient 3 */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="bg-zinc-900/60 border border-zinc-800 rounded-3xl p-8 space-y-4 hover:border-red-600/50 transition-all group"
-            >
-              <div className="relative h-44 w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800">
-                <Image
-                  src="https://images.unsplash.com/photo-1472476443507-c7a5948772fc?q=80&w=800&auto=format&fit=crop"
-                  alt="Signature Sauces"
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-              </div>
-              <h3 className="text-xl font-black text-white tracking-wider uppercase">
-                SIGNATURE SAUCES
-              </h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Handcrafted in-house daily—from our secret BB smash drizzle to rich truffle aioli and fiery habanero glaze.
-              </p>
-            </motion.div>
-
+          {/* Desktop Grid Layout (md and up) */}
+          <div className="hidden md:grid md:grid-cols-3 gap-8">
+            {ingredientsList.map((item, idx) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                className={`bg-zinc-900/60 border border-zinc-800 rounded-3xl p-8 space-y-4 ${item.borderHover} transition-all group`}
+              >
+                <div className="relative h-44 w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <h3 className="text-xl font-black text-white tracking-wider uppercase">
+                  {item.title}
+                </h3>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  {item.desc}
+                </p>
+              </motion.div>
+            ))}
           </div>
+
+          {/* Mobile Overlapping Cards Layout (below md) */}
+          <div className="md:hidden flex flex-col pt-4 relative px-2">
+            {ingredientsList.map((item, idx) => {
+              // Stack offset logic
+              const zIndexStyle = { zIndex: (idx + 1) * 10 };
+              const marginTopStyle = idx > 0 ? { marginTop: '-3.5rem' } : {};
+
+              return (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.15 }}
+                  style={{ ...zIndexStyle, ...marginTopStyle }}
+                  className="relative bg-zinc-900/95 border border-zinc-700/80 rounded-3xl p-6 text-left shadow-[0_20px_40px_rgba(0,0,0,0.9)] backdrop-blur-xl group transition-transform active:scale-[0.98]"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="relative h-28 w-28 shrink-0 rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950 shadow-md">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <span className="absolute top-1.5 left-1.5 bg-black/80 text-amber-400 text-[10px] font-black px-2 py-0.5 rounded-md border border-amber-500/40 font-mono">
+                        {item.badge}
+                      </span>
+                    </div>
+
+                    <div className="space-y-1.5 min-w-0 flex-1">
+                      <h3 className="text-base font-black text-white tracking-wider uppercase leading-snug">
+                        {item.title}
+                      </h3>
+                      <p className="text-[11px] text-zinc-300 leading-relaxed line-clamp-3">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
         </div>
       </section>
 
