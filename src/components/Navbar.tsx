@@ -89,34 +89,6 @@ export function Navbar() {
           </button>
         </div>
 
-        {/* CENTER: Glowing Rectangular Emblem Badge */}
-        <Link href="/" className="hidden md:flex group items-center justify-center my-0.5">
-          <div className="relative px-4 sm:px-6 py-1.5 sm:py-2 rounded-xl bg-gradient-to-b from-zinc-900 via-zinc-950 to-black border-2 border-amber-500/80 shadow-[0_0_25px_rgba(234,179,8,0.3)] group-hover:shadow-[0_0_35px_rgba(220,38,38,0.8)] group-hover:border-amber-400 transition-all duration-300 flex items-center gap-3">
-            
-            {/* Emblem icon */}
-            <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-lg overflow-hidden bg-black border border-amber-500/40 shrink-0">
-              <Image
-                src="/images/logo.png"
-                alt="BLACK BURGER"
-                fill
-                className="object-contain p-0.5"
-                priority
-              />
-            </div>
-
-            {/* Emblem text layout */}
-            <div className="flex flex-col text-center">
-              <span className="font-mono font-black text-sm sm:text-lg tracking-wider text-white uppercase flex items-center justify-center gap-1 leading-none">
-                BLACK <span className="text-red-600">BURGER</span>
-              </span>
-              <span className="text-[9px] sm:text-[10px] tracking-widest text-amber-400 font-mono font-bold uppercase mt-1 flex items-center justify-center gap-1 border-t border-amber-500/30 pt-0.5">
-                <Flame className="w-2.5 h-2.5 text-red-500 animate-pulse" />
-                SMASH & ANGUS
-              </span>
-            </div>
-
-          </div>
-        </Link>
 
         {/* Right Actions: Phone + Cart + Order CTA */}
         <div className="flex items-center gap-2 sm:gap-3">
