@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Flame, ShieldCheck, CheckCircle2, ChevronRight, Zap } from 'lucide-react';
+import { Flame, ShieldCheck, CheckCircle2, ChevronRight, Zap, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 export function ScrollStorytelling() {
@@ -32,25 +32,34 @@ export function ScrollStorytelling() {
 
   const ingredientsList = [
     {
+      step: '01',
+      tag: '100% PURE ANGUS',
       title: '100% ANGUS BEEF',
-      desc: 'Zero fillers, zero soy. Pure coarse ground grass-fed Angus beef with optimal fat ratio for max juiciness.',
+      subtitle: 'Zero Fillers • Daily Ground Chuck',
+      desc: 'Zero fillers, zero soy. Pure coarse ground grass-fed Angus beef chuck with optimal marbling for maximum rich flavor and juice retention.',
       image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?q=80&w=800&auto=format&fit=crop',
-      borderHover: 'hover:border-red-600/50',
-      badge: '01',
+      accentColor: 'border-red-600/70 shadow-[0_15px_35px_rgba(220,38,38,0.25)]',
+      badgeBg: 'bg-red-600 text-white',
     },
     {
+      step: '02',
+      tag: 'BAKED FRESH DAILY',
       title: 'FRESH BRIOCHE BUNS',
-      desc: 'Artisanal golden brioche baked fresh every morning, lightly slathered in butter and seared warm on the griddle.',
+      subtitle: 'Artisanal Golden Pillow',
+      desc: 'Artisanal golden brioche baked fresh every morning, lightly slathered in butter and seared warm on the griddle to hold every drop of juice.',
       image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=800&auto=format&fit=crop',
-      borderHover: 'hover:border-amber-500/50',
-      badge: '02',
+      accentColor: 'border-amber-500/70 shadow-[0_15px_35px_rgba(234,179,8,0.25)]',
+      badgeBg: 'bg-amber-500 text-black',
     },
     {
+      step: '03',
+      tag: 'SECRET HOUSE RECIPES',
       title: 'SIGNATURE SAUCES',
-      desc: 'Handcrafted in-house daily—from our secret BB smash drizzle to rich truffle aioli and fiery habanero glaze.',
+      subtitle: 'House Made In Small Batches',
+      desc: 'Handcrafted in-house daily—from our secret BB smash drizzle to rich truffle aioli, smoky chipotle, and fiery cayenne buffalo glaze.',
       image: 'https://images.unsplash.com/photo-1472476443507-c7a5948772fc?q=80&w=800&auto=format&fit=crop',
-      borderHover: 'hover:border-red-600/50',
-      badge: '03',
+      accentColor: 'border-red-600/70 shadow-[0_15px_35px_rgba(220,38,38,0.25)]',
+      badgeBg: 'bg-red-600 text-white',
     },
   ];
 
@@ -149,91 +158,86 @@ export function ScrollStorytelling() {
         </div>
       </section>
 
-      {/* 2. INGREDIENTS ANIMATION SECTION (Mobile overlapping stack + Desktop grid) */}
-      <section className="bg-zinc-950 border-y border-zinc-800/80 py-20 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-12">
+      {/* 2. STICKY SLIDE-OVER CARDS SECTION ("WHAT MAKES IT UNFORGETTABLE?") */}
+      <section className="bg-zinc-950 border-y border-zinc-800/80 py-24 relative">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
-          <div className="max-w-2xl mx-auto space-y-3">
-            <span className="text-xs font-black tracking-widest text-amber-400 uppercase">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-xs font-black tracking-widest text-amber-400 uppercase flex items-center justify-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               PURE UNCOMPROMISED INGREDIENTS
             </span>
-            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-              WHAT MAKES IT <span className="text-red-600">UNFORGETTABLE?</span>
+            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
+              WHAT MAKES IT <span className="text-red-gradient">UNFORGETTABLE?</span>
             </h2>
-            <p className="text-zinc-400 text-sm sm:text-base">
-              We sourcing only premium components to build the ultimate street luxury smash burger.
+            <p className="text-zinc-400 text-xs sm:text-sm">
+              Scroll down to explore how each ingredient layers together.
             </p>
           </div>
 
-          {/* Desktop Grid Layout (md and up) */}
-          <div className="hidden md:grid md:grid-cols-3 gap-8">
-            {ingredientsList.map((item, idx) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className={`bg-zinc-900/60 border border-zinc-800 rounded-3xl p-8 space-y-4 ${item.borderHover} transition-all group`}
-              >
-                <div className="relative h-44 w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-                <h3 className="text-xl font-black text-white tracking-wider uppercase">
-                  {item.title}
-                </h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">
-                  {item.desc}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Mobile Overlapping Cards Layout (below md) */}
-          <div className="md:hidden flex flex-col pt-4 relative px-2">
+          {/* Sticky Card Stacking Container */}
+          <div className="relative space-y-12 pb-16">
             {ingredientsList.map((item, idx) => {
-              // Stack offset logic
-              const zIndexStyle = { zIndex: (idx + 1) * 10 };
-              const marginTopStyle = idx > 0 ? { marginTop: '-3.5rem' } : {};
+              // Calculate sticky top offset so cards stack nicely over each other on scroll
+              const topStickyOffset = `${6.5 + idx * 1.5}rem`;
 
               return (
-                <motion.div
+                <div
                   key={item.title}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.15 }}
-                  style={{ ...zIndexStyle, ...marginTopStyle }}
-                  className="relative bg-zinc-900/95 border border-zinc-700/80 rounded-3xl p-6 text-left shadow-[0_20px_40px_rgba(0,0,0,0.9)] backdrop-blur-xl group transition-transform active:scale-[0.98]"
+                  className={`sticky rounded-3xl bg-zinc-900/95 border ${item.accentColor} p-6 sm:p-8 backdrop-blur-2xl transition-all relative overflow-hidden`}
+                  style={{
+                    top: topStickyOffset,
+                    zIndex: idx + 10,
+                  }}
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="relative h-28 w-28 shrink-0 rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950 shadow-md">
+                  {/* Subtle Red/Gold glow background */}
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
+
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    
+                    {/* Left Thumbnail Image */}
+                    <div className="md:col-span-5 relative aspect-video sm:aspect-square w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-xl">
                       <Image
                         src={item.image}
                         alt={item.title}
                         fill
                         className="object-cover"
                       />
-                      <span className="absolute top-1.5 left-1.5 bg-black/80 text-amber-400 text-[10px] font-black px-2 py-0.5 rounded-md border border-amber-500/40 font-mono">
-                        {item.badge}
-                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                      
+                      <div className="absolute top-3 left-3 flex items-center gap-2">
+                        <span className={`px-2.5 py-1 rounded-lg text-xs font-mono font-black uppercase ${item.badgeBg}`}>
+                          {item.step}
+                        </span>
+                        <span className="bg-black/80 text-amber-400 border border-amber-500/40 text-[10px] font-mono font-black px-2.5 py-1 rounded-lg uppercase">
+                          {item.tag}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="space-y-1.5 min-w-0 flex-1">
-                      <h3 className="text-base font-black text-white tracking-wider uppercase leading-snug">
-                        {item.title}
-                      </h3>
-                      <p className="text-[11px] text-zinc-300 leading-relaxed line-clamp-3">
+                    {/* Right Details */}
+                    <div className="md:col-span-7 space-y-3">
+                      <div>
+                        <span className="text-xs font-mono font-bold text-red-500 uppercase tracking-widest block">
+                          {item.subtitle}
+                        </span>
+                        <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase mt-0.5">
+                          {item.title}
+                        </h3>
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans">
                         {item.desc}
                       </p>
+
+                      <div className="pt-2 flex items-center gap-2 text-xs font-mono font-bold text-amber-400">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                        <span>Black Burger Master Standard</span>
+                      </div>
                     </div>
+
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
