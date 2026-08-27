@@ -384,7 +384,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     soloPrice: 20,
     description: 'Extra melted cheddar cheese topping.',
     ingredients: ['Extra Cheddar Cheese'],
-    image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/additions/extra-cheddar.jpg',
     isAvailable: true,
   },
   {
@@ -394,7 +394,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     soloPrice: 20,
     description: 'Extra crispy smoked bacon strip.',
     ingredients: ['Extra Crispy Bacon'],
-    image: 'https://images.unsplash.com/photo-1528607929212-2636ec44253e?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/additions/extra-bacon.jpeg',
     isAvailable: true,
   },
   {
@@ -404,7 +404,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     soloPrice: 40,
     description: 'Extra hand-breaded crispy fried chicken piece.',
     ingredients: ['Crispy Chkn Piece'],
-    image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/additions/extra-chicken-piece.jpg',
     isAvailable: true,
   },
   {
@@ -414,7 +414,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     soloPrice: 25,
     description: 'Extra sliced pickled jalapeños.',
     ingredients: ['Extra Jalapeño'],
-    image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/additions/extra-jalapeno.jpeg',
     isAvailable: true,
   },
   {
@@ -424,7 +424,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     soloPrice: 30,
     description: 'Extra grilled wild mushrooms.',
     ingredients: ['Extra Mushrooms'],
-    image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/additions/extra-mushroom.jpeg',
     isAvailable: true,
   },
 ];
