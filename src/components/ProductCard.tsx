@@ -79,7 +79,7 @@ export function ProductCard({ product }: { product: ProductItem }) {
             className="w-full bg-zinc-950 hover:bg-gradient-to-r hover:from-red-600 hover:to-red-800 text-white font-black py-3 rounded-2xl text-xs uppercase tracking-wider border border-zinc-800 hover:border-red-500/50 transition-all flex items-center justify-center gap-2 group/btn shadow-md font-mono"
           >
             <Plus className="w-4 h-4 text-red-500 group-hover/btn:text-white transition-colors" />
-            <span>CUSTOMIZE & ORDER</span>
+            <span>ORDER</span>
           </button>
         </div>
       </div>
