@@ -1,11 +1,17 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Phone, MapPin, Clock, Flame, ShieldCheck, Heart } from 'lucide-react';
 
 export function Footer() {
+  const [year, setYear] = useState<number>(2025);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="bg-black text-white border-t border-zinc-800/80 relative overflow-hidden">
       {/* Red ambient background glow */}
@@ -146,7 +152,7 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-4">
-          <p>© {new Date().getFullYear()} BLACK BURGER. All rights reserved. Smash Burgers Made Different.</p>
+          <p>© {year} BLACK BURGER. All rights reserved. Smash Burgers Made Different.</p>
           <p className="flex items-center gap-1">
             Crafted with <Heart className="w-3.5 h-3.5 text-red-600 fill-red-600" /> for smash burger lovers.
           </p>
