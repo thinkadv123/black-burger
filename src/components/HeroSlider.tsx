@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Flame, ArrowRight, ChevronLeft, ChevronRight, Award, Star } from 'lucide-react';
+import { Flame, ArrowRight, ChevronLeft, ChevronRight, Award, Star, Play, Pause } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SLIDES = [
@@ -14,6 +14,7 @@ const SLIDES = [
     highlightTitle: 'MADE DIFFERENT',
     subtitle: '100% ANGUS BEEF • SIGNATURE SAUCES • UNFORGETTABLE FLAVOR',
     image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1920&auto=format&fit=crop',
+    video: '/videos/hero-smash.mp4',
     ctaText: 'ORDER NOW',
     ctaLink: '/menu',
   },
@@ -25,7 +26,7 @@ const SLIDES = [
     subtitle: 'HAND-BREADED CRISPY FILLET • CAYENNE BUFFALO • HOUSE RANCH',
     image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=1920&auto=format&fit=crop',
     ctaText: 'EXPLORE CHICKEN',
-    ctaLink: '/menu?cat=CHICKEN+COLLECTION',
+    ctaLink: '/menu',
   },
   {
     id: 3,
@@ -35,19 +36,47 @@ const SLIDES = [
     subtitle: 'BB BEEF CHAOS FRIES • TRUFFLE AIOLI • LOADED APPETIZERS',
     image: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?q=80&w=1920&auto=format&fit=crop',
     ctaText: 'TRY CHAOS FRIES',
-    ctaLink: '/menu?cat=APPETIZERS',
+    ctaLink: '/menu',
   },
 ];
 
 export function HeroSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
+  // Auto-advance slide unless video is playing on slide 0
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
-    }, 6000);
+    }, 7000);
     return () => clearInterval(timer);
   }, []);
+
+  // Play video on scroll or slide change
+  useEffect(() => {
+    const handleScroll = () => {
+      if (videoRef.current) {
+        if (window.scrollY < 800) {
+          videoRef.current.play().catch(() => {});
+        } else {
+          videoRef.current.pause();
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Handle video element play when slide active
+  useEffect(() => {
+    if (videoRef.current) {
+      if (SLIDES[currentSlide].video) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play().catch(() => {});
+      }
+    }
+  }, [currentSlide]);
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
@@ -56,24 +85,36 @@ export function HeroSlider() {
 
   return (
     <section className="relative w-full h-[92vh] min-h-[650px] bg-black overflow-hidden flex items-center justify-center">
-      {/* Slide Background Image with Parallax & Zoom effect */}
+      {/* Slide Background Image or Video */}
       <AnimatePresence mode="wait">
         <motion.div
           key={slide.id}
-          initial={{ opacity: 0, scale: 1.15 }}
+          initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.05 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0"
         >
-          <Image
-            src={slide.image}
-            alt={slide.title}
-            fill
-            className="object-cover object-center brightness-75 filter"
-            priority
-          />
-          
+          {slide.video ? (
+            <video
+              ref={videoRef}
+              src={slide.video}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover object-center brightness-75"
+            />
+          ) : (
+            <Image
+              src={slide.image}
+              alt={slide.title}
+              fill
+              className="object-cover object-center brightness-75"
+              priority
+            />
+          )}
+
           {/* Gradients Overlay for high contrast luxury look */}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/80" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/60 to-transparent" />
