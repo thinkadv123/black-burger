@@ -253,15 +253,15 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                       key={ing}
                       type="button"
                       onClick={() => toggleIngredient(ing)}
-                      className={`flex items-center justify-between p-3 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+                      className={`flex items-center justify-between p-3 rounded-xl border text-xs sm:text-sm font-medium transition-all text-left ${
                         isChecked
                           ? 'border-neutral-800 bg-neutral-900 text-neutral-200 hover:border-neutral-700'
                           : 'border-red-900/60 bg-red-950/30 text-red-400 font-semibold shadow-inner'
                       }`}
                     >
-                      <span className="flex items-center gap-2.5">
+                      <span className="flex items-center gap-2.5 text-left min-w-0 pr-2">
                         <div
-                          className={`w-4 h-4 rounded flex items-center justify-center border transition-colors ${
+                          className={`w-4 h-4 rounded flex items-center justify-center border transition-colors shrink-0 ${
                             isChecked
                               ? 'bg-neutral-800 border-neutral-600 text-green-400'
                               : 'bg-red-900/50 border-red-600 text-red-400'
@@ -269,12 +269,12 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                         >
                           {isChecked ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
                         </div>
-                        <span className={!isChecked ? 'line-through text-red-400 font-bold' : ''}>
+                        <span className={`text-left leading-tight ${!isChecked ? 'line-through text-red-400 font-bold' : ''}`}>
                           {ing}
                         </span>
                       </span>
                       {!isChecked && (
-                        <span className="text-[10px] text-red-400 font-mono uppercase font-bold bg-red-950/80 px-2 py-0.5 rounded">
+                        <span className="text-[10px] text-red-400 font-mono uppercase font-bold bg-red-950/80 px-2 py-0.5 rounded shrink-0 whitespace-nowrap">
                           Removed
                         </span>
                       )}
@@ -306,15 +306,15 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                       key={add.id}
                       type="button"
                       onClick={() => toggleAddition(add)}
-                      className={`flex items-center justify-between p-3 rounded-xl border text-xs sm:text-sm font-medium transition-all ${
+                      className={`flex items-center justify-between p-3 rounded-xl border text-xs sm:text-sm font-medium transition-all text-left ${
                         isSelected
                           ? 'border-red-600 bg-red-950/40 text-white shadow-md'
                           : 'border-neutral-800 bg-neutral-900/50 text-neutral-300 hover:border-neutral-700'
                       }`}
                     >
-                      <span className="flex items-center gap-2.5">
+                      <span className="flex items-center gap-2.5 text-left min-w-0 pr-2">
                         <div
-                          className={`w-4 h-4 rounded flex items-center justify-center border transition-colors ${
+                          className={`w-4 h-4 rounded flex items-center justify-center border transition-colors shrink-0 ${
                             isSelected
                               ? 'bg-red-600 border-red-500 text-white'
                               : 'bg-neutral-800 border-neutral-700 text-transparent'
@@ -322,9 +322,9 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                         >
                           <Check className="w-3 h-3" />
                         </div>
-                        <span className="font-semibold">{add.name}</span>
+                        <span className="font-semibold text-left leading-tight">{add.name}</span>
                       </span>
-                      <span className="font-mono text-xs font-bold text-yellow-400">
+                      <span className="font-mono text-xs font-bold text-yellow-400 whitespace-nowrap shrink-0">
                         +{add.price} EGP
                       </span>
                     </button>
