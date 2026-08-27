@@ -124,7 +124,7 @@ export default function ContactPage() {
               </div>
 
               <a
-                href="https://wa.me/201515821555?text=Hello%20Black%20Burger!%20I%20would%20like%20to%20place%20an%20order."
+                href="https://wa.me/201000922142?text=Hello%20Black%20Burger!%20I%20would%20like%20to%20place%20an%20order."
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black px-6 py-3 rounded-full text-xs uppercase tracking-wider transition-all shadow-lg"

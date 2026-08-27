@@ -128,7 +128,7 @@ ${itemsList}
 
       // Open WhatsApp with formatted order text
       const text = formatWhatsAppMessage(newOrderId);
-      window.open(`https://wa.me/201515821555?text=${text}`, '_blank');
+      window.open(`https://wa.me/201000922142?text=${text}`, '_blank');
 
       clearCart();
     }, 1000);
@@ -221,7 +221,7 @@ ${itemsList}
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <a
-                    href={`https://wa.me/201515821555?text=${formatWhatsAppMessage(orderId)}`}
+                    href={`https://wa.me/201000922142?text=${formatWhatsAppMessage(orderId)}`}
                     target="_blank"
                     rel="noreferrer"
                     className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-2xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-lg"
