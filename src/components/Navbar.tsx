@@ -39,46 +39,62 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         
-        {/* Left: Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-1 bg-zinc-900/80 border border-zinc-800 px-3 py-1 rounded-full backdrop-blur-sm">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`relative px-4 py-1.5 text-xs font-mono font-bold tracking-wider uppercase transition-colors rounded-full ${
-                  isActive ? 'text-white' : 'text-zinc-400 hover:text-white'
-                }`}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="navbar-active"
-                    className="absolute inset-0 bg-red-600 rounded-full -z-10 shadow-[0_0_12px_rgba(220,38,38,0.8)]"
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                  />
-                )}
-                {link.name}
-              </Link>
-            );
-          })}
-        </nav>
+        {/* Left Side: Logo + Menu items right after */}
+        <div className="flex items-center gap-4">
+          {/* Left Brand Logo Badge */}
+          <Link href="/" className="relative flex items-center gap-2 group shrink-0">
+            <div className="relative w-12 h-14 sm:w-14 sm:h-16 rounded-xl overflow-hidden bg-zinc-950 border-2 border-amber-500/80 p-1 shadow-[0_0_20px_rgba(220,38,38,0.5)] group-hover:border-amber-400 transition-all">
+              <Image
+                src="/images/logo.png"
+                alt="BLACK BURGER"
+                fill
+                className="object-contain p-0.5"
+                priority
+              />
+            </div>
+          </Link>
 
-        {/* Mobile menu trigger button (left side on mobile) */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 text-zinc-300 hover:text-white rounded-xl bg-zinc-900 border border-zinc-800"
-          aria-label="Toggle Navigation"
-        >
-          {mobileMenuOpen ? <X className="w-5 h-5 text-red-500" /> : <MenuIcon className="w-5 h-5" />}
-        </button>
+          {/* Desktop Navigation Links directly after logo */}
+          <nav className="hidden lg:flex items-center space-x-1 bg-zinc-900/80 border border-zinc-800 px-3 py-1.5 rounded-full backdrop-blur-sm">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={`relative px-4 py-1.5 text-xs font-mono font-bold tracking-wider uppercase transition-colors rounded-full ${
+                    isActive ? 'text-white' : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="navbar-active"
+                      className="absolute inset-0 bg-red-600 rounded-full -z-10 shadow-[0_0_12px_rgba(220,38,38,0.8)]"
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  {link.name}
+                </Link>
+              );
+            })}
+          </nav>
 
-        {/* CENTER: Rectangular Emblem Logo */}
-        <Link href="/" className="group flex items-center justify-center my-0.5">
-          <div className="relative px-4 sm:px-6 py-1.5 sm:py-2 rounded-xl bg-gradient-to-b from-zinc-900 via-zinc-950 to-black border-2 border-amber-500/80 shadow-[0_0_25px_rgba(220,38,38,0.5)] group-hover:shadow-[0_0_35px_rgba(220,38,38,0.8)] group-hover:border-amber-400 transition-all duration-300 flex items-center gap-3">
+          {/* Mobile menu trigger button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden p-2 text-zinc-300 hover:text-white rounded-xl bg-zinc-900 border border-zinc-800"
+            aria-label="Toggle Navigation"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5 text-red-500" /> : <MenuIcon className="w-5 h-5" />}
+          </button>
+        </div>
+
+        {/* CENTER: Glowing Rectangular Emblem Badge */}
+        <Link href="/" className="hidden md:flex group items-center justify-center my-0.5">
+          <div className="relative px-4 sm:px-6 py-1.5 sm:py-2 rounded-xl bg-gradient-to-b from-zinc-900 via-zinc-950 to-black border-2 border-amber-500/80 shadow-[0_0_25px_rgba(234,179,8,0.3)] group-hover:shadow-[0_0_35px_rgba(220,38,38,0.8)] group-hover:border-amber-400 transition-all duration-300 flex items-center gap-3">
             
             {/* Emblem icon */}
-            <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden bg-black border border-amber-500/40 shrink-0">
+            <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-lg overflow-hidden bg-black border border-amber-500/40 shrink-0">
               <Image
                 src="/images/logo.png"
                 alt="BLACK BURGER"
@@ -90,7 +106,7 @@ export function Navbar() {
 
             {/* Emblem text layout */}
             <div className="flex flex-col text-center">
-              <span className="font-mono font-black text-base sm:text-xl tracking-wider text-white uppercase flex items-center justify-center gap-1.5 leading-none">
+              <span className="font-mono font-black text-sm sm:text-lg tracking-wider text-white uppercase flex items-center justify-center gap-1 leading-none">
                 BLACK <span className="text-red-600">BURGER</span>
               </span>
               <span className="text-[9px] sm:text-[10px] tracking-widest text-amber-400 font-mono font-bold uppercase mt-1 flex items-center justify-center gap-1 border-t border-amber-500/30 pt-0.5">
