@@ -38,9 +38,9 @@ export function ScrollStorytelling() {
       subtitle: 'Zero Fillers • Daily Ground Chuck',
       desc: 'Zero fillers, zero soy. Pure coarse ground grass-fed Angus beef chuck with optimal marbling for maximum rich flavor and juice retention.',
       image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?q=80&w=800&auto=format&fit=crop',
-      accentColor: 'border-red-600/70 shadow-[0_20px_50px_rgba(220,38,38,0.35)]',
+      accentColor: 'border-red-600/70 hover:border-red-500 shadow-xl',
       badgeBg: 'bg-red-600 text-white',
-      bgGradient: 'from-red-950/90 via-zinc-900 to-zinc-950',
+      bgGradient: 'from-red-950/80 via-zinc-900 to-zinc-950',
     },
     {
       step: '02',
@@ -49,9 +49,9 @@ export function ScrollStorytelling() {
       subtitle: 'Artisanal Golden Pillow',
       desc: 'Artisanal golden brioche baked fresh every morning, lightly slathered in butter and seared warm on the griddle to hold every drop of juice.',
       image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=800&auto=format&fit=crop',
-      accentColor: 'border-amber-500/70 shadow-[0_20px_50px_rgba(234,179,8,0.35)]',
+      accentColor: 'border-amber-500/70 hover:border-amber-400 shadow-xl',
       badgeBg: 'bg-amber-500 text-black',
-      bgGradient: 'from-amber-950/90 via-zinc-900 to-zinc-950',
+      bgGradient: 'from-amber-950/80 via-zinc-900 to-zinc-950',
     },
     {
       step: '03',
@@ -60,9 +60,9 @@ export function ScrollStorytelling() {
       subtitle: 'House Made In Small Batches',
       desc: 'Handcrafted in-house daily—from our secret BB smash drizzle to rich truffle aioli, smoky chipotle, and fiery cayenne buffalo glaze.',
       image: 'https://images.unsplash.com/photo-1472476443507-c7a5948772fc?q=80&w=800&auto=format&fit=crop',
-      accentColor: 'border-red-600/70 shadow-[0_20px_50px_rgba(220,38,38,0.35)]',
+      accentColor: 'border-red-600/70 hover:border-red-500 shadow-xl',
       badgeBg: 'bg-red-600 text-white',
-      bgGradient: 'from-red-950/90 via-zinc-900 to-zinc-950',
+      bgGradient: 'from-red-950/80 via-zinc-900 to-zinc-950',
     },
   ];
 
@@ -161,11 +161,11 @@ export function ScrollStorytelling() {
         </div>
       </section>
 
-      {/* 2. OVERLAPPING STACKED SCROLL CARDS SECTION ("WHAT MAKES IT UNFORGETTABLE?") */}
-      <section className="bg-zinc-950 border-y border-zinc-800/80 py-24 relative">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      {/* 2. INGREDIENTS CARDS SECTION: 1 Row on Desktop, Horizontal Scroll on Mobile */}
+      <section className="bg-zinc-950 border-y border-zinc-800/80 py-20 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           
-          <div className="text-center max-w-2xl mx-auto space-y-3 sticky top-20 z-0">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs font-black tracking-widest text-amber-400 uppercase flex items-center justify-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               PURE UNCOMPROMISED INGREDIENTS
@@ -174,70 +174,62 @@ export function ScrollStorytelling() {
               WHAT MAKES IT <span className="text-red-gradient">UNFORGETTABLE?</span>
             </h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Scroll down to watch each layer cover the previous one.
+              Explore our core pillars of flavor <span className="sm:hidden">(Swipe left/right)</span>.
             </p>
           </div>
 
-          {/* Cards Stack Container - Each card pins at top-28/top-32 and slides directly over the previous one */}
-          <div className="relative pt-6 pb-20 space-y-24 sm:space-y-32">
-            {ingredientsList.map((item, idx) => {
-              const zIndexClass = idx === 0 ? 'z-10' : idx === 1 ? 'z-20' : 'z-30';
-
-              return (
-                <div
-                  key={item.title}
-                  className={`sticky top-28 sm:top-36 rounded-3xl bg-gradient-to-br ${item.bgGradient} border ${item.accentColor} p-6 sm:p-10 backdrop-blur-2xl transition-all relative overflow-hidden shadow-2xl ${zIndexClass}`}
-                >
-                  {/* Glowing background ambient light */}
-                  <div className="absolute top-0 right-0 w-80 h-80 bg-red-600/15 rounded-full blur-3xl pointer-events-none" />
-
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
-                    
-                    {/* Left Image */}
-                    <div className="md:col-span-5 relative aspect-video sm:aspect-square w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-2xl">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                      
-                      <div className="absolute top-3 left-3 flex items-center gap-2">
-                        <span className={`px-2.5 py-1 rounded-lg text-xs font-mono font-black uppercase ${item.badgeBg}`}>
-                          {item.step}
-                        </span>
-                        <span className="bg-black/80 text-amber-400 border border-amber-500/40 text-[10px] font-mono font-black px-2.5 py-1 rounded-lg uppercase">
-                          {item.tag}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Right Details */}
-                    <div className="md:col-span-7 space-y-4">
-                      <div>
-                        <span className="text-xs font-mono font-bold text-red-500 uppercase tracking-widest block">
-                          {item.subtitle}
-                        </span>
-                        <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight uppercase mt-0.5">
-                          {item.title}
-                        </h3>
-                      </div>
-
-                      <p className="text-xs sm:text-base text-zinc-300 leading-relaxed font-sans">
-                        {item.desc}
-                      </p>
-
-                      <div className="pt-2 flex items-center gap-2 text-xs font-mono font-bold text-amber-400">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                        <span>Black Burger Master Standard</span>
-                      </div>
-                    </div>
-
+          {/* Cards Container: Grid in 1 Row on Desktop (md:grid-cols-3) | Horizontal Scroll on Mobile */}
+          <div className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-6 md:pb-0 custom-scrollbar px-2 sm:px-0">
+            {ingredientsList.map((item, idx) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.15 }}
+                className={`min-w-[85vw] sm:min-w-[340px] md:min-w-0 flex-1 snap-center rounded-3xl bg-gradient-to-br ${item.bgGradient} border ${item.accentColor} p-6 sm:p-8 flex flex-col justify-between space-y-6 transition-all group hover:-translate-y-2`}
+              >
+                {/* Image */}
+                <div className="relative aspect-video sm:aspect-square w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-xl">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                  
+                  <div className="absolute top-3 left-3 flex items-center gap-2">
+                    <span className={`px-2.5 py-1 rounded-lg text-xs font-mono font-black uppercase ${item.badgeBg}`}>
+                      {item.step}
+                    </span>
+                    <span className="bg-black/80 text-amber-400 border border-amber-500/40 text-[10px] font-mono font-black px-2.5 py-1 rounded-lg uppercase">
+                      {item.tag}
+                    </span>
                   </div>
                 </div>
-              );
-            })}
+
+                {/* Details */}
+                <div className="space-y-2.5 flex-1 flex flex-col justify-between">
+                  <div>
+                    <span className="text-xs font-mono font-bold text-red-500 uppercase tracking-widest block">
+                      {item.subtitle}
+                    </span>
+                    <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight uppercase mt-0.5">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans mt-2">
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-zinc-800/80 flex items-center gap-2 text-xs font-mono font-bold text-amber-400">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                    <span>Black Burger Master Standard</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
 
         </div>
