@@ -80,8 +80,8 @@ export function TalabatMenu() {
           )}
         </div>
 
-        {/* Talabat-Style Category Filter Bar (Hides non-selected categories) */}
-        <div className="sticky top-16 z-30 bg-[#0A0A0C]/95 backdrop-blur-md py-3 border-y border-neutral-800 shadow-xl overflow-x-auto custom-scrollbar">
+        {/* Category Filter Bar */}
+        <div className="relative z-30 bg-[#0A0A0C] py-3 border-y border-neutral-800 shadow-xl overflow-x-auto custom-scrollbar">
           <div className="flex items-center gap-2 px-2 max-w-7xl mx-auto min-w-max">
             {CATEGORIES_LIST.map((cat) => {
               const isSelected = selectedCategory === cat && !searchQuery;
