@@ -312,7 +312,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     soloPrice: 25,
     description: 'Our proprietary smoky-sweet secret smash sauce.',
     ingredients: ['Signature BB Sauce cup'],
-    image: 'https://images.unsplash.com/photo-1472476443507-c7a5948772fc?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/sauces/sauce_bb.jpg',
     isAvailable: true,
   },
   {
@@ -322,7 +322,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     soloPrice: 30,
     description: 'Creamy house buttermilk garlic ranch.',
     ingredients: ['House Ranch Sauce cup'],
-    image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/sauces/sauce-ranch.jpg',
     isAvailable: true,
   },
   {
@@ -332,7 +332,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     soloPrice: 25,
     description: 'Classic spicy cayenne pepper buffalo sauce.',
     ingredients: ['Buffalo Sauce cup'],
-    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/sauces/sauce_bufflo.jpg',
     isAvailable: true,
   },
   {
@@ -342,7 +342,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     soloPrice: 20,
     description: 'Rich hickory barbecue dipping sauce.',
     ingredients: ['Barbecue Sauce cup'],
-    image: 'https://images.unsplash.com/photo-1509722747041-616f39b57569?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/sauces/sauce-bbq.jpg',
     isAvailable: true,
   },
   {
@@ -352,7 +352,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     soloPrice: 30,
     description: 'Warm liquid cheddar cheese dip.',
     ingredients: ['Cheddar Cheese Sauce cup'],
-    image: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/sauces/sauce-cheddar.jpg',
     isAvailable: true,
   },
   {
@@ -362,7 +362,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     soloPrice: 35,
     description: 'Smoky chipotle pepper mayo sauce.',
     ingredients: ['Chipotle Sauce cup'],
-    image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/sauces/sauce-chipotle.jpg',
     isAvailable: true,
   },
   {
@@ -372,7 +372,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     soloPrice: 35,
     description: 'Fiery chili sriracha sauce.',
     ingredients: ['Sriracha Sauce cup'],
-    image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/sauces/sauce-siracha.jpg',
     isAvailable: true,
   },
 
