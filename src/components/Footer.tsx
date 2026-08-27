@@ -61,22 +61,22 @@ export function Footer() {
             <ul className="space-y-2.5 text-sm font-semibold">
               <li>
                 <Link href="/" className="text-zinc-400 hover:text-red-500 transition-colors">
-                  Home
+                  Black Burger Home
                 </Link>
               </li>
               <li>
                 <Link href="/menu" className="text-zinc-400 hover:text-red-500 transition-colors">
-                  Smash Burgers & Menu
+                  Order Online Now
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="text-zinc-400 hover:text-red-500 transition-colors">
-                  Our Story & Smash Craft
+                  About BB
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-zinc-400 hover:text-red-500 transition-colors">
-                  Contact & Location
+                  Contact us
                 </Link>
               </li>
             </ul>
