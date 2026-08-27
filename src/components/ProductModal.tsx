@@ -41,6 +41,8 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   const isBurgerOrChicken =
     product.category === 'Smash Burgers' || product.category === 'Chicken Collection';
 
+  const isOfferProduct = product.category === 'Online Only Offers';
+
   // Calculate live item unit price
   let basePrice = product.soloPrice;
   if (product.id === 'onion-rings' && product.sizePrices) {
@@ -54,10 +56,10 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   const unitPrice = basePrice + additionsPrice;
   const totalPrice = unitPrice * quantity;
 
-  // Track removed ingredients
-  const removedIngredients = (product.ingredients || []).filter(
-    (ing) => !activeIngredients.includes(ing)
-  );
+  // Track removed ingredients (only for non-offers)
+  const removedIngredients = isOfferProduct
+    ? []
+    : (product.ingredients || []).filter((ing) => !activeIngredients.includes(ing));
 
   const toggleIngredient = (ing: string) => {
     if (activeIngredients.includes(ing)) {
@@ -77,7 +79,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
 
   const handleAddToCart = () => {
     const options: CartItemOption = {
-      variant: isBurgerOrChicken ? variant : 'solo',
+      variant: isBurgerOrChicken || product.comboPrice ? variant : 'solo',
       size: product.id === 'onion-rings' ? selectedSize : undefined,
       removedIngredients,
       addedAdditions: selectedAdditions,
@@ -93,15 +95,19 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-[#0F0F12] border-neutral-800 text-white p-0 gap-0 shadow-2xl rounded-2xl">
         <DialogTitle className="sr-only">{product.name}</DialogTitle>
 
-        {/* Header Section with Square Image on the side */}
+        {/* Header Section with Image container */}
         <div className="relative p-5 sm:p-6 bg-neutral-900/80 border-b border-neutral-800 flex flex-row gap-4 sm:gap-6 items-center">
-          {/* Square Image Container */}
-          <div className="relative w-28 h-28 sm:w-36 sm:h-36 shrink-0 aspect-square rounded-xl sm:rounded-2xl overflow-hidden border border-red-600/40 shadow-xl bg-neutral-950">
+          {/* Full-size Image Container (uncropped) */}
+          <div className={`relative shrink-0 rounded-xl sm:rounded-2xl overflow-hidden border border-red-600/40 shadow-xl bg-neutral-950 flex items-center justify-center ${
+            isOfferProduct
+              ? 'w-32 h-44 sm:w-44 sm:h-60 aspect-[3/4]'
+              : 'w-28 h-28 sm:w-36 sm:h-36 aspect-square'
+          }`}>
             <Image
               src={product.image}
               alt={product.name}
               fill
-              className="object-cover object-center"
+              className="object-contain"
               priority
             />
           </div>
@@ -125,7 +131,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             </h2>
 
             {product.description && (
-              <p className="text-xs sm:text-sm text-neutral-400 mt-1 line-clamp-2 leading-snug">
+              <p className="text-xs sm:text-sm text-neutral-400 mt-1 leading-snug">
                 {product.description}
               </p>
             )}
@@ -203,6 +209,55 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             </div>
           )}
 
+          {/* Hawaiian Beef Variant (if applicable) */}
+          {product.id === 'hawaiian-beef' && product.comboPrice && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
+                <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                  <span className="w-2 h-4 bg-red-600 rounded-sm" />
+                  Select Sandwich or Combo
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setVariant('solo')}
+                  className={`p-4 rounded-xl border text-left transition-all ${
+                    variant === 'solo'
+                      ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600 shadow-md'
+                      : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
+                  }`}
+                >
+                  <div className="font-mono font-black text-sm uppercase tracking-wide">SOLO</div>
+                  <div className="text-xs text-neutral-400 mt-1">Sandwich only</div>
+                  <div className="text-sm font-bold font-mono text-yellow-400 mt-2">
+                    200 EGP
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setVariant('combo')}
+                  className={`p-4 rounded-xl border text-left transition-all relative ${
+                    variant === 'combo'
+                      ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600 shadow-md'
+                      : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
+                  }`}
+                >
+                  <span className="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full bg-red-600 text-[10px] font-bold text-white uppercase tracking-wider font-mono">
+                    BEST VALUE
+                  </span>
+                  <div className="font-mono font-black text-sm uppercase tracking-wide">COMBO</div>
+                  <div className="text-xs text-neutral-300 mt-1">Includes fries & drink</div>
+                  <div className="text-sm font-bold font-mono text-yellow-400 mt-2">
+                    250 EGP
+                  </div>
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Onion Rings Size Selection */}
           {product.id === 'onion-rings' && product.sizePrices && (
             <div className="space-y-3">
@@ -232,8 +287,8 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             </div>
           )}
 
-          {/* SECTION 2: REMOVE INGREDIENTS */}
-          {product.ingredients && product.ingredients.length > 0 && (
+          {/* SECTION 2: REMOVE INGREDIENTS (Hidden for Online Only Offers) */}
+          {!isOfferProduct && product.ingredients && product.ingredients.length > 0 && (
             <div className="space-y-3">
               <div className="border-b border-neutral-800 pb-2">
                 <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
@@ -285,13 +340,30 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             </div>
           )}
 
+          {/* Offer Package Includes Summary */}
+          {isOfferProduct && product.ingredients && product.ingredients.length > 0 && (
+            <div className="bg-neutral-900/90 border border-neutral-800 p-4 rounded-xl space-y-2">
+              <span className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider block">
+                📦 Package Includes:
+              </span>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-neutral-300">
+                {product.ingredients.map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {/* SECTION 3: ADD EXTRAS */}
           {additions && additions.length > 0 && (
             <div className="space-y-3">
               <div className="border-b border-neutral-800 pb-2">
                 <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
                   <span className="w-2 h-4 bg-red-600 rounded-sm" />
-                  3. Add extras
+                  {isOfferProduct ? 'Add Extra Sauces & Sides' : '3. Add extras'}
                 </h3>
                 <p className="text-xs text-neutral-400 mt-0.5 font-sans">
                   Make it yours
@@ -342,7 +414,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             </div>
             <textarea
               rows={2}
-              placeholder="e.g., Please make it extra crispy, sauce on the side..."
+              placeholder="e.g., Specify chicken choices or sauce preferences..."
               value={specialInstructions}
               onChange={(e) => setSpecialInstructions(e.target.value)}
               className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-red-600 transition-colors font-sans resize-none"
