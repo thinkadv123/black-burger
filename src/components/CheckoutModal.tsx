@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { X, CheckCircle2, Phone, MapPin, Send, Truck, ShieldCheck, Flame } from 'lucide-react';
+import { X, CheckCircle2, Phone, MapPin, Send, Truck, ShieldCheck, Flame, MessageSquare } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
@@ -22,7 +22,7 @@ export function CheckoutModal() {
     phone: '',
     address: '',
     notes: '',
-    paymentMethod: 'cod', // 'cod' or 'whatsapp'
+    paymentMethod: 'whatsapp', // default to WhatsApp for direct ordering
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,38 +51,62 @@ export function CheckoutModal() {
   const formatWhatsAppMessage = (generatedId: string) => {
     const itemsList = cart
       .map((item, idx) => {
-        let details = `${idx + 1}. *${item.product.name}* (x${item.quantity}) - ${item.unitPrice * item.quantity} EGP`;
-        if (item.options.variant === 'combo') details += `\n   ↳ [COMBO MEAL]`;
-        if (item.options.size) details += `\n   ↳ [SIZE: ${item.options.size}]`;
+        let details = `*${idx + 1}. ${item.product.name}*  (x${item.quantity})\n   💵 *Price:* ${item.unitPrice * item.quantity} EGP`;
+        
+        const optionTags: string[] = [];
+        if (item.options.variant === 'combo') {
+          optionTags.push('🍟🥤 Combo Meal (Includes Fries & Soft Drink)');
+        } else if (item.product.comboPrice) {
+          optionTags.push('🍔 Solo Sandwich');
+        }
+
+        if (item.options.size) {
+          optionTags.push(`📏 Size: ${item.options.size}`);
+        }
+
         if (item.options.addedAdditions.length > 0) {
-          details += `\n   ↳ Additions: ${item.options.addedAdditions.map((a) => a.name).join(', ')}`;
+          const adds = item.options.addedAdditions.map((a) => `+ ${a.name} (+${a.price} EGP)`).join('\n      ');
+          optionTags.push(`🧀 *Extras:*\n      ${adds}`);
         }
+
         if (item.options.removedIngredients.length > 0) {
-          details += `\n   ↳ No: ${item.options.removedIngredients.join(', ')}`;
+          const removed = item.options.removedIngredients.map((ing) => `❌ No ${ing}`).join(', ');
+          optionTags.push(`🚫 *Customizations:* ${removed}`);
         }
+
+        if (item.options.specialInstructions) {
+          optionTags.push(`💬 *Note:* "${item.options.specialInstructions}"`);
+        }
+
+        if (optionTags.length > 0) {
+          details += `\n   ${optionTags.join('\n   ')}`;
+        }
+
         return details;
       })
       .join('\n\n');
 
-    const message = `🔥 *NEW BLACK BURGER ORDER* (${generatedId})
---------------------------------
-*Customer Details:*
-• *Name:* ${formData.name}
-• *Phone:* ${formData.phone}
-• *Address:* ${formData.address}
-${formData.notes ? `• *Notes:* ${formData.notes}\n` : ''}
---------------------------------
-*Order Items:*
+    const message = `🍔🔥 *BLACK BURGER | NEW ORDER* 🔥🍔
+🆔 *Order Ref:* #${generatedId}
+
+👤 *CUSTOMER DETAILS*
+━━━━━━━━━━━━━━━━━━━━━
+▫️ *Name:* ${formData.name}
+▫️ *Phone:* ${formData.phone}
+▫️ *Delivery Address:* ${formData.address}
+${formData.notes ? `▫️ *Special Instructions:* ${formData.notes}\n` : ''}
+🛒 *ORDER BREAKDOWN*
+━━━━━━━━━━━━━━━━━━━━━
 ${itemsList}
 
---------------------------------
-*Subtotal:* ${subtotalPrice} EGP
-*Delivery (Faisal):* ${deliveryFee} EGP
-*TOTAL AMOUNT:* ${totalPrice} EGP
---------------------------------
-*Payment Method:* Cash on Delivery
+💰 *BILL SUMMARY*
+━━━━━━━━━━━━━━━━━━━━━
+▫️ *Subtotal:* ${subtotalPrice} EGP
+▫️ *Delivery Fee (Faisal):* ${deliveryFee} EGP
+🔥 *TOTAL DUE:* *${totalPrice} EGP*
+💳 *Payment Method:* Cash on Delivery
 
-Please confirm my smash burger order! 🍔💥`;
+⚡ _Sent via Black Burger Web App_`;
 
     return encodeURIComponent(message);
   };
@@ -102,14 +126,12 @@ Please confirm my smash burger order! 🍔💥`;
       setOrderCompleted(true);
       triggerConfetti();
 
-      // If WhatsApp payment selected, redirect after brief delay
-      if (formData.paymentMethod === 'whatsapp') {
-        const text = formatWhatsAppMessage(newOrderId);
-        window.open(`https://wa.me/201515821555?text=${text}`, '_blank');
-      }
+      // Open WhatsApp with formatted order text
+      const text = formatWhatsAppMessage(newOrderId);
+      window.open(`https://wa.me/201515821555?text=${text}`, '_blank');
 
       clearCart();
-    }, 1200);
+    }, 1000);
   };
 
   const handleClose = () => {
@@ -134,14 +156,14 @@ Please confirm my smash burger order! 🍔💥`;
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-xl bg-zinc-950 border border-zinc-800 rounded-3xl shadow-[0_0_60px_rgba(220,38,38,0.4)] overflow-hidden z-10 max-h-[90vh] flex flex-col"
+          className="relative w-full max-w-xl bg-zinc-950 border border-zinc-800 rounded-3xl shadow-[0_0_60px_rgba(220,38,38,0.4)] overflow-hidden z-10 max-h-[90vh] flex flex-col font-mono"
         >
           {/* Header */}
           <div className="p-6 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Truck className="w-5 h-5 text-red-500" />
               <h2 className="text-xl font-black uppercase tracking-wider text-white">
-                {orderCompleted ? 'Order Confirmed' : 'Checkout & Delivery'}
+                {orderCompleted ? 'Order Sent to WhatsApp' : 'Checkout & Delivery'}
               </h2>
             </div>
             <button
@@ -153,29 +175,29 @@ Please confirm my smash burger order! 🍔💥`;
           </div>
 
           {/* Modal Content */}
-          <div className="p-6 overflow-y-auto space-y-6 text-zinc-300 custom-scrollbar flex-1">
+          <div className="p-6 overflow-y-auto space-y-6 text-zinc-300 custom-scrollbar flex-1 font-sans">
             {orderCompleted ? (
               /* Success / Receipt Screen */
-              <div className="text-center space-y-6 py-4">
-                <div className="w-20 h-20 bg-gradient-to-tr from-red-600 to-amber-500 rounded-full flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(220,38,38,0.6)] animate-bounce">
+              <div className="text-center space-y-6 py-4 font-mono">
+                <div className="w-20 h-20 bg-gradient-to-tr from-emerald-600 to-amber-500 rounded-full flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(16,185,129,0.6)] animate-bounce">
                   <CheckCircle2 className="w-10 h-10 text-white" />
                 </div>
 
                 <div>
-                  <span className="text-xs font-black tracking-widest text-amber-400 uppercase">
-                    SMASH ORDER PLACED
+                  <span className="text-xs font-black tracking-widest text-emerald-400 uppercase block">
+                    WHATSAPP ORDER OPENED
                   </span>
                   <h3 className="text-3xl font-black text-white mt-1">
                     Order #{orderId}
                   </h3>
-                  <p className="text-sm text-zinc-400 mt-2 max-w-md mx-auto">
-                    Thank you, <strong className="text-white">{formData.name}</strong>! Your smash burgers are being sizzling-smashed on the grill right now.
+                  <p className="text-sm text-zinc-400 mt-2 max-w-md mx-auto font-sans">
+                    Thank you, <strong className="text-white">{formData.name}</strong>! Your order details have been formatted and passed directly to WhatsApp.
                   </p>
                 </div>
 
                 {/* Delivery details breakdown card */}
-                <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 text-left space-y-3">
-                  <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+                <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 text-left space-y-3 font-sans">
+                  <div className="flex items-center justify-between border-b border-zinc-800 pb-3 font-mono">
                     <span className="text-xs text-zinc-500 font-bold uppercase">Estimated Delivery</span>
                     <span className="text-sm font-extrabold text-amber-400">25 – 35 Mins</span>
                   </div>
@@ -191,7 +213,7 @@ Please confirm my smash burger order! 🍔💥`;
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-zinc-800 flex justify-between items-center text-sm font-black text-white">
+                  <div className="pt-2 border-t border-zinc-800 flex justify-between items-center text-sm font-black text-white font-mono">
                     <span>Payment Method</span>
                     <span className="text-emerald-400">Cash on Delivery ({totalPrice} EGP)</span>
                   </div>
@@ -199,17 +221,19 @@ Please confirm my smash burger order! 🍔💥`;
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <a
-                    href="tel:01515821555"
-                    className="flex-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-amber-400 font-bold py-3.5 rounded-2xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2"
+                    href={`https://wa.me/201515821555?text=${formatWhatsAppMessage(orderId)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-2xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-lg"
                   >
-                    <Phone className="w-4 h-4 text-red-500" />
-                    <span>Hotline: 01515821555</span>
+                    <MessageSquare className="w-4 h-4" />
+                    <span>Re-open WhatsApp Chat</span>
                   </a>
                   <button
                     onClick={handleClose}
-                    className="flex-1 bg-gradient-to-r from-red-600 to-red-800 text-white font-black py-3.5 rounded-2xl text-xs uppercase tracking-wider shadow-lg transition-all"
+                    className="flex-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white font-black py-3.5 rounded-2xl text-xs uppercase tracking-wider transition-all"
                   >
-                    Done & Back to Home
+                    Back to Menu
                   </button>
                 </div>
               </div>
@@ -217,7 +241,7 @@ Please confirm my smash burger order! 🍔💥`;
               /* Checkout Form */
               <form onSubmit={handleSubmitOrder} className="space-y-5">
                 {/* Order Summary banner */}
-                <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between">
+                <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between font-mono">
                   <div>
                     <span className="text-xs text-zinc-400 font-bold block">Total Amount to Pay</span>
                     <span className="text-xs text-zinc-500">Includes delivery fee in Faisal</span>
@@ -228,7 +252,7 @@ Please confirm my smash burger order! 🍔💥`;
                 {/* Form Inputs */}
                 <div className="space-y-4">
                   <div>
-                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1">
+                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1 font-mono">
                       Full Name *
                     </label>
                     <input
@@ -243,7 +267,7 @@ Please confirm my smash burger order! 🍔💥`;
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1">
+                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1 font-mono">
                       Phone Number *
                     </label>
                     <input
@@ -253,12 +277,12 @@ Please confirm my smash burger order! 🍔💥`;
                       placeholder="01xxxxxxxxx"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-red-600"
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-red-600 font-mono"
                     />
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1">
+                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1 font-mono">
                       Delivery Address (Faisal Area) *
                     </label>
                     <textarea
@@ -273,7 +297,7 @@ Please confirm my smash burger order! 🍔💥`;
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1">
+                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1 font-mono">
                       Order Notes (Optional)
                     </label>
                     <input
@@ -287,70 +311,27 @@ Please confirm my smash burger order! 🍔💥`;
                   </div>
                 </div>
 
-                {/* Payment Option Toggle */}
-                <div className="space-y-3 pt-2">
-                  <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block">
-                    Choose Order Confirmation Method
-                  </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setFormData({ ...formData, paymentMethod: 'cod' })}
-                      className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between transition-all ${
-                        formData.paymentMethod === 'cod'
-                          ? 'border-red-600 bg-red-950/40 text-white shadow-[0_0_15px_rgba(220,38,38,0.3)]'
-                          : 'border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:border-zinc-700'
-                      }`}
-                    >
-                      <span className="font-bold text-sm text-white flex items-center gap-1.5">
-                        💵 Cash on Delivery
-                      </span>
-                      <span className="text-[11px] text-zinc-400 mt-1">Pay when burger arrives</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setFormData({ ...formData, paymentMethod: 'whatsapp' })}
-                      className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between transition-all ${
-                        formData.paymentMethod === 'whatsapp'
-                          ? 'border-emerald-500 bg-emerald-950/40 text-white shadow-[0_0_15px_rgba(16,185,129,0.3)]'
-                          : 'border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:border-zinc-700'
-                      }`}
-                    >
-                      <span className="font-bold text-sm text-white flex items-center gap-1.5">
-                        💬 Direct WhatsApp
-                      </span>
-                      <span className="text-[11px] text-emerald-400 mt-1">Send cart to WhatsApp</span>
-                    </button>
-                  </div>
-                </div>
-
                 {/* Security Guarantee */}
-                <div className="flex items-center gap-2 text-xs text-zinc-500 bg-zinc-900/50 p-3 rounded-xl border border-zinc-800">
-                  <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-                  <span>100% fresh smash guaranteed. Payment collected upon delivery.</span>
+                <div className="flex items-center gap-2 text-xs text-zinc-400 bg-emerald-950/30 p-3 rounded-xl border border-emerald-800/40">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Your full cart details & delivery address will be sent formatted directly to WhatsApp.</span>
                 </div>
 
                 {/* Submit CTA */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-red-600 via-red-700 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-black py-4 rounded-2xl text-sm sm:text-base uppercase tracking-wider shadow-[0_0_30px_rgba(220,38,38,0.6)] border border-red-500/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-500 hover:to-emerald-700 text-white font-mono font-black py-4 rounded-2xl text-sm sm:text-base uppercase tracking-wider shadow-[0_0_30px_rgba(16,185,129,0.5)] border border-emerald-500/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
                       <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      PLUMMETING SMASH PATTY...
+                      GENERATING WHATSAPP ORDER...
                     </span>
-                  ) : formData.paymentMethod === 'whatsapp' ? (
-                    <>
-                      <Send className="w-4 h-4 text-emerald-400" />
-                      <span>SEND ORDER VIA WHATSAPP ({totalPrice} EGP)</span>
-                    </>
                   ) : (
                     <>
-                      <Flame className="w-4 h-4 text-amber-300" />
-                      <span>CONFIRM CASH ON DELIVERY ({totalPrice} EGP)</span>
+                      <Send className="w-4 h-4 text-emerald-300" />
+                      <span>SEND ORDER TO WHATSAPP ({totalPrice} EGP)</span>
                     </>
                   )}
                 </button>
