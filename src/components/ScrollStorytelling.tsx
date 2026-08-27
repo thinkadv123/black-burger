@@ -38,8 +38,9 @@ export function ScrollStorytelling() {
       subtitle: 'Zero Fillers • Daily Ground Chuck',
       desc: 'Zero fillers, zero soy. Pure coarse ground grass-fed Angus beef chuck with optimal marbling for maximum rich flavor and juice retention.',
       image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?q=80&w=800&auto=format&fit=crop',
-      accentColor: 'border-red-600/70 shadow-[0_15px_35px_rgba(220,38,38,0.25)]',
+      accentColor: 'border-red-600/70 shadow-[0_20px_50px_rgba(220,38,38,0.35)]',
       badgeBg: 'bg-red-600 text-white',
+      bgGradient: 'from-red-950/90 via-zinc-900 to-zinc-950',
     },
     {
       step: '02',
@@ -48,8 +49,9 @@ export function ScrollStorytelling() {
       subtitle: 'Artisanal Golden Pillow',
       desc: 'Artisanal golden brioche baked fresh every morning, lightly slathered in butter and seared warm on the griddle to hold every drop of juice.',
       image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=800&auto=format&fit=crop',
-      accentColor: 'border-amber-500/70 shadow-[0_15px_35px_rgba(234,179,8,0.25)]',
+      accentColor: 'border-amber-500/70 shadow-[0_20px_50px_rgba(234,179,8,0.35)]',
       badgeBg: 'bg-amber-500 text-black',
+      bgGradient: 'from-amber-950/90 via-zinc-900 to-zinc-950',
     },
     {
       step: '03',
@@ -58,8 +60,9 @@ export function ScrollStorytelling() {
       subtitle: 'House Made In Small Batches',
       desc: 'Handcrafted in-house daily—from our secret BB smash drizzle to rich truffle aioli, smoky chipotle, and fiery cayenne buffalo glaze.',
       image: 'https://images.unsplash.com/photo-1472476443507-c7a5948772fc?q=80&w=800&auto=format&fit=crop',
-      accentColor: 'border-red-600/70 shadow-[0_15px_35px_rgba(220,38,38,0.25)]',
+      accentColor: 'border-red-600/70 shadow-[0_20px_50px_rgba(220,38,38,0.35)]',
       badgeBg: 'bg-red-600 text-white',
+      bgGradient: 'from-red-950/90 via-zinc-900 to-zinc-950',
     },
   ];
 
@@ -158,11 +161,11 @@ export function ScrollStorytelling() {
         </div>
       </section>
 
-      {/* 2. STICKY SLIDE-OVER CARDS SECTION ("WHAT MAKES IT UNFORGETTABLE?") */}
+      {/* 2. OVERLAPPING STACKED SCROLL CARDS SECTION ("WHAT MAKES IT UNFORGETTABLE?") */}
       <section className="bg-zinc-950 border-y border-zinc-800/80 py-24 relative">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           
-          <div className="text-center max-w-2xl mx-auto space-y-3">
+          <div className="text-center max-w-2xl mx-auto space-y-3 sticky top-20 z-0">
             <span className="text-xs font-black tracking-widest text-amber-400 uppercase flex items-center justify-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               PURE UNCOMPROMISED INGREDIENTS
@@ -171,32 +174,27 @@ export function ScrollStorytelling() {
               WHAT MAKES IT <span className="text-red-gradient">UNFORGETTABLE?</span>
             </h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Scroll down to explore how each ingredient layers together.
+              Scroll down to watch each layer cover the previous one.
             </p>
           </div>
 
-          {/* Sticky Card Stacking Container */}
-          <div className="relative space-y-12 pb-16">
+          {/* Cards Stack Container - Each card pins at top-28/top-32 and slides directly over the previous one */}
+          <div className="relative pt-6 pb-20 space-y-24 sm:space-y-32">
             {ingredientsList.map((item, idx) => {
-              // Calculate sticky top offset so cards stack nicely over each other on scroll
-              const topStickyOffset = `${6.5 + idx * 1.5}rem`;
+              const zIndexClass = idx === 0 ? 'z-10' : idx === 1 ? 'z-20' : 'z-30';
 
               return (
                 <div
                   key={item.title}
-                  className={`sticky rounded-3xl bg-zinc-900/95 border ${item.accentColor} p-6 sm:p-8 backdrop-blur-2xl transition-all relative overflow-hidden`}
-                  style={{
-                    top: topStickyOffset,
-                    zIndex: idx + 10,
-                  }}
+                  className={`sticky top-28 sm:top-36 rounded-3xl bg-gradient-to-br ${item.bgGradient} border ${item.accentColor} p-6 sm:p-10 backdrop-blur-2xl transition-all relative overflow-hidden shadow-2xl ${zIndexClass}`}
                 >
-                  {/* Subtle Red/Gold glow background */}
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
+                  {/* Glowing background ambient light */}
+                  <div className="absolute top-0 right-0 w-80 h-80 bg-red-600/15 rounded-full blur-3xl pointer-events-none" />
 
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
                     
-                    {/* Left Thumbnail Image */}
-                    <div className="md:col-span-5 relative aspect-video sm:aspect-square w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-xl">
+                    {/* Left Image */}
+                    <div className="md:col-span-5 relative aspect-video sm:aspect-square w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 shadow-2xl">
                       <Image
                         src={item.image}
                         alt={item.title}
@@ -216,17 +214,17 @@ export function ScrollStorytelling() {
                     </div>
 
                     {/* Right Details */}
-                    <div className="md:col-span-7 space-y-3">
+                    <div className="md:col-span-7 space-y-4">
                       <div>
                         <span className="text-xs font-mono font-bold text-red-500 uppercase tracking-widest block">
                           {item.subtitle}
                         </span>
-                        <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase mt-0.5">
+                        <h3 className="text-2xl sm:text-4xl font-black text-white tracking-tight uppercase mt-0.5">
                           {item.title}
                         </h3>
                       </div>
 
-                      <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-sans">
+                      <p className="text-xs sm:text-base text-zinc-300 leading-relaxed font-sans">
                         {item.desc}
                       </p>
 
