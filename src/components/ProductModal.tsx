@@ -93,50 +93,52 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-[#0F0F12] border-neutral-800 text-white p-0 gap-0 shadow-2xl rounded-2xl">
         <DialogTitle className="sr-only">{product.name}</DialogTitle>
 
-        {/* Header Image */}
-        <div className="relative h-60 sm:h-64 w-full bg-neutral-900 overflow-hidden">
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            className="object-cover object-center"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F12] via-transparent to-black/60" />
-
-          {/* Close button */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-red-600 transition-colors z-10"
-            aria-label="Close modal"
-          >
-            <X className="w-5 h-5" />
-          </button>
-
-          {/* Badges */}
-          <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-            {product.spicy && (
-              <span className="px-3 py-1 rounded-full bg-red-600 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-1 shadow-lg shadow-red-900/40 font-mono">
-                <Flame className="w-3.5 h-3.5 fill-yellow-300 text-yellow-300" />
-                Spicy
-              </span>
-            )}
-            <span className="px-3 py-1 rounded-full bg-neutral-900/80 backdrop-blur-md border border-neutral-700 text-neutral-300 text-xs font-semibold font-mono">
-              {product.category}
-            </span>
+        {/* Header Section with Square Image on the side */}
+        <div className="relative p-5 sm:p-6 bg-neutral-900/80 border-b border-neutral-800 flex flex-row gap-4 sm:gap-6 items-center">
+          {/* Square Image Container */}
+          <div className="relative w-28 h-28 sm:w-36 sm:h-36 shrink-0 aspect-square rounded-xl sm:rounded-2xl overflow-hidden border border-red-600/40 shadow-xl bg-neutral-950">
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className="object-cover object-center"
+              priority
+            />
           </div>
 
-          {/* Title Overlay */}
-          <div className="absolute bottom-4 left-6 right-6">
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase font-mono">
+          {/* Product Info Next to Image */}
+          <div className="flex-1 min-w-0 pr-6 sm:pr-8">
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              {product.spicy && (
+                <span className="px-2.5 py-0.5 rounded-full bg-red-600 text-white font-bold text-[10px] sm:text-xs uppercase tracking-wider flex items-center gap-1 shadow-md font-mono">
+                  <Flame className="w-3 h-3 fill-yellow-300 text-yellow-300" />
+                  Spicy
+                </span>
+              )}
+              <span className="px-2.5 py-0.5 rounded-full bg-neutral-800 border border-neutral-700 text-neutral-300 text-[10px] sm:text-xs font-semibold font-mono">
+                {product.category}
+              </span>
+            </div>
+
+            <h2 className="text-lg sm:text-2xl font-black text-white tracking-tight uppercase font-mono leading-tight">
               {product.name}
             </h2>
+
             {product.description && (
-              <p className="text-xs sm:text-sm text-neutral-300 mt-1 line-clamp-2">
+              <p className="text-xs sm:text-sm text-neutral-400 mt-1 line-clamp-2 leading-snug">
                 {product.description}
               </p>
             )}
           </div>
+
+          {/* Close button */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-neutral-800/90 hover:bg-red-600 border border-neutral-700 text-neutral-300 hover:text-white flex items-center justify-center transition-colors z-10"
+            aria-label="Close modal"
+          >
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
         </div>
 
         {/* Modal Body */}
