@@ -38,7 +38,14 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
       }
       const savedAdditions = localStorage.getItem('black_burger_db_additions');
       if (savedAdditions) {
-        setAdditions(JSON.parse(savedAdditions));
+        const parsedAdds: AdditionItem[] = JSON.parse(savedAdditions);
+        const syncedAdds = parsedAdds.map((add) => {
+          if (add.id === 'extra-crispy-chicken-piece') {
+            return { ...add, name: 'CRISPY CHKN PIECE' };
+          }
+          return add;
+        });
+        setAdditions(syncedAdds);
       }
     } catch (e) {
       console.error('Error loading menu from local database storage', e);
