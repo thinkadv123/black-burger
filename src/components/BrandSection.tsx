@@ -1,34 +1,37 @@
 "use client";
 
 import React from 'react';
-import { Flame, Sparkles, Award, ShieldCheck, Heart, ChefHat } from 'lucide-react';
+import { Star, MessageSquareQuote, Award, ShieldCheck, Heart, Sparkles, UserCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export function BrandSection() {
-  const brandPillars = [
+  const testimonials = [
     {
-      icon: Flame,
-      title: 'Premium Angus Beef',
-      subtitle: '100% Grass-Fed Quality',
-      description: 'We exclusively grind 100% Angus beef chuck every morning. Smashed high and hard on red-hot cast iron to lock in natural moisture with crisp lacy edges.',
-      badge: 'ALWAYS FRESH',
-      color: 'red',
-    },
-    {
-      icon: Sparkles,
-      title: 'Fresh Ingredients',
-      subtitle: 'Zero Compromise Quality',
-      description: 'Artisanal brioche buns, farm-picked crisp veggies, aged sharp American cheddar, and hand-selected dill pickles sliced fresh daily for maximum bite.',
-      badge: 'FARM DIRECT',
+      icon: Star,
+      title: 'Best Smash in Faisal',
+      subtitle: 'Crispy Edges & Juicy Beef',
+      quote: 'I’ve tried smash burgers all over Cairo, but Black Burger’s lacy crispy edges and secret BB sauce hit completely different. The combo with chaos fries is insane!',
+      author: 'Omar Hassan',
+      badge: '5.0 ★ RATING',
       color: 'gold',
     },
     {
-      icon: ChefHat,
-      title: 'Signature Recipes',
-      subtitle: 'Urban Flavor Fusion',
-      description: 'House-made secret smash sauces, rich truffle aioli, smoky chipotle glazes, and loaded chaos trays engineered for burger lovers.',
-      badge: 'PROPRIETARY',
+      icon: Sparkles,
+      title: 'Unreal Meat Quality',
+      subtitle: '100% Angus Beef Chuck',
+      quote: 'You can genuinely taste the quality of pure 100% Angus beef chuck—zero fillers. Delivered piping hot to my doorstep in under 25 minutes!',
+      author: 'Youssef Khalil',
+      badge: 'VERIFIED ORDER',
       color: 'red',
+    },
+    {
+      icon: Heart,
+      title: 'Addictive Secret Sauces',
+      subtitle: 'Truffle Aioli & Brioche',
+      quote: 'The Truffle smash burger and buffalo chicken are my absolute favorites. Golden pillow brioche bun that holds together rich juices without getting soggy.',
+      author: 'Nouran Mahmoud',
+      badge: 'TOP REVIEWER',
+      color: 'gold',
     },
   ];
 
@@ -42,25 +45,25 @@ export function BrandSection() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900 border border-amber-500/40 text-amber-400 text-xs font-black tracking-widest uppercase shadow-md">
-            <Award className="w-4 h-4 text-amber-400" /> UNMATCHED STREET LUXURY
+            <MessageSquareQuote className="w-4 h-4 text-amber-400" /> REAL FEEDBACK & REVIEWS
           </div>
 
           <h2 className="text-4xl sm:text-6xl font-black text-white tracking-tight uppercase">
-            WHY <span className="text-red-gradient">BLACK BURGER?</span>
+            WHAT OUR <span className="text-red-gradient">CUSTOMERS SAY</span>
           </h2>
 
           <p className="text-zinc-400 text-base sm:text-lg leading-relaxed">
-            We didn&apos;t set out to create just another burger joint. We built Black Burger to revolutionize street food into an elevated luxury experience.
+            Don&apos;t just take our word for it. Here is what smash burger lovers across Faisal & Cairo have to say about Black Burger.
           </p>
         </div>
 
         {/* 3 Columns Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {brandPillars.map((pillar, idx) => {
-            const Icon = pillar.icon;
+          {testimonials.map((item, idx) => {
+            const Icon = item.icon;
             return (
               <motion.div
-                key={pillar.title}
+                key={item.author}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -76,27 +79,36 @@ export function BrandSection() {
                     </div>
 
                     <span className="text-[10px] font-black tracking-widest px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-amber-400 uppercase">
-                      {pillar.badge}
+                      {item.badge}
                     </span>
                   </div>
 
                   <div>
                     <h3 className="text-2xl font-black text-white tracking-tight">
-                      {pillar.title}
+                      &ldquo;{item.title}&rdquo;
                     </h3>
                     <span className="text-xs font-bold text-red-500 uppercase tracking-wider block mt-0.5">
-                      {pillar.subtitle}
+                      {item.subtitle}
                     </span>
                   </div>
 
-                  <p className="text-sm text-zinc-400 leading-relaxed">
-                    {pillar.description}
+                  <p className="text-sm text-zinc-400 leading-relaxed italic">
+                    &ldquo;{item.quote}&rdquo;
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-zinc-900 flex items-center gap-2 text-xs font-bold text-zinc-400 group-hover:text-white transition-colors">
-                  <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                  <span>Black Burger Signature Guarantee</span>
+                <div className="pt-4 border-t border-zinc-900 flex items-center justify-between text-xs font-bold text-zinc-400 group-hover:text-white transition-colors">
+                  <div className="flex items-center gap-2">
+                    <UserCheck className="w-4 h-4 text-emerald-500" />
+                    <span>{item.author}</span>
+                  </div>
+                  <div className="flex items-center gap-0.5 text-amber-400">
+                    <Star className="w-3.5 h-3.5 fill-amber-400" />
+                    <Star className="w-3.5 h-3.5 fill-amber-400" />
+                    <Star className="w-3.5 h-3.5 fill-amber-400" />
+                    <Star className="w-3.5 h-3.5 fill-amber-400" />
+                    <Star className="w-3.5 h-3.5 fill-amber-400" />
+                  </div>
                 </div>
               </motion.div>
             );
