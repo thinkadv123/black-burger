@@ -23,9 +23,18 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
   // Load from localStorage on mount
   useEffect(() => {
     try {
-      const savedProducts = localStorage.getItem('black_burger_db_products');
-      if (savedProducts) {
-        setProducts(JSON.parse(savedProducts));
+      const savedProductsStr = localStorage.getItem('black_burger_db_products');
+      if (savedProductsStr) {
+        const parsed: ProductItem[] = JSON.parse(savedProductsStr);
+        // Sync fresh local images from INITIAL_PRODUCTS if previously set to unsplash
+        const synced = parsed.map((item) => {
+          const init = INITIAL_PRODUCTS.find((p) => p.id === item.id);
+          if (init && init.image.startsWith('/images/') && !item.image.startsWith('/images/')) {
+            return { ...item, image: init.image };
+          }
+          return item;
+        });
+        setProducts(synced);
       }
       const savedAdditions = localStorage.getItem('black_burger_db_additions');
       if (savedAdditions) {

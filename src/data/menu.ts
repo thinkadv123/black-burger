@@ -55,7 +55,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Special BB Sauce',
       'Cheddar sauce',
     ],
-    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/menu/bb-classic.jpg',
     isAvailable: true,
   },
   {
@@ -75,7 +75,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Tomato',
       'Touch of truffle sauce',
     ],
-    image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/menu/truffle.jpg',
     isAvailable: true,
   },
   {
@@ -94,7 +94,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Pepper Jack cheese',
       'Chipotle sauce',
     ],
-    image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/menu/chipotle.jpg',
     isAvailable: true,
   },
   {
@@ -115,7 +115,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Sriracha sauce',
       'Pepper Jack cheese',
     ],
-    image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/menu/mexicali.jpg',
     isAvailable: true,
   },
   {
@@ -134,7 +134,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Cheddar sauce',
       'Ranch sauce',
     ],
-    image: 'https://images.unsplash.com/photo-1603064752734-4c48eff53d05?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/menu/ranchavoo.jpg',
     isAvailable: true,
   },
 
