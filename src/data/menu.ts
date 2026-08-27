@@ -32,7 +32,7 @@ export const CATEGORIES_LIST = [
 export const INITIAL_ADDITIONS: AdditionItem[] = [
   { id: 'extra-cheddar-cheese', name: 'EXTRA CHEDDAR CHEESE', price: 20 },
   { id: 'extra-bacon', name: 'EXTRA BACON', price: 20 },
-  { id: 'extra-crispy-chicken-piece', name: 'EXTRA CRISPY CHKN PIECE', price: 40 },
+  { id: 'extra-crispy-chicken-piece', name: 'EXTRA CRISPY CHICKEN PIECE', price: 40 },
   { id: 'extra-jalapeno', name: 'EXTRA JALAPEÑO', price: 25 },
   { id: 'extra-mushrooms', name: 'EXTRA MUSHROOMS', price: 30 },
 ];
@@ -399,11 +399,11 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
   },
   {
     id: 'add-extra-crispy-chicken-piece',
-    name: 'EXTRA CRISPY CHKN PIECE',
+    name: 'EXTRA CRISPY CHICKEN PIECE',
     category: 'Additions',
     soloPrice: 40,
     description: 'Extra hand-breaded crispy fried chicken piece.',
-    ingredients: ['Extra Crispy Chkn Piece'],
+    ingredients: ['Extra Crispy Chicken Piece'],
     image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=1000&auto=format&fit=crop',
     isAvailable: true,
   },
