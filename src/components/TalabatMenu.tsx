@@ -44,7 +44,7 @@ export function TalabatMenu() {
 
   return (
     <section id="menu-section" className="bg-[#0A0A0C] text-white py-16 border-t border-neutral-800 relative min-h-[80vh]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Section Title Header */}
         <div className="text-center space-y-3 max-w-3xl mx-auto">
@@ -140,7 +140,7 @@ export function TalabatMenu() {
                 </div>
 
                 {/* Category Items Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
                   {categoryProducts.map((product) => {
                     const ingredientsText = product.ingredients
                       ? product.ingredients.join(', ')
