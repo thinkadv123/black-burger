@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Flame, ArrowRight, ChevronLeft, ChevronRight, Award, Star, Play, Pause } from 'lucide-react';
+import { Flame, ArrowRight, ChevronLeft, ChevronRight, Award, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SLIDES = [
@@ -44,15 +44,30 @@ export function HeroSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Auto-advance slide unless video is playing on slide 0
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
-    }, 7000);
-    return () => clearInterval(timer);
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
   }, []);
 
-  // Play video on scroll or slide change
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+  }, []);
+
+  // Auto-advance slide: for non-video slides wait 7 seconds; for video slides wait until video ends
+  useEffect(() => {
+    const slide = SLIDES[currentSlide];
+    if (slide.video) {
+      // The onEnded handler on the video element will trigger nextSlide
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      nextSlide();
+    }, 7000);
+
+    return () => clearTimeout(timer);
+  }, [currentSlide, nextSlide]);
+
+  // Pause video on scroll past hero
   useEffect(() => {
     const handleScroll = () => {
       if (videoRef.current) {
@@ -68,7 +83,7 @@ export function HeroSlider() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle video element play when slide active
+  // Reset & play video when slide becomes active
   useEffect(() => {
     if (videoRef.current) {
       if (SLIDES[currentSlide].video) {
@@ -77,9 +92,6 @@ export function HeroSlider() {
       }
     }
   }, [currentSlide]);
-
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
 
   const slide = SLIDES[currentSlide];
 
@@ -101,8 +113,8 @@ export function HeroSlider() {
               src={slide.video}
               autoPlay
               muted
-              loop
               playsInline
+              onEnded={nextSlide}
               className="w-full h-full object-cover object-center brightness-90"
             />
           ) : (
@@ -115,7 +127,7 @@ export function HeroSlider() {
             />
           )}
 
-          {/* Gradients Overlay - lighter over video so it shows clearly */}
+          {/* Gradients Overlay */}
           <div className={`absolute inset-0 bg-gradient-to-t ${slide.video ? 'from-black via-black/30 to-black/50' : 'from-black via-black/50 to-black/80'}`} />
           <div className={`absolute inset-0 bg-gradient-to-r ${slide.video ? 'from-black/80 via-black/40 to-transparent' : 'from-black/95 via-black/60 to-transparent'}`} />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.15)_0%,transparent_70%)] pointer-events-none" />
