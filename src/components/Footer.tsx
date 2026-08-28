@@ -136,13 +136,18 @@ export function Footer() {
 
               <div className="pt-2 border-t border-zinc-800/80">
                 <span className="text-xs text-zinc-400 block mb-2 font-medium">Payment Methods:</span>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="px-2.5 py-1 rounded bg-zinc-800 text-[11px] text-zinc-200 font-bold border border-zinc-700">
                     💵 Cash on Delivery
                   </span>
-                  <span className="px-2.5 py-1 rounded bg-emerald-950/80 text-[11px] text-emerald-400 font-bold border border-emerald-800/60">
+                  <a
+                    href="https://wa.me/201144484008?text=Hello%20Black%20Burger!%20I%20want%20to%20place%20an%20order."
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-2.5 py-1 rounded bg-emerald-950/80 hover:bg-emerald-900 text-[11px] text-emerald-400 font-bold border border-emerald-800/60 transition-colors"
+                  >
                     💬 WhatsApp Order
-                  </span>
+                  </a>
                 </div>
               </div>
             </div>
