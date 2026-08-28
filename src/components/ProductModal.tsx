@@ -92,16 +92,16 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
 
   return (
     <Dialog open={!!product} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-[#0F0F12] border-neutral-800 text-white p-0 gap-0 shadow-2xl rounded-2xl">
+      <DialogContent className="max-w-2xl max-h-[92vh] sm:max-h-[90vh] overflow-hidden bg-[#0F0F12] border-neutral-800 text-white p-0 gap-0 shadow-2xl rounded-2xl flex flex-col">
         <DialogTitle className="sr-only">{product.name}</DialogTitle>
 
         {/* Header Section with Image container */}
-        <div className="relative p-5 sm:p-6 bg-neutral-900/80 border-b border-neutral-800 flex flex-row gap-4 sm:gap-6 items-center">
+        <div className="relative p-4 sm:p-6 bg-neutral-900/80 border-b border-neutral-800 flex flex-row gap-3 sm:gap-6 items-center shrink-0">
           {/* Full-size Image Container (uncropped) */}
           <div className={`relative shrink-0 rounded-xl sm:rounded-2xl overflow-hidden border border-red-600/40 shadow-xl bg-neutral-950 flex items-center justify-center ${
             isOfferProduct
-              ? 'w-32 h-44 sm:w-44 sm:h-60 aspect-[3/4]'
-              : 'w-28 h-28 sm:w-36 sm:h-36 aspect-square'
+              ? 'w-24 h-32 sm:w-44 sm:h-60 aspect-[3/4]'
+              : 'w-20 h-20 sm:w-36 sm:h-36 aspect-square'
           }`}>
             <Image
               src={product.image}
@@ -114,24 +114,24 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
 
           {/* Product Info Next to Image */}
           <div className="flex-1 min-w-0 pr-6 sm:pr-8">
-            <div className="flex flex-wrap items-center gap-2 mb-1.5">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
               {product.spicy && (
-                <span className="px-2.5 py-0.5 rounded-full bg-red-600 text-white font-bold text-[10px] sm:text-xs uppercase tracking-wider flex items-center gap-1 shadow-md font-mono">
+                <span className="px-2 py-0.5 rounded-full bg-red-600 text-white font-bold text-[10px] sm:text-xs uppercase tracking-wider flex items-center gap-1 shadow-md font-mono">
                   <Flame className="w-3 h-3 fill-yellow-300 text-yellow-300" />
                   Spicy
                 </span>
               )}
-              <span className="px-2.5 py-0.5 rounded-full bg-neutral-800 border border-neutral-700 text-neutral-300 text-[10px] sm:text-xs font-semibold font-mono">
+              <span className="px-2 py-0.5 rounded-full bg-neutral-800 border border-neutral-700 text-neutral-300 text-[10px] sm:text-xs font-semibold font-mono">
                 {product.category}
               </span>
             </div>
 
-            <h2 className="text-lg sm:text-2xl font-black text-white tracking-tight uppercase font-mono leading-tight">
+            <h2 className="text-base sm:text-2xl font-black text-white tracking-tight uppercase font-mono leading-tight">
               {product.name}
             </h2>
 
             {product.description && (
-              <p className="text-xs sm:text-sm text-neutral-400 mt-1 leading-snug">
+              <p className="text-[11px] sm:text-sm text-neutral-400 mt-0.5 sm:mt-1 leading-snug line-clamp-2 sm:line-clamp-none">
                 {product.description}
               </p>
             )}
@@ -140,19 +140,19 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-neutral-800/90 hover:bg-red-600 border border-neutral-700 text-neutral-300 hover:text-white flex items-center justify-center transition-colors z-10"
+            className="absolute top-3 right-3 sm:top-4 sm:right-4 w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-neutral-800/90 hover:bg-red-600 border border-neutral-700 text-neutral-300 hover:text-white flex items-center justify-center transition-colors z-10"
             aria-label="Close modal"
           >
             <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
-        {/* Modal Body */}
-        <div className="p-6 space-y-7 font-sans">
+        {/* Modal Scrollable Content Body */}
+        <div className="p-4 sm:p-6 space-y-5 sm:space-y-7 font-sans overflow-y-auto flex-1 custom-scrollbar">
           {/* Spicy Warning Notice */}
           {product.spicyWarning && (
-            <div className="p-3.5 rounded-xl bg-red-950/80 border border-red-600/60 text-red-200 text-xs sm:text-sm flex items-center gap-3 shadow-md">
-              <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />
+            <div className="p-3 rounded-xl bg-red-950/80 border border-red-600/60 text-red-200 text-xs sm:text-sm flex items-center gap-2.5 shadow-md">
+              <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-red-400 shrink-0" />
               <span className="font-semibold">{product.spicyWarning}</span>
             </div>
           )}
@@ -161,7 +161,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           {isBurgerOrChicken && product.comboPrice && (
             <div className="space-y-3">
               <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
-                <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                <h3 className="text-xs sm:text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
                   <span className="w-2 h-4 bg-red-600 rounded-sm" />
                   1. Choose your size
                 </h3>
@@ -170,22 +170,22 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 pt-1">
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-3 pt-1">
                 <button
                   type="button"
                   onClick={() => setVariant('combo')}
-                  className={`p-4 rounded-xl border text-left transition-all relative ${
+                  className={`p-3 sm:p-4 rounded-xl border text-left transition-all relative ${
                     variant === 'combo'
                       ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600 shadow-md'
                       : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
                   }`}
                 >
-                  <span className="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full bg-red-600 text-[10px] font-bold text-white uppercase tracking-wider font-mono">
+                  <span className="absolute -top-2.5 right-2 sm:right-3 px-1.5 sm:px-2 py-0.5 rounded-full bg-red-600 text-[9px] sm:text-[10px] font-bold text-white uppercase tracking-wider font-mono">
                     BEST VALUE
                   </span>
-                  <div className="font-mono font-black text-sm uppercase tracking-wide">COMBO</div>
-                  <div className="text-xs text-neutral-300 mt-1">Includes fries & soft drink</div>
-                  <div className="text-sm font-bold font-mono text-yellow-400 mt-2">
+                  <div className="font-mono font-black text-xs sm:text-sm uppercase tracking-wide">COMBO</div>
+                  <div className="text-[11px] sm:text-xs text-zinc-300 mt-0.5 sm:mt-1">Includes fries & soft drink</div>
+                  <div className="text-xs sm:text-sm font-bold font-mono text-yellow-400 mt-1.5 sm:mt-2">
                     {product.comboPrice} EGP
                   </div>
                 </button>
@@ -193,15 +193,15 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                 <button
                   type="button"
                   onClick={() => setVariant('solo')}
-                  className={`p-4 rounded-xl border text-left transition-all ${
+                  className={`p-3 sm:p-4 rounded-xl border text-left transition-all ${
                     variant === 'solo'
                       ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600 shadow-md'
                       : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
                   }`}
                 >
-                  <div className="font-mono font-black text-sm uppercase tracking-wide">SOLO</div>
-                  <div className="text-xs text-neutral-400 mt-1">Sandwich only</div>
-                  <div className="text-sm font-bold font-mono text-yellow-400 mt-2">
+                  <div className="font-mono font-black text-xs sm:text-sm uppercase tracking-wide">SOLO</div>
+                  <div className="text-[11px] sm:text-xs text-neutral-400 mt-0.5 sm:mt-1">Sandwich only</div>
+                  <div className="text-xs sm:text-sm font-bold font-mono text-yellow-400 mt-1.5 sm:mt-2">
                     {product.soloPrice} EGP
                   </div>
                 </button>
@@ -213,25 +213,25 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           {product.id === 'hawaiian-beef' && product.comboPrice && (
             <div className="space-y-3">
               <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
-                <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                <h3 className="text-xs sm:text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
                   <span className="w-2 h-4 bg-red-600 rounded-sm" />
                   Select Sandwich or Combo
                 </h3>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 pt-1">
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-3 pt-1">
                 <button
                   type="button"
                   onClick={() => setVariant('solo')}
-                  className={`p-4 rounded-xl border text-left transition-all ${
+                  className={`p-3 sm:p-4 rounded-xl border text-left transition-all ${
                     variant === 'solo'
                       ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600 shadow-md'
                       : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
                   }`}
                 >
-                  <div className="font-mono font-black text-sm uppercase tracking-wide">SOLO</div>
-                  <div className="text-xs text-neutral-400 mt-1">Sandwich only</div>
-                  <div className="text-sm font-bold font-mono text-yellow-400 mt-2">
+                  <div className="font-mono font-black text-xs sm:text-sm uppercase tracking-wide">SOLO</div>
+                  <div className="text-[11px] sm:text-xs text-neutral-400 mt-0.5">Sandwich only</div>
+                  <div className="text-xs sm:text-sm font-bold font-mono text-yellow-400 mt-1.5">
                     200 EGP
                   </div>
                 </button>
@@ -239,18 +239,18 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                 <button
                   type="button"
                   onClick={() => setVariant('combo')}
-                  className={`p-4 rounded-xl border text-left transition-all relative ${
+                  className={`p-3 sm:p-4 rounded-xl border text-left transition-all relative ${
                     variant === 'combo'
                       ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600 shadow-md'
                       : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
                   }`}
                 >
-                  <span className="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full bg-red-600 text-[10px] font-bold text-white uppercase tracking-wider font-mono">
+                  <span className="absolute -top-2.5 right-2 px-1.5 py-0.5 rounded-full bg-red-600 text-[9px] font-bold text-white uppercase tracking-wider font-mono">
                     BEST VALUE
                   </span>
-                  <div className="font-mono font-black text-sm uppercase tracking-wide">COMBO</div>
-                  <div className="text-xs text-neutral-300 mt-1">Includes fries & drink</div>
-                  <div className="text-sm font-bold font-mono text-yellow-400 mt-2">
+                  <div className="font-mono font-black text-xs sm:text-sm uppercase tracking-wide">COMBO</div>
+                  <div className="text-[11px] sm:text-xs text-zinc-300 mt-0.5">Includes fries & drink</div>
+                  <div className="text-xs sm:text-sm font-bold font-mono text-yellow-400 mt-1.5">
                     250 EGP
                   </div>
                 </button>
@@ -262,25 +262,25 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           {product.id === 'onion-rings' && product.sizePrices && (
             <div className="space-y-3">
               <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
-                <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                <h3 className="text-xs sm:text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
                   <span className="w-2 h-4 bg-red-600 rounded-sm" />
                   1. Choose your size
                 </h3>
               </div>
-              <div className="grid grid-cols-2 gap-3 pt-1">
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-3 pt-1">
                 {product.sizePrices.map((sp) => (
                   <button
                     key={sp.label}
                     type="button"
                     onClick={() => setSelectedSize(sp.label as 'Large' | 'X-Large')}
-                    className={`p-4 rounded-xl border text-left transition-all ${
+                    className={`p-3 sm:p-4 rounded-xl border text-left transition-all ${
                       selectedSize === sp.label
                         ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600'
                         : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
                     }`}
                   >
-                    <div className="font-mono font-black text-sm uppercase tracking-wide">{sp.label}</div>
-                    <div className="text-sm font-bold font-mono text-yellow-400 mt-2">{sp.price} EGP</div>
+                    <div className="font-mono font-black text-xs sm:text-sm uppercase tracking-wide">{sp.label}</div>
+                    <div className="text-xs sm:text-sm font-bold font-mono text-yellow-400 mt-1.5">{sp.price} EGP</div>
                   </button>
                 ))}
               </div>
@@ -291,11 +291,11 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           {!isOfferProduct && product.ingredients && product.ingredients.length > 0 && (
             <div className="space-y-3">
               <div className="border-b border-neutral-800 pb-2">
-                <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                <h3 className="text-xs sm:text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
                   <span className="w-2 h-4 bg-red-600 rounded-sm" />
                   2. Remove ingredients
                 </h3>
-                <p className="text-xs text-neutral-400 mt-0.5 font-sans">
+                <p className="text-[11px] sm:text-xs text-neutral-400 mt-0.5 font-sans">
                   Tap anything you don&apos;t want
                 </p>
               </div>
@@ -308,13 +308,13 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                       key={ing}
                       type="button"
                       onClick={() => toggleIngredient(ing)}
-                      className={`flex items-center justify-between p-3 rounded-xl border text-xs sm:text-sm font-medium transition-all text-left ${
+                      className={`flex items-center justify-between p-2.5 sm:p-3 rounded-xl border text-xs sm:text-sm font-medium transition-all text-left ${
                         isChecked
                           ? 'border-neutral-800 bg-neutral-900 text-neutral-200 hover:border-neutral-700'
                           : 'border-red-900/60 bg-red-950/30 text-red-400 font-semibold shadow-inner'
                       }`}
                     >
-                      <span className="flex items-center gap-2.5 text-left min-w-0 pr-2">
+                      <span className="flex items-center gap-2 text-left min-w-0 pr-2">
                         <div
                           className={`w-4 h-4 rounded flex items-center justify-center border transition-colors shrink-0 ${
                             isChecked
@@ -342,14 +342,14 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
 
           {/* Offer Package Includes Summary */}
           {isOfferProduct && product.ingredients && product.ingredients.length > 0 && (
-            <div className="bg-neutral-900/90 border border-neutral-800 p-4 rounded-xl space-y-2">
+            <div className="bg-neutral-900/90 border border-neutral-800 p-3.5 sm:p-4 rounded-xl space-y-2">
               <span className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider block">
                 📦 Package Includes:
               </span>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-neutral-300">
                 {product.ingredients.map((item) => (
                   <li key={item} className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -361,11 +361,11 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           {additions && additions.length > 0 && (
             <div className="space-y-3">
               <div className="border-b border-neutral-800 pb-2">
-                <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                <h3 className="text-xs sm:text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
                   <span className="w-2 h-4 bg-red-600 rounded-sm" />
                   {isOfferProduct ? 'Add Extra Sauces & Sides' : '3. Add extras'}
                 </h3>
-                <p className="text-xs text-neutral-400 mt-0.5 font-sans">
+                <p className="text-[11px] sm:text-xs text-neutral-400 mt-0.5 font-sans">
                   Make it yours
                 </p>
               </div>
@@ -378,13 +378,13 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                       key={add.id}
                       type="button"
                       onClick={() => toggleAddition(add)}
-                      className={`flex items-center justify-between p-3 rounded-xl border text-xs sm:text-sm font-medium transition-all text-left ${
+                      className={`flex items-center justify-between p-2.5 sm:p-3 rounded-xl border text-xs sm:text-sm font-medium transition-all text-left ${
                         isSelected
                           ? 'border-red-600 bg-red-950/40 text-white shadow-md'
                           : 'border-neutral-800 bg-neutral-900/50 text-neutral-300 hover:border-neutral-700'
                       }`}
                     >
-                      <span className="flex items-center gap-2.5 text-left min-w-0 pr-2">
+                      <span className="flex items-center gap-2 text-left min-w-0 pr-2">
                         <div
                           className={`w-4 h-4 rounded flex items-center justify-center border transition-colors shrink-0 ${
                             isSelected
@@ -407,7 +407,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           )}
 
           {/* SECTION 4: COMMENT BOX */}
-          <div className="space-y-2">
+          <div className="space-y-2 pb-2">
             <div className="flex items-center gap-2 text-xs font-bold text-neutral-300 uppercase tracking-wider font-mono">
               <MessageSquare className="w-3.5 h-3.5 text-red-500" />
               Comment Box / Special Instructions
@@ -417,50 +417,50 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
               placeholder="e.g., Specify chicken choices or sauce preferences..."
               value={specialInstructions}
               onChange={(e) => setSpecialInstructions(e.target.value)}
-              className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-red-600 transition-colors font-sans resize-none"
+              className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-red-600 transition-colors font-sans resize-none"
             />
           </div>
+        </div>
 
-          {/* Footer Action Bar */}
-          <div className="pt-4 border-t border-neutral-800 flex items-center justify-between gap-4">
-            {/* Quantity Selector */}
-            <div className="flex items-center bg-neutral-900 border border-neutral-800 rounded-xl p-1">
-              <button
-                type="button"
-                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                className="w-9 h-9 rounded-lg flex items-center justify-center text-neutral-300 hover:bg-neutral-800 transition-colors"
-                aria-label="Decrease quantity"
-              >
-                <Minus className="w-4 h-4" />
-              </button>
-              <span className="w-10 text-center font-mono font-bold text-base text-white">
-                {quantity}
-              </span>
-              <button
-                type="button"
-                onClick={() => setQuantity((q) => q + 1)}
-                className="w-9 h-9 rounded-lg flex items-center justify-center text-neutral-300 hover:bg-neutral-800 transition-colors"
-                aria-label="Increase quantity"
-              >
-                <Plus className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Add to Order Button */}
+        {/* Footer Action Bar (Sticky at bottom) */}
+        <div className="p-4 sm:p-5 bg-neutral-900 border-t border-neutral-800 flex items-center justify-between gap-3 shrink-0">
+          {/* Quantity Selector */}
+          <div className="flex items-center bg-neutral-950 border border-neutral-800 rounded-xl p-1">
             <button
               type="button"
-              onClick={handleAddToCart}
-              className="flex-1 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-red-950/50 flex items-center justify-between group active:scale-[0.99]"
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center text-neutral-300 hover:bg-neutral-800 transition-colors"
+              aria-label="Decrease quantity"
             >
-              <span className="flex items-center gap-2 font-mono uppercase tracking-wider text-sm">
-                <ShoppingBag className="w-4 h-4" />
-                Add to Order
-              </span>
-              <span className="font-mono text-base font-black text-yellow-300">
-                {totalPrice} EGP
-              </span>
+              <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            </button>
+            <span className="w-8 sm:w-10 text-center font-mono font-bold text-sm sm:text-base text-white">
+              {quantity}
+            </span>
+            <button
+              type="button"
+              onClick={() => setQuantity((q) => q + 1)}
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center text-neutral-300 hover:bg-neutral-800 transition-colors"
+              aria-label="Increase quantity"
+            >
+              <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           </div>
+
+          {/* Add to Order Button */}
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            className="flex-1 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-3 sm:py-3.5 px-4 sm:px-6 rounded-xl transition-all shadow-lg shadow-red-950/50 flex items-center justify-between group active:scale-[0.99]"
+          >
+            <span className="flex items-center gap-1.5 font-mono uppercase tracking-wider text-xs sm:text-sm">
+              <ShoppingBag className="w-4 h-4" />
+              Add to Order
+            </span>
+            <span className="font-mono text-sm sm:text-base font-black text-yellow-300">
+              {totalPrice} EGP
+            </span>
+          </button>
         </div>
       </DialogContent>
     </Dialog>
