@@ -124,7 +124,7 @@ export default function ContactPage() {
               </div>
 
               <a
-                href="https://wa.me/201000922142?text=Hello%20Black%20Burger!%20I%20would%20like%20to%20place%20an%20order."
+                href="https://wa.me/201144484008?text=Hello%20Black%20Burger!%20I%20would%20like%20to%20place%20an%20order."
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black px-6 py-3 rounded-full text-xs uppercase tracking-wider transition-all shadow-lg"
@@ -150,7 +150,6 @@ export default function ContactPage() {
 
               {/* Map embed / preview representation */}
               <div className="relative h-64 w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800 flex items-center justify-center group">
-                {/* Embedded google map iframe */}
                 <iframe
                   title="Black Burger Location Map"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.384661073887!2d31.1712!3d30.0076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDAwJzI3LjQiTiAzMcKwMTAnMTYuMyJF!5e0!3m2!1sen!2seg!4v1650000000000!5m2!1sen!2seg"
