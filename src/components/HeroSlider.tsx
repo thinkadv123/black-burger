@@ -137,8 +137,8 @@ export function HeroSlider() {
       <div className="absolute inset-0 pointer-events-none z-10 opacity-30 bg-[radial-gradient(#DC2626_1px,transparent_1px)] [background-size:24px_24px]" />
 
       {/* Hero Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-20 sm:pt-16">
-        <div className="max-w-3xl space-y-4 sm:space-y-6">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-20 sm:pt-16 text-center flex flex-col items-center justify-center">
+        <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6 flex flex-col items-center text-center">
           
           {/* Badge */}
           <motion.div
@@ -146,7 +146,7 @@ export function HeroSlider() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-zinc-900/90 border border-amber-500/40 backdrop-blur-md shadow-[0_0_15px_rgba(234,179,8,0.2)]"
+            className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-4.5 py-1 sm:py-1.5 rounded-full bg-zinc-900/90 border border-amber-500/40 backdrop-blur-md shadow-[0_0_15px_rgba(234,179,8,0.2)] mx-auto"
           >
             <Flame className="w-3.5 h-3.5 text-red-500 animate-pulse" />
             <span className="text-[10px] sm:text-xs font-black tracking-widest text-amber-400 uppercase">
@@ -165,7 +165,7 @@ export function HeroSlider() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="space-y-1 sm:space-y-1.5"
+            className="space-y-1 sm:space-y-1.5 text-center"
           >
             <span className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white block leading-tight drop-shadow-lg">
               {slide.title}
@@ -181,7 +181,7 @@ export function HeroSlider() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="text-xs sm:text-base md:text-lg text-zinc-300 font-bold tracking-wider uppercase max-w-xl border-l-4 border-red-600 pl-3 sm:pl-4 py-0.5 sm:py-1"
+            className="text-xs sm:text-base md:text-lg text-zinc-300 font-bold tracking-wider uppercase max-w-xl text-center border-y border-red-600/60 px-4 py-1.5 mx-auto backdrop-blur-xs"
           >
             {slide.subtitle}
           </motion.p>
@@ -192,11 +192,11 @@ export function HeroSlider() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2 sm:pt-4"
+            className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4"
           >
             <Link
               href={slide.ctaLink}
-              className="group relative overflow-hidden bg-gradient-to-r from-red-600 via-red-700 to-red-800 text-white font-black px-6 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs sm:text-base tracking-widest uppercase shadow-[0_0_30px_rgba(220,38,38,0.7)] border border-red-500/50 hover:shadow-[0_0_45px_rgba(220,38,38,0.9)] transition-all flex items-center gap-2"
+              className="group relative overflow-hidden bg-gradient-to-r from-red-600 via-red-700 to-red-800 text-white font-black px-6 sm:px-8 py-3.5 sm:py-4 rounded-full text-xs sm:text-base tracking-widest uppercase shadow-[0_0_30px_rgba(220,38,38,0.7)] border border-red-500/50 hover:shadow-[0_0_45px_rgba(220,38,38,0.9)] transition-all flex items-center justify-center gap-2"
             >
               <Flame className="w-4 h-4 sm:w-5 sm:h-5 text-amber-300 group-hover:scale-125 transition-transform" />
               <span>{slide.ctaText}</span>
@@ -205,7 +205,7 @@ export function HeroSlider() {
 
             <Link
               href="/about"
-              className="px-5 sm:px-6 py-3.5 sm:py-4 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 transition-all flex items-center gap-2 backdrop-blur-sm"
+              className="px-5 sm:px-6 py-3.5 sm:py-4 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
             >
               <Award className="w-4 h-4 text-amber-400" />
               <span>THE CRAFT</span>
