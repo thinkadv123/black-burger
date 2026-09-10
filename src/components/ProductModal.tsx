@@ -126,7 +126,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
               </span>
             </div>
 
-            <h2 className="text-lg sm:text-2xl font-black text-white tracking-tight uppercase font-mono leading-tight">
+            <h2 className="text-[22px] font-black text-white tracking-tight uppercase font-mono leading-tight">
               {product.name}
             </h2>
 

@@ -68,7 +68,7 @@ export function ProductCard({ product }: { product: ProductItem }) {
           <div className="flex items-center justify-between">
             <h3
               onClick={() => setCustomizingProduct(product)}
-              className="text-xl font-black text-white tracking-tight cursor-pointer hover:text-red-500 transition-colors uppercase font-mono"
+              className="text-[22px] font-black text-white tracking-tight cursor-pointer hover:text-red-500 transition-colors uppercase font-mono"
             >
               {product.name}
             </h3>

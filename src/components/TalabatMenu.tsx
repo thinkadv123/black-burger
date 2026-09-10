@@ -217,7 +217,7 @@ export function TalabatMenu() {
                           {/* Product Details */}
                           <div className="space-y-1.5">
                             <div className="flex items-start justify-between gap-2">
-                              <h4 className="font-mono font-extrabold text-base text-white uppercase tracking-tight group-hover:text-red-400 transition-colors">
+                              <h4 className="font-mono font-extrabold text-[22px] text-white uppercase tracking-tight group-hover:text-red-400 transition-colors leading-tight">
                                 {product.name}
                               </h4>
                             </div>
