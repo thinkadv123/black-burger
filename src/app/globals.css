@@ -11,7 +11,12 @@
 }
 
 @layer base {
-  h1, h2, h3, h4, h5, h6, button, input[type="button"], input[type="submit"], .font-title, .font-mono, .btn, a[href^="tel:"] {
+  h1, h2, h3, h4, h5, h6,
+  button, button *,
+  input[type="button"], input[type="submit"],
+  a, a *,
+  .btn, [role="button"],
+  .font-title, .font-mono {
     font-family: var(--font-title), 'OldNavyGrunge', sans-serif !important;
     letter-spacing: 0.04em;
   }
