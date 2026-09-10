@@ -11,9 +11,9 @@
 }
 
 @layer base {
-  h1, h2, h3, h4, h5, h6, .font-title {
+  h1, h2, h3, h4, h5, h6, button, input[type="button"], input[type="submit"], .font-title, .font-mono, .btn {
     font-family: var(--font-title), 'OldNavyGrunge', sans-serif !important;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
   }
 }
 
