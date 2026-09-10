@@ -56,7 +56,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Special BB Sauce',
       'Cheddar sauce',
     ],
-    image: '/images/menu/bb-classic.jpg',
+    image: '/images/menu/bb-classic.jpeg',
     isAvailable: true,
   },
   {
@@ -76,7 +76,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Tomato',
       'Touch of truffle sauce',
     ],
-    image: '/images/menu/truffle.jpg',
+    image: '/images/menu/truffle.jpeg',
     isAvailable: true,
   },
   {
@@ -155,7 +155,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Mozzarella sticks',
       'BB Sauce',
     ],
-    image: '/images/menu/bb-chicken.jpg',
+    image: '/images/menu/bb-chicken.jpeg',
     isAvailable: true,
   },
   {
@@ -172,7 +172,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Buffalo sauce',
       'Crispy onion rings',
     ],
-    image: '/images/menu/buffalo-chicken.jpg',
+    image: '/images/menu/buffalo-chicken.jpeg',
     isAvailable: true,
   },
   {
@@ -212,7 +212,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Barbecue sauce',
       'Mozzarella cheese',
     ],
-    image: '/images/menu/bb-bbsalad.jpg',
+    image: '/images/menu/bb-salad.jpeg',
     isAvailable: true,
   },
   {
@@ -283,7 +283,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Barbecue sauce',
       'Cheetos',
     ],
-    image: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/menu/bb-beef-chaos.jpeg',
     isAvailable: true,
   },
   {
