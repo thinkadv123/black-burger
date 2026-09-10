@@ -95,7 +95,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Pepper Jack cheese',
       'Chipotle sauce',
     ],
-    image: '/images/menu/chipotle.jpg',
+    image: '/images/menu/chipotle.jpeg',
     isAvailable: true,
   },
   {
@@ -116,7 +116,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Sriracha sauce',
       'Pepper Jack cheese',
     ],
-    image: '/images/menu/mexicali.jpg',
+    image: '/images/menu/mexicali.jpeg',
     isAvailable: true,
   },
   {
@@ -135,7 +135,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Cheddar sauce',
       'Ranch sauce',
     ],
-    image: '/images/menu/ranchavoo.jpg',
+    image: '/images/menu/ranchavoo.jpeg',
     isAvailable: true,
   },
 
@@ -191,7 +191,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Pepper Jack cheese',
       'Sriracha sauce',
     ],
-    image: '/images/menu/chickenito.jpg',
+    image: '/images/menu/chickenito.jpeg',
     isAvailable: true,
   },
 
@@ -228,7 +228,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Parmesan cheese',
       'Caesar sauce',
     ],
-    image: '/images/menu/bb-cesarsalad.jpg',
+    image: '/images/menu/caesar-salad.jpeg',
     isAvailable: true,
   },
 
@@ -301,7 +301,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Buffalo sauce',
       'Cheetos',
     ],
-    image: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?q=80&w=1000&auto=format&fit=crop',
+    image: '/images/menu/bb-chicken-chaos.jpeg',
     isAvailable: true,
   },
 
