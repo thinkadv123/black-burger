@@ -161,20 +161,20 @@ export function HeroSlider() {
           </motion.div>
 
           {/* Main Headline */}
-          <motion.div
+          <motion.h1
             key={`title-${slide.id}`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="space-y-1.5"
           >
-            <span className="text-3xl sm:text-5xl md:text-6xl lg:text-6xl font-black tracking-tight text-white block leading-tight drop-shadow-lg whitespace-nowrap">
+            <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-white block leading-tight drop-shadow-lg whitespace-nowrap">
               {slide.title}
             </span>
-            <span className="text-3xl sm:text-5xl md:text-6xl lg:text-6xl font-black tracking-tight text-red-gradient block leading-tight drop-shadow-[0_0_25px_rgba(220,38,38,0.6)] whitespace-nowrap">
+            <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-red-gradient block leading-tight drop-shadow-[0_0_25px_rgba(220,38,38,0.6)] whitespace-nowrap">
               {slide.highlightTitle}
             </span>
-          </motion.div>
+          </motion.h1>
 
           {/* Subtitle */}
           <motion.p
