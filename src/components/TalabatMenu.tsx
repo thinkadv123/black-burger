@@ -193,6 +193,12 @@ export function TalabatMenu() {
                               </div>
                             )}
 
+                            {product.comboPrice && (
+                              <div className="absolute top-2.5 right-2.5 bg-neutral-900/90 border border-neutral-700 text-yellow-300 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
+                                2 Sizes: Solo / Combo
+                              </div>
+                            )}
+
                             {isOfferCategory && (
                               <div className="absolute top-2.5 right-2.5 bg-amber-500 text-black text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
                                 EXCLUSIVE OFFER
@@ -225,11 +231,17 @@ export function TalabatMenu() {
                         {/* Price & Customize Button Bar */}
                         <div className="pt-4 mt-3 border-t border-neutral-800/80 flex items-center justify-between gap-2">
                           <div>
-                            <span className="text-[10px] text-neutral-500 font-mono block uppercase">
-                              {hasVariants ? 'Variants available' : 'Offer Price'}
+                            <span className="text-[10px] text-neutral-400 font-mono block uppercase">
+                              {product.comboPrice
+                                ? `Solo: ${product.soloPrice} EGP | Combo: ${product.comboPrice} EGP`
+                                : product.hasSizes
+                                ? 'Multiple Sizes'
+                                : 'Price'}
                             </span>
-                            <span className="font-mono font-extrabold text-base text-yellow-400">
-                              {startingPriceText}
+                            <span className="font-mono font-extrabold text-sm sm:text-base text-yellow-400">
+                              {product.comboPrice
+                                ? `${product.soloPrice} / ${product.comboPrice} EGP`
+                                : startingPriceText}
                             </span>
                           </div>
 

@@ -35,7 +35,7 @@ export default function AdminDashboardPage() {
     soloPrice: 180,
     comboPrice: 220,
     description: '',
-    ingredients: ['Two smash beef patties', 'Lettuce', 'Tomato', 'Cheddar sauce', 'Special BB Sauce'],
+    ingredients: ['Two smash beef patties', 'Lettuce', 'Cheddar sauce', 'Special BB Sauce'],
     image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop',
     isAvailable: true,
   });
@@ -74,7 +74,7 @@ export default function AdminDashboardPage() {
         soloPrice: 180,
         comboPrice: 220,
         description: '',
-        ingredients: ['Two smash beef patties', 'Lettuce', 'Tomato'],
+        ingredients: ['Two smash beef patties', 'Lettuce'],
         image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop',
         isAvailable: true,
       });

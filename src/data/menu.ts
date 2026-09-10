@@ -31,9 +31,10 @@ export const CATEGORIES_LIST = [
 ] as const;
 
 export const INITIAL_ADDITIONS: AdditionItem[] = [
+  { id: 'extra-smash-beef-patty', name: 'EXTRA BEEF PATTY', price: 50 },
+  { id: 'extra-crispy-chicken-piece', name: 'CRISPY CHKN PIECE', price: 40 },
   { id: 'extra-cheddar-cheese', name: 'EXTRA CHEDDAR CHEESE', price: 20 },
   { id: 'extra-bacon', name: 'EXTRA BACON', price: 20 },
-  { id: 'extra-crispy-chicken-piece', name: 'CRISPY CHKN PIECE', price: 40 },
   { id: 'extra-jalapeno', name: 'EXTRA JALAPEÑO', price: 25 },
   { id: 'extra-mushrooms', name: 'EXTRA MUSHROOMS', price: 30 },
 ];
@@ -51,7 +52,6 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Two smash beef patties',
       'Caramelized onions',
       'Lettuce',
-      'Tomato',
       'Pickles',
       'Special BB Sauce',
       'Cheddar sauce',
@@ -73,7 +73,6 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Grilled onions',
       'Swiss cheese',
       'Lettuce',
-      'Tomato',
       'Touch of truffle sauce',
     ],
     image: '/images/menu/truffle.jpeg',
@@ -89,7 +88,6 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     ingredients: [
       'Two smash beef patties',
       'Lettuce',
-      'Tomato',
       'Onion rings',
       'Bacon',
       'Pepper Jack cheese',
@@ -110,7 +108,6 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     ingredients: [
       'Two smash beef patties',
       'Lettuce',
-      'Tomato',
       'Jalapeño',
       'Smoked turkey',
       'Sriracha sauce',
@@ -129,7 +126,6 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     ingredients: [
       'Two smash beef patties',
       'Lettuce',
-      'Tomato',
       'Avocado',
       'Bacon',
       'Cheddar sauce',
@@ -150,7 +146,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     ingredients: [
       'Large crispy chicken piece',
       'Cheddar sauce',
-      'Coleslaw',
+      'Crunchy Slaw',
       'Pickles',
       'Mozzarella sticks',
       'BB Sauce',
@@ -167,7 +163,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     description: 'Made with a large crispy chicken piece.',
     ingredients: [
       'Large crispy chicken piece',
-      'Coleslaw',
+      'Crunchy Slaw',
       'Parmesan cheese',
       'Buffalo sauce',
       'Crispy onion rings',
@@ -187,7 +183,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Large crispy chicken piece',
       'Jalapeño',
       'Roast beef',
-      'Coleslaw',
+      'Crunchy Slaw',
       'Pepper Jack cheese',
       'Sriracha sauce',
     ],
@@ -200,12 +196,11 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     id: 'bb-salad',
     name: 'BB SALAD',
     category: 'Salads',
-    soloPrice: 180,
+    soloPrice: 190,
     description: 'Fresh hearty salad bowl loaded with Angus beef pieces and sauces.',
     ingredients: [
       'Angus beef pieces',
       'Lettuce',
-      'Tomato',
       'Pickles',
       'Fries',
       'BB Sauce',
@@ -379,6 +374,26 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
 
   // 6. ADDITIONS
   {
+    id: 'add-extra-smash-beef-patty',
+    name: 'EXTRA BEEF PATTY',
+    category: 'Additions',
+    soloPrice: 50,
+    description: 'Extra 150g pure Angus beef smash patty.',
+    ingredients: ['Extra Beef Patty'],
+    image: '/images/menu/bb-classic.jpeg',
+    isAvailable: true,
+  },
+  {
+    id: 'add-extra-crispy-chicken-piece',
+    name: 'CRISPY CHKN PIECE',
+    category: 'Additions',
+    soloPrice: 40,
+    description: 'Extra hand-breaded crispy fried chicken piece.',
+    ingredients: ['Crispy Chkn Piece'],
+    image: '/images/additions/extra-chicken-piece.jpg',
+    isAvailable: true,
+  },
+  {
     id: 'add-extra-cheddar-cheese',
     name: 'EXTRA CHEDDAR CHEESE',
     category: 'Additions',
@@ -396,16 +411,6 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     description: 'Extra crispy smoked bacon strip.',
     ingredients: ['Extra Crispy Bacon'],
     image: '/images/additions/extra-bacon.jpeg',
-    isAvailable: true,
-  },
-  {
-    id: 'add-extra-crispy-chicken-piece',
-    name: 'CRISPY CHKN PIECE',
-    category: 'Additions',
-    soloPrice: 40,
-    description: 'Extra hand-breaded crispy fried chicken piece.',
-    ingredients: ['Crispy Chkn Piece'],
-    image: '/images/additions/extra-chicken-piece.jpg',
     isAvailable: true,
   },
   {

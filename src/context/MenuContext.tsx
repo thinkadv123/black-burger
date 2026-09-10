@@ -36,6 +36,8 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
               ...existing,
               image: init.image, // Always sync latest local image path
               category: init.category, // Sync latest category ordering
+              ingredients: init.ingredients, // Sync updated ingredients
+              soloPrice: init.soloPrice, // Sync updated price
             };
           }
           return init;
@@ -46,16 +48,17 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
         setProducts(INITIAL_PRODUCTS);
       }
 
-      const savedAdditions = localStorage.getItem('black_burger_db_additions');
-      if (savedAdditions) {
-        const parsedAdds: AdditionItem[] = JSON.parse(savedAdditions);
-        const syncedAdds = parsedAdds.map((add) => {
-          if (add.id === 'extra-crispy-chicken-piece') {
-            return { ...add, name: 'CRISPY CHKN PIECE' };
-          }
-          return add;
+      const savedAdditionsStr = localStorage.getItem('black_burger_db_additions');
+      if (savedAdditionsStr) {
+        const parsedAdds: AdditionItem[] = JSON.parse(savedAdditionsStr);
+        const parsedMap = new Map(parsedAdds.map((a) => [a.id, a]));
+        const mergedAdds = INITIAL_ADDITIONS.map((init) => {
+          const existing = parsedMap.get(init.id);
+          return existing ? { ...existing, name: init.name, price: init.price } : init;
         });
-        setAdditions(syncedAdds);
+        setAdditions(mergedAdds);
+      } else {
+        setAdditions(INITIAL_ADDITIONS);
       }
     } catch (e) {
       console.error('Error loading menu from local database storage', e);

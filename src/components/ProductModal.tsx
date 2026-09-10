@@ -163,7 +163,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
               <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
                 <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
                   <span className="w-2 h-4 bg-red-600 rounded-sm" />
-                  1. Choose your size
+                  1. Choose your size / option (اختر الحجم)
                 </h3>
                 <span className="text-[10px] bg-red-950 text-red-400 border border-red-800 px-2 py-0.5 rounded font-mono font-bold uppercase">
                   Required
