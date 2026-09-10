@@ -61,16 +61,16 @@ export default function HomePage() {
               <div className="pt-4 flex flex-wrap gap-4">
                 <a
                   href="#menu-section"
-                  className="bg-gradient-to-r from-red-600 via-red-700 to-red-800 text-white font-mono font-bold px-8 py-4 rounded-full text-xs sm:text-sm tracking-wider uppercase shadow-[0_0_25px_rgba(220,38,38,0.6)] hover:shadow-red-600/80 transition-all flex items-center gap-2"
+                  className="bg-gradient-to-r from-[#EA1F27] via-[#D11820] to-[#B00E15] text-white font-mono font-bold px-8 py-4 rounded-full text-xs sm:text-sm tracking-wider uppercase shadow-[0_0_25px_rgba(234,31,39,0.6)] hover:shadow-[#EA1F27]/80 transition-all flex items-center gap-2"
                 >
-                  <Flame className="w-4 h-4 text-amber-300 animate-pulse" />
+                  <Flame className="w-4 h-4 text-[#CDB32D] animate-pulse" />
                   <span>ORDER ONLINE NOW</span>
                 </a>
                 <a
                   href="tel:01515821555"
-                  className="bg-zinc-900 border border-zinc-700 hover:border-amber-400 text-amber-400 font-bold px-6 py-4 rounded-full text-xs sm:text-sm tracking-wider uppercase transition-colors flex items-center gap-2"
+                  className="bg-zinc-900 border border-zinc-700 hover:border-[#CDB32D] text-[#CDB32D] font-mono font-bold px-6 py-4 rounded-full text-xs sm:text-sm tracking-wider uppercase transition-colors flex items-center gap-2"
                 >
-                  <Phone className="w-4 h-4 text-red-500" />
+                  <Phone className="w-4 h-4 text-[#EA1F27]" />
                   <span>CALL HOTLINE</span>
                 </a>
               </div>
