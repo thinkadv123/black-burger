@@ -40,10 +40,10 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         
         {/* Left Side: Logo + Menu items right after */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           {/* Left Brand Logo */}
           <Link href="/" className="relative flex items-center group shrink-0">
-            <div className="relative w-32 h-14 sm:w-40 sm:h-16 hover:scale-105 transition-transform">
+            <div className="relative w-36 h-12 sm:w-44 sm:h-14 md:w-52 md:h-16 hover:scale-105 transition-transform">
               <Image
                 src="/images/logo.png"
                 alt="BLACK BURGER"

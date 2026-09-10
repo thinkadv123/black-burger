@@ -23,7 +23,7 @@ export function Footer() {
           {/* Brand Info */}
           <div className="space-y-4">
             <Link href="/" className="inline-block hover:scale-105 transition-transform">
-              <div className="relative w-52 sm:w-60 h-24 sm:h-28">
+              <div className="relative w-56 sm:w-64 h-20 sm:h-24">
                 <Image
                   src="/images/logo.png"
                   alt="BLACK BURGER"
