@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { MenuProvider } from "@/context/MenuContext";
 import { CartProvider } from "@/context/CartContext";
@@ -20,6 +21,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const titleFont = localFont({
+  src: "../../public/fonts/the-old-navy-grunge-regular.ttf",
+  variable: "--font-title",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "BLACK BURGER | Smash Burgers Made Different",
   description:
@@ -37,7 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-black text-white antialiased min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} ${titleFont.variable} bg-black text-white antialiased min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white`}
       >
         <MenuProvider>
           <CartProvider>

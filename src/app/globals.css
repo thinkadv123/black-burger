@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'OldNavyGrunge';
+  src: url('/fonts/the-old-navy-grunge-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-title), 'OldNavyGrunge', sans-serif !important;
+    letter-spacing: 0.03em;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 3.9%;
