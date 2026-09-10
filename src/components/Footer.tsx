@@ -22,22 +22,15 @@ export function Footer() {
           
           {/* Brand Info */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-amber-500/80 bg-black">
+            <Link href="/" className="inline-block hover:scale-105 transition-transform">
+              <div className="relative w-52 sm:w-60 h-24 sm:h-28">
                 <Image
                   src="/images/logo.png"
                   alt="BLACK BURGER"
                   fill
-                  className="object-contain p-0.5"
+                  className="object-contain object-left"
+                  priority
                 />
-              </div>
-              <div>
-                <span className="font-black text-2xl tracking-tight text-white block">
-                  BLACK <span className="text-red-600">BURGER</span>
-                </span>
-                <span className="text-xs tracking-widest text-amber-400 font-semibold uppercase">
-                  Smash & Angus
-                </span>
               </div>
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed">
