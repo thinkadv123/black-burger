@@ -452,11 +452,11 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
               onClick={handleAddToCart}
               className="flex-1 bg-gradient-to-r from-[#EA1F27] via-[#D11820] to-[#B00E15] hover:from-[#D11820] hover:to-[#960B11] text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-[#EA1F27]/30 flex items-center justify-between group active:scale-[0.99]"
             >
-              <span className="flex items-center gap-2 font-mono uppercase tracking-wider text-sm">
-                <ShoppingBag className="w-4 h-4" />
+              <span className="flex items-center gap-2 font-mono uppercase tracking-wider text-[19px]">
+                <ShoppingBag className="w-5 h-5" />
                 Add to Order
               </span>
-              <span className="font-mono text-base font-black text-[#CDB32D]">
+              <span className="font-mono text-lg font-black text-[#CDB32D]">
                 {totalPrice} EGP
               </span>
             </button>

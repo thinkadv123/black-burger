@@ -62,7 +62,7 @@ export function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`relative px-4 py-1.5 text-xs font-mono font-bold tracking-wider uppercase transition-colors rounded-full whitespace-nowrap ${
+                  className={`relative px-4 py-1.5 text-[17px] font-mono font-bold tracking-wider uppercase transition-colors rounded-full whitespace-nowrap ${
                     isActive ? 'text-white' : 'text-zinc-400 hover:text-white'
                   }`}
                 >
@@ -96,9 +96,9 @@ export function Navbar() {
           {/* Hotline Button (Desktop) */}
           <a
             href="tel:01515821555"
-            className="hidden xl:flex items-center gap-2 text-xs font-mono font-bold text-zinc-300 hover:text-[#03A0E5] transition-colors bg-zinc-900 border border-zinc-800 px-3 py-2 rounded-xl"
+            className="hidden xl:flex items-center gap-2 text-[17px] font-mono font-bold text-zinc-300 hover:text-[#03A0E5] transition-colors bg-zinc-900 border border-zinc-800 px-3 py-2 rounded-xl"
           >
-            <Phone className="w-3.5 h-3.5 text-[#03A0E5]" />
+            <Phone className="w-4 h-4 text-[#03A0E5]" />
             <span>01515821555</span>
           </a>
 
@@ -123,7 +123,7 @@ export function Navbar() {
           {/* Primary Order Now Button */}
           <Link
             href="/menu"
-            className="relative group overflow-hidden bg-gradient-to-r from-[#EA1F27] via-[#D11820] to-[#B00E15] text-white font-mono font-bold px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(234,31,39,0.5)] border border-[#EA1F27]/30 hover:shadow-[0_0_30px_rgba(234,31,39,0.8)] transition-all flex items-center gap-1.5"
+            className="relative group overflow-hidden bg-gradient-to-r from-[#EA1F27] via-[#D11820] to-[#B00E15] text-white font-mono font-bold px-4 sm:px-5 py-2.5 rounded-xl text-[17px] sm:text-[19px] tracking-wider uppercase shadow-[0_0_20px_rgba(234,31,39,0.5)] border border-[#EA1F27]/30 hover:shadow-[0_0_30px_rgba(234,31,39,0.8)] transition-all flex items-center gap-1.5"
           >
             <Flame className="w-4 h-4 text-[#CDB32D] animate-pulse" />
             <span>ORDER NOW</span>
