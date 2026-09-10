@@ -197,7 +197,7 @@ export function HeroSlider() {
           >
             <Link
               href={slide.ctaLink}
-              className="group relative overflow-hidden bg-gradient-to-r from-[#EA1F27] via-[#D11820] to-[#B00E15] text-white font-black px-8 py-4 rounded-full text-lg sm:text-xl tracking-widest uppercase shadow-[0_0_30px_rgba(234,31,39,0.7)] border border-[#EA1F27]/50 hover:shadow-[0_0_45px_rgba(234,31,39,0.9)] transition-all flex items-center gap-2"
+              className="group relative overflow-hidden bg-gradient-to-r from-[#EA1F27] via-[#D11820] to-[#B00E15] text-white font-black px-8 py-4 rounded-full text-sm sm:text-base tracking-widest uppercase shadow-[0_0_30px_rgba(234,31,39,0.7)] border border-[#EA1F27]/50 hover:shadow-[0_0_45px_rgba(234,31,39,0.9)] transition-all flex items-center gap-2"
             >
               <Flame className="w-5 h-5 text-[#CDB32D] group-hover:scale-125 transition-transform" />
               <span>{slide.ctaText}</span>
@@ -206,7 +206,7 @@ export function HeroSlider() {
 
             <Link
               href="/about"
-              className="px-6 py-4 rounded-full text-sm sm:text-lg font-bold tracking-wider uppercase bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-[#03A0E5]/40 hover:border-[#03A0E5] transition-all flex items-center gap-2 backdrop-blur-sm"
+              className="px-6 py-4 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-[#03A0E5]/40 hover:border-[#03A0E5] transition-all flex items-center gap-2 backdrop-blur-sm"
             >
               <Award className="w-4 h-4 text-[#03A0E5]" />
               <span>THE SMASH CRAFT</span>

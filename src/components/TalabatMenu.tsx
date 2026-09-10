@@ -103,7 +103,7 @@ export function TalabatMenu() {
                     setSearchQuery('');
                     setSelectedCategory(cat);
                   }}
-                  className={`px-5 py-2.5 rounded-xl text-[17px] sm:text-[19px] font-mono font-bold uppercase transition-all whitespace-nowrap flex items-center gap-2 ${
+                  className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-mono font-bold uppercase transition-all whitespace-nowrap flex items-center gap-2 ${
                     isSelected
                       ? 'bg-[#EA1F27] text-white shadow-lg shadow-[#EA1F27]/30 scale-105 border border-[#EA1F27]'
                       : 'bg-neutral-900 text-neutral-400 hover:text-white hover:bg-neutral-800 border border-neutral-800'
@@ -252,7 +252,7 @@ export function TalabatMenu() {
                               e.stopPropagation();
                               if (product.isAvailable) setCustomizingProduct(product);
                             }}
-                            className="bg-[#EA1F27] hover:bg-[#D11820] text-white font-mono font-bold text-[17px] uppercase px-3.5 py-2 rounded-xl transition-all shadow-lg shadow-[#EA1F27]/30 flex items-center gap-1.5 active:scale-95 disabled:opacity-50 shrink-0"
+                            className="bg-[#EA1F27] hover:bg-[#D11820] text-white font-mono font-bold text-xs uppercase px-3.5 py-2 rounded-xl transition-all shadow-lg shadow-[#EA1F27]/30 flex items-center gap-1.5 active:scale-95 disabled:opacity-50 shrink-0"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             <span>ORDER</span>

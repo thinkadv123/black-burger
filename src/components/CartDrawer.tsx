@@ -205,10 +205,10 @@ export function CartDrawer() {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
                   }}
-                  className="w-full bg-gradient-to-r from-red-600 via-red-700 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-4 rounded-2xl text-[19px] uppercase tracking-wider shadow-[0_0_25px_rgba(220,38,38,0.5)] border border-red-500/30 transition-all flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-red-600 via-red-700 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-4 rounded-2xl text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(220,38,38,0.5)] border border-red-500/30 transition-all flex items-center justify-center gap-2"
                 >
                   <span>PROCEED TO CHECKOUT</span>
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             )}

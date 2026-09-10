@@ -83,7 +83,7 @@ export function ProductCard({ product }: { product: ProductItem }) {
         <div className="pt-2">
           <button
             onClick={() => setCustomizingProduct(product)}
-            className="w-full bg-zinc-950 hover:bg-gradient-to-r hover:from-[#EA1F27] hover:to-[#B00E15] text-white font-black py-3 rounded-2xl text-[17px] uppercase tracking-wider border border-zinc-800 hover:border-[#EA1F27]/50 transition-all flex items-center justify-center gap-2 group/btn shadow-md font-mono"
+            className="w-full bg-zinc-950 hover:bg-gradient-to-r hover:from-[#EA1F27] hover:to-[#B00E15] text-white font-black py-3 rounded-2xl text-xs uppercase tracking-wider border border-zinc-800 hover:border-[#EA1F27]/50 transition-all flex items-center justify-center gap-2 group/btn shadow-md font-mono"
           >
             <Plus className="w-4 h-4 text-[#EA1F27] group-hover/btn:text-white transition-colors" />
             <span>ORDER</span>
