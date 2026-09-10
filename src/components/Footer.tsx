@@ -37,38 +37,38 @@ export function Footer() {
               Black Burger was created for people who believe burgers should be bold, handcrafted, and unforgettable. 100% Angus Beef smashed to crispy perfection.
             </p>
             <div className="flex items-center gap-2 pt-2">
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-950/80 text-red-400 border border-red-800/50 flex items-center gap-1.5">
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#EA1F27]/10 text-[#EA1F27] border border-[#EA1F27]/30 flex items-center gap-1.5">
                 <Flame className="w-3.5 h-3.5" /> 100% Angus Beef
               </span>
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-950/80 text-amber-400 border border-amber-800/50">
-                Cash on Delivery
+              <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#03A0E5]/10 text-[#03A0E5] border border-[#03A0E5]/30">
+                Fast Delivery
               </span>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-black tracking-wider uppercase text-white mb-4 border-l-4 border-red-600 pl-3">
+            <h3 className="text-lg font-black tracking-wider uppercase text-white mb-4 border-l-4 border-[#EA1F27] pl-3">
               Quick Navigation
             </h3>
             <ul className="space-y-2.5 text-sm font-semibold">
               <li>
-                <Link href="/" className="text-zinc-400 hover:text-red-500 transition-colors">
+                <Link href="/" className="text-zinc-400 hover:text-[#EA1F27] transition-colors">
                   Black Burger Home
                 </Link>
               </li>
               <li>
-                <Link href="/menu" className="text-zinc-400 hover:text-red-500 transition-colors">
+                <Link href="/menu" className="text-zinc-400 hover:text-[#EA1F27] transition-colors">
                   Order Online Now
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-zinc-400 hover:text-red-500 transition-colors">
+                <Link href="/about" className="text-zinc-400 hover:text-[#EA1F27] transition-colors">
                   About BB
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-zinc-400 hover:text-red-500 transition-colors">
+                <Link href="/contact" className="text-zinc-400 hover:text-[#EA1F27] transition-colors">
                   Contact us
                 </Link>
               </li>
@@ -77,15 +77,15 @@ export function Footer() {
 
           {/* Contact Details */}
           <div>
-            <h3 className="text-lg font-black tracking-wider uppercase text-white mb-4 border-l-4 border-red-600 pl-3">
+            <h3 className="text-lg font-black tracking-wider uppercase text-white mb-4 border-l-4 border-[#03A0E5] pl-3">
               Order Hotline & Location
             </h3>
             <ul className="space-y-3.5 text-sm">
               <li className="flex items-start gap-3 text-zinc-300">
-                <Phone className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                <Phone className="w-5 h-5 text-[#03A0E5] shrink-0 mt-0.5" />
                 <div>
                   <span className="block text-xs text-zinc-500 font-medium">Order Hotline:</span>
-                  <a href="tel:01515821555" className="text-base font-bold text-amber-400 hover:underline">
+                  <a href="tel:01515821555" className="text-base font-bold text-[#CDB32D] hover:underline">
                     01515821555
                   </a>
                 </div>

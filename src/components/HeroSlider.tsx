@@ -147,16 +147,16 @@ export function HeroSlider() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900/90 border border-amber-500/40 backdrop-blur-md shadow-[0_0_15px_rgba(234,179,8,0.2)]"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900/90 border border-[#03A0E5]/50 backdrop-blur-md shadow-[0_0_15px_rgba(3,160,229,0.25)]"
           >
-            <Flame className="w-4 h-4 text-red-500 animate-pulse" />
-            <span className="text-xs font-black tracking-widest text-amber-400 uppercase">
+            <Flame className="w-4 h-4 text-[#EA1F27] animate-pulse" />
+            <span className="text-xs font-black tracking-widest text-[#03A0E5] uppercase">
               {slide.badge}
             </span>
-            <div className="flex items-center gap-0.5 ml-1 text-amber-400">
-              <Star className="w-3 h-3 fill-amber-400" />
-              <Star className="w-3 h-3 fill-amber-400" />
-              <Star className="w-3 h-3 fill-amber-400" />
+            <div className="flex items-center gap-0.5 ml-1 text-[#CDB32D]">
+              <Star className="w-3 h-3 fill-[#CDB32D]" />
+              <Star className="w-3 h-3 fill-[#CDB32D]" />
+              <Star className="w-3 h-3 fill-[#CDB32D]" />
             </div>
           </motion.div>
 
@@ -182,7 +182,7 @@ export function HeroSlider() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="text-sm sm:text-base md:text-lg text-zinc-300 font-bold tracking-wider uppercase max-w-xl border-l-4 border-red-600 pl-4 py-1"
+            className="text-sm sm:text-base md:text-lg text-zinc-300 font-bold tracking-wider uppercase max-w-xl border-l-4 border-[#EA1F27] pl-4 py-1"
           >
             {slide.subtitle}
           </motion.p>
@@ -197,18 +197,18 @@ export function HeroSlider() {
           >
             <Link
               href={slide.ctaLink}
-              className="group relative overflow-hidden bg-gradient-to-r from-red-600 via-red-700 to-red-800 text-white font-black px-8 py-4 rounded-full text-sm sm:text-base tracking-widest uppercase shadow-[0_0_30px_rgba(220,38,38,0.7)] border border-red-500/50 hover:shadow-[0_0_45px_rgba(220,38,38,0.9)] transition-all flex items-center gap-2"
+              className="group relative overflow-hidden bg-gradient-to-r from-[#EA1F27] via-[#D11820] to-[#B00E15] text-white font-black px-8 py-4 rounded-full text-sm sm:text-base tracking-widest uppercase shadow-[0_0_30px_rgba(234,31,39,0.7)] border border-[#EA1F27]/50 hover:shadow-[0_0_45px_rgba(234,31,39,0.9)] transition-all flex items-center gap-2"
             >
-              <Flame className="w-5 h-5 text-amber-300 group-hover:scale-125 transition-transform" />
+              <Flame className="w-5 h-5 text-[#CDB32D] group-hover:scale-125 transition-transform" />
               <span>{slide.ctaText}</span>
               <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform" />
             </Link>
 
             <Link
               href="/about"
-              className="px-6 py-4 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 hover:border-zinc-700 transition-all flex items-center gap-2 backdrop-blur-sm"
+              className="px-6 py-4 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-[#03A0E5]/40 hover:border-[#03A0E5] transition-all flex items-center gap-2 backdrop-blur-sm"
             >
-              <Award className="w-4 h-4 text-amber-400" />
+              <Award className="w-4 h-4 text-[#03A0E5]" />
               <span>THE SMASH CRAFT</span>
             </Link>
           </motion.div>

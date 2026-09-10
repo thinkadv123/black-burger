@@ -116,12 +116,12 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           <div className="flex-1 min-w-0 pr-6 sm:pr-8">
             <div className="flex flex-wrap items-center gap-2 mb-1.5">
               {product.spicy && (
-                <span className="px-2.5 py-0.5 rounded-full bg-red-600 text-white font-bold text-[10px] sm:text-xs uppercase tracking-wider flex items-center gap-1 shadow-md font-mono">
-                  <Flame className="w-3 h-3 fill-yellow-300 text-yellow-300" />
+                <span className="px-2.5 py-0.5 rounded-full bg-[#EA1F27] text-white font-bold text-[10px] sm:text-xs uppercase tracking-wider flex items-center gap-1 shadow-md font-mono">
+                  <Flame className="w-3 h-3 fill-[#CDB32D] text-[#CDB32D]" />
                   Spicy
                 </span>
               )}
-              <span className="px-2.5 py-0.5 rounded-full bg-neutral-800 border border-neutral-700 text-neutral-300 text-[10px] sm:text-xs font-semibold font-mono">
+              <span className="px-2.5 py-0.5 rounded-full bg-zinc-800 border border-[#03A0E5]/40 text-[#03A0E5] text-[10px] sm:text-xs font-semibold font-mono">
                 {product.category}
               </span>
             </div>
@@ -450,13 +450,13 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             <button
               type="button"
               onClick={handleAddToCart}
-              className="flex-1 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-red-950/50 flex items-center justify-between group active:scale-[0.99]"
+              className="flex-1 bg-gradient-to-r from-[#EA1F27] via-[#D11820] to-[#B00E15] hover:from-[#D11820] hover:to-[#960B11] text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg shadow-[#EA1F27]/30 flex items-center justify-between group active:scale-[0.99]"
             >
               <span className="flex items-center gap-2 font-mono uppercase tracking-wider text-sm">
                 <ShoppingBag className="w-4 h-4" />
                 Add to Order
               </span>
-              <span className="font-mono text-base font-black text-yellow-300">
+              <span className="font-mono text-base font-black text-[#CDB32D]">
                 {totalPrice} EGP
               </span>
             </button>

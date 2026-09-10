@@ -15,6 +15,12 @@ export default {
   			title: ['var(--font-title)', 'OldNavyGrunge', 'sans-serif'],
   		},
   		colors: {
+  			brand: {
+  				red: '#EA1F27',
+  				white: '#FFFFFF',
+  				blue: '#03A0E5',
+  				gold: '#CDB32D',
+  			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

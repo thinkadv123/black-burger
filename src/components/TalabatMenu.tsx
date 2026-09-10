@@ -50,12 +50,12 @@ export function TalabatMenu() {
         
         {/* Section Title Header */}
         <div className="text-center space-y-3 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-950/80 border border-red-800/60 text-red-400 text-xs font-mono font-bold uppercase tracking-wider">
-            <Flame className="w-3.5 h-3.5 text-yellow-400" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EA1F27]/10 border border-[#EA1F27]/40 text-[#EA1F27] text-xs font-mono font-bold uppercase tracking-wider">
+            <Flame className="w-3.5 h-3.5 text-[#CDB32D]" />
             Official Black Burger Menu
           </div>
           <h2 className="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight font-mono">
-            ORDER <span className="text-red-600">BLACK BURGER</span> ONLINE
+            ORDER <span className="text-[#EA1F27]">BLACK BURGER</span> ONLINE
           </h2>
           <p className="text-neutral-400 text-xs sm:text-sm">
             All displayed prices are VAT inclusive. Fast Cash on Delivery across Faisal & Giza.
@@ -105,7 +105,7 @@ export function TalabatMenu() {
                   }}
                   className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-mono font-bold uppercase transition-all whitespace-nowrap flex items-center gap-2 ${
                     isSelected
-                      ? 'bg-red-600 text-white shadow-lg shadow-red-900/60 scale-105 border border-red-500'
+                      ? 'bg-[#EA1F27] text-white shadow-lg shadow-[#EA1F27]/30 scale-105 border border-[#EA1F27]'
                       : 'bg-neutral-900 text-neutral-400 hover:text-white hover:bg-neutral-800 border border-neutral-800'
                   }`}
                 >
@@ -130,7 +130,7 @@ export function TalabatMenu() {
                 <div className="border-b border-neutral-800 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                   <div>
                     <h3 className="text-2xl font-black text-white uppercase tracking-tight font-mono flex items-center gap-2">
-                      <span className="w-2.5 h-6 bg-red-600 rounded-sm" />
+                      <span className="w-2.5 h-6 bg-[#EA1F27] rounded-sm" />
                       {category === 'Smash Burgers' ? 'Beef Smash Burgers' : category}
                     </h3>
                     {categoryNotes[category] && (
@@ -187,20 +187,20 @@ export function TalabatMenu() {
 
                             {/* Spicy badge */}
                             {product.spicy && (
-                              <div className="absolute top-2.5 left-2.5 bg-red-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase flex items-center gap-1 shadow-md font-mono z-10">
-                                <Flame className="w-3 h-3 text-yellow-300 fill-yellow-300" />
+                              <div className="absolute top-2.5 left-2.5 bg-[#EA1F27] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase flex items-center gap-1 shadow-md font-mono z-10">
+                                <Flame className="w-3 h-3 text-[#CDB32D] fill-[#CDB32D]" />
                                 Spicy
                               </div>
                             )}
 
                             {product.comboPrice && (
-                              <div className="absolute top-2.5 right-2.5 bg-neutral-900/90 border border-neutral-700 text-yellow-300 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
+                              <div className="absolute top-2.5 right-2.5 bg-neutral-900/90 border border-[#03A0E5]/60 text-[#03A0E5] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
                                 2 Sizes: Solo / Combo
                               </div>
                             )}
 
                             {isOfferCategory && (
-                              <div className="absolute top-2.5 right-2.5 bg-amber-500 text-black text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
+                              <div className="absolute top-2.5 right-2.5 bg-[#03A0E5] text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
                                 EXCLUSIVE OFFER
                               </div>
                             )}
@@ -238,7 +238,7 @@ export function TalabatMenu() {
                                 ? 'Multiple Sizes'
                                 : 'Price'}
                             </span>
-                            <span className="font-mono font-extrabold text-sm sm:text-base text-yellow-400">
+                            <span className="font-mono font-extrabold text-sm sm:text-base text-[#CDB32D]">
                               {product.comboPrice
                                 ? `${product.soloPrice} / ${product.comboPrice} EGP`
                                 : startingPriceText}
@@ -252,7 +252,7 @@ export function TalabatMenu() {
                               e.stopPropagation();
                               if (product.isAvailable) setCustomizingProduct(product);
                             }}
-                            className="bg-red-600 hover:bg-red-700 text-white font-mono font-bold text-xs uppercase px-3.5 py-2 rounded-xl transition-all shadow-lg shadow-red-950/50 flex items-center gap-1.5 active:scale-95 disabled:opacity-50 shrink-0"
+                            className="bg-[#EA1F27] hover:bg-[#D11820] text-white font-mono font-bold text-xs uppercase px-3.5 py-2 rounded-xl transition-all shadow-lg shadow-[#EA1F27]/30 flex items-center gap-1.5 active:scale-95 disabled:opacity-50 shrink-0"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             <span>ORDER</span>
