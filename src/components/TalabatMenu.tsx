@@ -202,7 +202,7 @@ export function TalabatMenu() {
                             )}
 
                             {isOfferCategory && (
-                              <div className="absolute top-2.5 right-2.5 bg-[#03A0E5] text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
+                              <div className="absolute top-2.5 right-2.5 bg-neutral-900/90 border border-[#03A0E5]/80 text-[#03A0E5] text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase shadow-md font-mono z-10 tracking-wider">
                                 EXCLUSIVE OFFER
                               </div>
                             )}
