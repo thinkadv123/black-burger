@@ -179,7 +179,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
               <div className="border-b border-red-900/40 pb-2.5 flex items-center justify-between">
                 <h3 className="text-sm sm:text-base font-black text-white uppercase tracking-wider font-mono flex items-center gap-2">
                   <span className="w-2.5 h-4 bg-red-600 rounded-sm" />
-                  Choose Your Sandwiches (اختر الساندوتشات)
+                  Choose Your Sandwiches
                 </h3>
                 <span className="text-[10px] bg-red-600 text-white font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                   Included
