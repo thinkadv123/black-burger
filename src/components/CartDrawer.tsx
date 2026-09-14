@@ -151,6 +151,26 @@ export function CartDrawer() {
                           ))}
                         </div>
 
+                        {/* Selected Sandwiches for Offer Bundles */}
+                        {item.options.selectedSandwiches && (
+                          <div className="w-full mt-1.5 flex flex-wrap gap-1">
+                            {Object.entries(item.options.selectedSandwiches).map(([key, val], idx) => (
+                              <span
+                                key={key}
+                                className="text-[10px] font-mono font-bold bg-red-950/80 text-amber-300 border border-red-800/60 px-2 py-0.5 rounded-md flex items-center gap-1"
+                              >
+                                <span className="text-red-400">Sandwich {idx + 1}:</span> {val}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {item.options.specialInstructions && (
+                          <p className="text-[10px] text-zinc-400 italic mt-1 font-sans truncate">
+                            &quot;{item.options.specialInstructions}&quot;
+                          </p>
+                        )}
+
                         {/* Quantity and price */}
                         <div className="flex items-center justify-between mt-3">
                           <div className="flex items-center gap-2 bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1">

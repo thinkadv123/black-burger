@@ -64,6 +64,11 @@ export function CheckoutModal() {
           optionTags.push(`📏 Size: ${item.options.size}`);
         }
 
+        if (item.options.selectedSandwiches) {
+          const choices = Object.values(item.options.selectedSandwiches).join(' + ');
+          optionTags.push(`🥪 *Chosen Sandwiches:* ${choices}`);
+        }
+
         if (item.options.addedAdditions.length > 0) {
           const adds = item.options.addedAdditions.map((a) => `+ ${a.name} (+${a.price} EGP)`).join('\n      ');
           optionTags.push(`🧀 *Extras:*\n      ${adds}`);

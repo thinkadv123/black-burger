@@ -23,6 +23,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   const [selectedAdditions, setSelectedAdditions] = useState<AdditionItem[]>([]);
   const [quantity, setQuantity] = useState(1);
   const [specialInstructions, setSpecialInstructions] = useState('');
+  const [selectedSandwiches, setSelectedSandwiches] = useState<Record<string, string>>({});
 
   // Reset modal state when product changes
   useEffect(() => {
@@ -33,6 +34,17 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
       setSelectedAdditions([]);
       setQuantity(1);
       setSpecialInstructions('');
+
+      // Initialize default sandwich selections if product has bundleChoices
+      if (product.bundleChoices && product.bundleChoices.length > 0) {
+        const initialSelections: Record<string, string> = {};
+        product.bundleChoices.forEach((group) => {
+          initialSelections[group.id] = group.options[0] || '';
+        });
+        setSelectedSandwiches(initialSelections);
+      } else {
+        setSelectedSandwiches({});
+      }
     }
   }, [product]);
 
@@ -83,6 +95,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
       size: product.id === 'onion-rings' ? selectedSize : undefined,
       removedIngredients,
       addedAdditions: selectedAdditions,
+      selectedSandwiches: Object.keys(selectedSandwiches).length > 0 ? selectedSandwiches : undefined,
       specialInstructions,
     };
 
@@ -154,6 +167,60 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             <div className="p-3.5 rounded-xl bg-red-950/80 border border-red-600/60 text-red-200 text-xs sm:text-sm flex items-center gap-3 shadow-md">
               <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />
               <span className="font-semibold">{product.spicyWarning}</span>
+            </div>
+          )}
+
+          {/* BUNDLE SANDWICH SELECTION (FOR OFFERS LIKE PREMIUM BOX & CHICKEN BOX) */}
+          {product.bundleChoices && product.bundleChoices.length > 0 && (
+            <div className="space-y-4 bg-red-950/20 border border-red-800/50 p-4 sm:p-5 rounded-2xl">
+              <div className="border-b border-red-900/40 pb-2.5 flex items-center justify-between">
+                <h3 className="text-sm sm:text-base font-black text-white uppercase tracking-wider font-mono flex items-center gap-2">
+                  <span className="w-2.5 h-4 bg-red-600 rounded-sm" />
+                  Choose Your Sandwiches (اختر الساندوتشات)
+                </h3>
+                <span className="text-[10px] bg-red-600 text-white font-mono font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  Included
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                {product.bundleChoices.map((group, idx) => (
+                  <div key={group.id} className="space-y-2">
+                    <label className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                      <span className="w-5 h-5 rounded-full bg-red-600/30 border border-red-500/50 text-red-300 font-mono text-[11px] flex items-center justify-center font-bold">
+                        {idx + 1}
+                      </span>
+                      {group.title}:
+                    </label>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {group.options.map((opt) => {
+                        const isSelected = selectedSandwiches[group.id] === opt;
+                        return (
+                          <button
+                            key={opt}
+                            type="button"
+                            onClick={() =>
+                              setSelectedSandwiches((prev) => ({ ...prev, [group.id]: opt }))
+                            }
+                            className={`p-3 rounded-xl border text-xs font-mono font-bold transition-all text-left flex items-center justify-between gap-1.5 ${
+                              isSelected
+                                ? 'border-red-500 bg-red-900/60 text-white shadow-lg shadow-red-950/50 ring-1 ring-red-500 scale-[1.02]'
+                                : 'border-neutral-800 bg-neutral-900/80 text-neutral-300 hover:border-neutral-700 hover:text-white'
+                            }`}
+                          >
+                            <span className="truncate">{opt}</span>
+                            {isSelected && (
+                              <div className="w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center shrink-0">
+                                <Check className="w-3 h-3" />
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 

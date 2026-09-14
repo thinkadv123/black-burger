@@ -9,6 +9,7 @@ export interface CartItemOption {
   size?: 'Large' | 'X-Large'; // for onion rings: 60 or 80 EGP
   removedIngredients: string[];
   addedAdditions: AdditionItem[];
+  selectedSandwiches?: Record<string, string>; // e.g. { 'sandwich-1': 'Ranchavoo', 'sandwich-2': 'Chipotle' }
   specialInstructions?: string;
 }
 
@@ -89,7 +90,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addToCart = (product: ProductItem, quantity: number, options: CartItemOption) => {
     const unitPrice = calculateUnitPrice(product, options);
-    const cartItemId = `${product.id}-${options.variant}-${options.size || 'reg'}-${options.removedIngredients.sort().join('-')}-${options.addedAdditions.map((a) => a.id).sort().join('-')}-${options.specialInstructions || ''}`;
+    const sandwichesKey = options.selectedSandwiches
+      ? Object.entries(options.selectedSandwiches).map(([k, v]) => `${k}:${v}`).sort().join('-')
+      : '';
+    const cartItemId = `${product.id}-${options.variant}-${options.size || 'reg'}-${options.removedIngredients.sort().join('-')}-${options.addedAdditions.map((a) => a.id).sort().join('-')}-${sandwichesKey}-${options.specialInstructions || ''}`;
 
     setCart((prevCart) => {
       const existingIndex = prevCart.findIndex((item) => item.cartItemId === cartItemId);

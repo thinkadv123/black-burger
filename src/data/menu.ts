@@ -4,6 +4,12 @@ export interface AdditionItem {
   price: number;
 }
 
+export interface BundleChoiceGroup {
+  id: string;
+  title: string;
+  options: string[];
+}
+
 export interface ProductItem {
   id: string;
   name: string;
@@ -18,6 +24,7 @@ export interface ProductItem {
   spicyWarning?: string;
   image: string;
   isAvailable: boolean;
+  bundleChoices?: BundleChoiceGroup[];
 }
 
 export const CATEGORIES_LIST = [
@@ -461,7 +468,19 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     category: 'Offers',
     soloPrice: 450,
     description: '2 Smash Beef (Ranchavoo or Chipotle or Mexicali or BB Truffle or Hawaiian) + 2 BB Sauce + 2 Mini Soda + 1 Fries XL',
-    ingredients: [],
+    ingredients: ['2 BB Sauces', '2 Mini Soda', '1 Fries XL'],
+    bundleChoices: [
+      {
+        id: 'sandwich-1',
+        title: 'Choose 1st Smash Beef Sandwich',
+        options: ['Ranchavoo', 'Chipotle', 'Mexicali', 'BB Truffle', 'Hawaiian'],
+      },
+      {
+        id: 'sandwich-2',
+        title: 'Choose 2nd Smash Beef Sandwich',
+        options: ['Ranchavoo', 'Chipotle', 'Mexicali', 'BB Truffle', 'Hawaiian'],
+      },
+    ],
     image: '/images/offers/premium-box.jpeg',
     isAvailable: true,
   },
@@ -481,7 +500,24 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     category: 'Offers',
     soloPrice: 520,
     description: '3 Sandwich Chicken (BB Chicken - Buffalo Chicken - Chickenito) + 3 BB Sauce + 3 Mini Soda + 1 Fries L + 1 Fries with Cheese L',
-    ingredients: [],
+    ingredients: ['3 BB Sauces', '3 Mini Soda', '1 Fries L', '1 Fries with Cheese L'],
+    bundleChoices: [
+      {
+        id: 'sandwich-1',
+        title: 'Choose 1st Chicken Sandwich',
+        options: ['BB Chicken', 'Buffalo Chicken', 'Chickenito'],
+      },
+      {
+        id: 'sandwich-2',
+        title: 'Choose 2nd Chicken Sandwich',
+        options: ['BB Chicken', 'Buffalo Chicken', 'Chickenito'],
+      },
+      {
+        id: 'sandwich-3',
+        title: 'Choose 3rd Chicken Sandwich',
+        options: ['BB Chicken', 'Buffalo Chicken', 'Chickenito'],
+      },
+    ],
     image: '/images/offers/chicken-box.jpeg',
     isAvailable: true,
   },
