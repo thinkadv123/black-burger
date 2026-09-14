@@ -88,8 +88,12 @@ export default function AdminDashboardPage() {
         {/* Header Bar */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-neutral-800 pb-6">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono font-bold text-red-500 uppercase tracking-widest">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-mono font-bold text-red-500 uppercase tracking-widest">
               <Settings className="w-4 h-4" /> Restaurant Management Dashboard
+              <span className="bg-emerald-950/80 border border-emerald-500/60 text-emerald-400 font-extrabold px-2.5 py-0.5 rounded-full text-[10px] flex items-center gap-1.5 shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                Firebase DB: blackburger
+              </span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-black font-mono uppercase text-white mt-1">
               BLACK BURGER <span className="text-red-600">MENU MANAGER</span>

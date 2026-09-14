@@ -2,11 +2,14 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ProductItem, AdditionItem, INITIAL_PRODUCTS, INITIAL_ADDITIONS } from '@/data/menu';
+import { doc, setDoc, onSnapshot, deleteDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 import { toast } from 'sonner';
 
 interface MenuContextType {
   products: ProductItem[];
   additions: AdditionItem[];
+  isLoadingFirebase: boolean;
   updateProduct: (updatedProduct: ProductItem) => void;
   toggleAvailability: (productId: string) => void;
   addProduct: (newProduct: ProductItem) => void;
@@ -19,97 +22,162 @@ const MenuContext = createContext<MenuContextType | undefined>(undefined);
 export function MenuProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<ProductItem[]>(INITIAL_PRODUCTS);
   const [additions, setAdditions] = useState<AdditionItem[]>(INITIAL_ADDITIONS);
+  const [isLoadingFirebase, setIsLoadingFirebase] = useState<boolean>(true);
 
-  // Load from localStorage on mount & sync missing items, categories, descriptions, and images from INITIAL_PRODUCTS
+  // Helper to sync state to Firebase Firestore under database/collection "blackburger"
+  const syncToFirebase = async (newProds: ProductItem[], newAdds: AdditionItem[]) => {
+    try {
+      // 1. Save master menu snapshot document
+      await setDoc(doc(db, 'blackburger', 'menu'), {
+        products: newProds,
+        additions: newAdds,
+        updatedAt: new Date().toISOString(),
+      });
+
+      // 2. Save each product as an individual document in collection "blackburger"
+      for (const prod of newProds) {
+        await setDoc(doc(db, 'blackburger', prod.id), {
+          ...prod,
+          updatedAt: new Date().toISOString(),
+        });
+      }
+    } catch (err) {
+      console.error('Error syncing menu to Firebase Firestore "blackburger":', err);
+    }
+  };
+
+  // Real-time synchronization with Firebase Firestore "blackburger"
   useEffect(() => {
+    let unsub: (() => void) | null = null;
+
+    try {
+      // Subscribe to real-time updates from document "blackburger/menu"
+      unsub = onSnapshot(
+        doc(db, 'blackburger', 'menu'),
+        (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.data();
+            if (data && Array.isArray(data.products)) {
+              // Merge with local images to ensure fast rendering
+              const firebaseProds: ProductItem[] = data.products;
+              const mergedProducts = INITIAL_PRODUCTS.map((init) => {
+                const found = firebaseProds.find((p) => p.id === init.id);
+                if (found) {
+                  return {
+                    ...found,
+                    // Keep original local image path if firebase image is missing
+                    image: found.image || init.image,
+                  };
+                }
+                return init;
+              });
+
+              // Also include any custom products added via admin that aren't in INITIAL_PRODUCTS
+              const initialIds = new Set(INITIAL_PRODUCTS.map((p) => p.id));
+              const customProds = firebaseProds.filter((p) => !initialIds.has(p.id));
+
+              setProducts([...mergedProducts, ...customProds]);
+            }
+
+            if (data && Array.isArray(data.additions)) {
+              setAdditions(data.additions);
+            }
+          } else {
+            // First time setup: Seed Firebase "blackburger" database with default menu
+            console.log('Seeding initial products into Firebase "blackburger" database...');
+            syncToFirebase(INITIAL_PRODUCTS, INITIAL_ADDITIONS);
+          }
+          setIsLoadingFirebase(false);
+        },
+        (error) => {
+          console.warn('Firebase connection issue, using local storage fallback:', error);
+          loadFromLocalStorage();
+          setIsLoadingFirebase(false);
+        }
+      );
+    } catch (e) {
+      console.error('Failed to connect to Firebase:', e);
+      loadFromLocalStorage();
+      setIsLoadingFirebase(false);
+    }
+
+    return () => {
+      if (unsub) unsub();
+    };
+  }, []);
+
+  const loadFromLocalStorage = () => {
     try {
       const savedProductsStr = localStorage.getItem('black_burger_db_products');
       if (savedProductsStr) {
         const parsed: ProductItem[] = JSON.parse(savedProductsStr);
-        const parsedMap = new Map(parsed.map((p) => [p.id, p]));
-
-        // Merge initial products so any new products (e.g., Offers) are updated automatically
-        const mergedProducts = INITIAL_PRODUCTS.map((init) => {
-          const existing = parsedMap.get(init.id);
-          if (existing) {
-            return {
-              ...existing,
-              image: init.image, // Always sync latest local image path
-              category: init.category, // Sync latest category
-              ingredients: init.ingredients, // Sync updated ingredients
-              soloPrice: init.soloPrice, // Sync updated price
-              description: init.description || existing.description,
-            };
-          }
-          return init;
-        });
-
-        // Retain custom items added by admin through local storage
-        const initialIds = new Set(INITIAL_PRODUCTS.map((p) => p.id));
-        const customProducts = parsed.filter((p) => !initialIds.has(p.id));
-
-        setProducts([...mergedProducts, ...customProducts]);
-      } else {
-        setProducts(INITIAL_PRODUCTS);
+        setProducts(parsed);
       }
-
       const savedAdditionsStr = localStorage.getItem('black_burger_db_additions');
       if (savedAdditionsStr) {
         const parsedAdds: AdditionItem[] = JSON.parse(savedAdditionsStr);
-        const parsedMap = new Map(parsedAdds.map((a) => [a.id, a]));
-        const mergedAdds = INITIAL_ADDITIONS.map((init) => {
-          const existing = parsedMap.get(init.id);
-          return existing ? { ...existing, name: init.name, price: init.price } : init;
-        });
-        setAdditions(mergedAdds);
-      } else {
-        setAdditions(INITIAL_ADDITIONS);
+        setAdditions(parsedAdds);
       }
     } catch (e) {
-      console.error('Error loading menu from local database storage', e);
+      console.error('LocalStorage read error:', e);
     }
-  }, []);
+  };
 
-  // Save to localStorage when changed
+  // Sync to local storage for backup
   useEffect(() => {
     try {
       localStorage.setItem('black_burger_db_products', JSON.stringify(products));
       localStorage.setItem('black_burger_db_additions', JSON.stringify(additions));
     } catch (e) {
-      console.error('Error saving menu to local database storage', e);
+      console.error('Error writing local backup:', e);
     }
   }, [products, additions]);
 
   const updateProduct = (updatedProduct: ProductItem) => {
-    setProducts((prev) =>
-      prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
-    toast.success(`Updated ${updatedProduct.name} in menu database!`);
+    const updated = products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p));
+    setProducts(updated);
+    syncToFirebase(updated, additions);
+    toast.success(`Updated ${updatedProduct.name} in Black Burger Firebase database!`);
   };
 
   const toggleAvailability = (productId: string) => {
-    setProducts((prev) =>
-      prev.map((p) => {
-        if (p.id === productId) {
-          const nextState = !p.isAvailable;
-          toast.info(
-            `${p.name} is now ${nextState ? 'AVAILABLE' : 'SOLD OUT'}`
-          );
-          return { ...p, isAvailable: nextState };
-        }
-        return p;
-      })
-    );
+    let changedName = '';
+    let nextState = false;
+
+    const updated = products.map((p) => {
+      if (p.id === productId) {
+        changedName = p.name;
+        nextState = !p.isAvailable;
+        return { ...p, isAvailable: nextState };
+      }
+      return p;
+    });
+
+    setProducts(updated);
+    syncToFirebase(updated, additions);
+    toast.info(`${changedName} is now ${nextState ? 'AVAILABLE' : 'SOLD OUT'}`);
   };
 
   const addProduct = (newProduct: ProductItem) => {
-    setProducts((prev) => [...prev, newProduct]);
-    toast.success(`Added new product ${newProduct.name} to menu!`);
+    const updated = [...products, newProduct];
+    setProducts(updated);
+    syncToFirebase(updated, additions);
+    toast.success(`Added ${newProduct.name} to Black Burger Firebase database!`);
   };
 
   const deleteProduct = (productId: string) => {
-    setProducts((prev) => prev.filter((p) => p.id !== productId));
-    toast.info('Product deleted from menu database');
+    const updated = products.filter((p) => p.id !== productId);
+    setProducts(updated);
+    syncToFirebase(updated, additions);
+
+    // Also delete individual document from collection
+    try {
+      deleteDoc(doc(db, 'blackburger', productId));
+    } catch (e) {
+      console.error('Error deleting product document from Firebase:', e);
+    }
+
+    toast.info('Product deleted from Black Burger database');
   };
 
   const resetToDefaultMenu = () => {
@@ -117,7 +185,8 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
     setAdditions(INITIAL_ADDITIONS);
     localStorage.removeItem('black_burger_db_products');
     localStorage.removeItem('black_burger_db_additions');
-    toast.success('Reset menu database to official Black Burger defaults!');
+    syncToFirebase(INITIAL_PRODUCTS, INITIAL_ADDITIONS);
+    toast.success('Reset database to official Black Burger defaults!');
   };
 
   return (
@@ -125,6 +194,7 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
       value={{
         products,
         additions,
+        isLoadingFirebase,
         updateProduct,
         toggleAvailability,
         addProduct,
