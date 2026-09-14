@@ -88,7 +88,21 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
             }
 
             if (data && Array.isArray(data.additions)) {
-              setAdditions(data.additions);
+              const firebaseAdds: AdditionItem[] = data.additions;
+              const mergedAdds = INITIAL_ADDITIONS.map((init) => {
+                const found = firebaseAdds.find((a) => a.id === init.id || a.name === init.name);
+                if (found) {
+                  return {
+                    ...init,
+                    ...found,
+                    name_ar: found.name_ar || init.name_ar,
+                  };
+                }
+                return init;
+              });
+              const initAddIds = new Set(INITIAL_ADDITIONS.map((a) => a.id));
+              const customAdds = firebaseAdds.filter((a) => !initAddIds.has(a.id));
+              setAdditions([...mergedAdds, ...customAdds]);
             }
           } else {
             // First time setup: Seed Firebase "blackburger" database with default menu
@@ -124,7 +138,20 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
       const savedAdditionsStr = localStorage.getItem('black_burger_db_additions');
       if (savedAdditionsStr) {
         const parsedAdds: AdditionItem[] = JSON.parse(savedAdditionsStr);
-        setAdditions(parsedAdds);
+        const mergedAdds = INITIAL_ADDITIONS.map((init) => {
+          const found = parsedAdds.find((a) => a.id === init.id || a.name === init.name);
+          if (found) {
+            return {
+              ...init,
+              ...found,
+              name_ar: found.name_ar || init.name_ar,
+            };
+          }
+          return init;
+        });
+        const initAddIds = new Set(INITIAL_ADDITIONS.map((a) => a.id));
+        const customAdds = parsedAdds.filter((a) => !initAddIds.has(a.id));
+        setAdditions([...mergedAdds, ...customAdds]);
       }
     } catch (e) {
       console.error('LocalStorage read error:', e);

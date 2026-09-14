@@ -10,6 +10,7 @@ import {
   getProductName,
   getProductDescription,
   getProductIngredients,
+  getAdditionName,
 } from '@/data/menu';
 import { useCart, CartItemOption } from '@/context/CartContext';
 import { useMenu } from '@/context/MenuContext';
@@ -410,7 +411,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                 {additions.map((add) => {
                   const isSelected = selectedAdditions.some((a) => a.id === add.id);
-                  const addName = isAr && add.name_ar ? add.name_ar : add.name;
+                  const addName = getAdditionName(add, isAr);
                   return (
                     <button
                       key={add.id}
@@ -434,8 +435,9 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                         </div>
                         <span className="font-semibold leading-tight">{addName}</span>
                       </span>
-                      <span className="font-mono text-xs font-bold text-yellow-400 whitespace-nowrap shrink-0">
-                        +{add.price} {isAr ? 'ج.م' : 'EGP'}
+                      <span className="font-mono text-xs font-bold text-yellow-400 whitespace-nowrap shrink-0 flex items-center gap-1" dir="ltr">
+                        <span>+{add.price}</span>
+                        <span>{isAr ? 'ج.م' : 'EGP'}</span>
                       </span>
                     </button>
                   );

@@ -39,6 +39,7 @@
   .rtl-mode .font-title, .rtl-mode .font-mono {
     font-family: var(--font-cairo), 'Cairo', sans-serif !important;
     letter-spacing: normal !important;
+    line-height: 1.35;
   }
 }
 
@@ -105,18 +106,30 @@
   background: linear-gradient(135deg, #FFFFFF 0%, #CDB32D 60%, #B89E23 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding-bottom: 0.18em;
+  padding-top: 0.05em;
+  overflow: visible;
 }
 
 .text-red-gradient {
   background: linear-gradient(135deg, #FF4D53 0%, #EA1F27 50%, #B50E15 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding-bottom: 0.18em;
+  padding-top: 0.05em;
+  overflow: visible;
 }
 
 .text-blue-gradient {
   background: linear-gradient(135deg, #38BDF8 0%, #03A0E5 50%, #0284C7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding-bottom: 0.18em;
+  padding-top: 0.05em;
+  overflow: visible;
 }
 
 .glow-red {

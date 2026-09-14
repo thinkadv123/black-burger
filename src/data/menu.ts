@@ -102,6 +102,36 @@ export function getCategoryDisplayName(cat: string, isAr: boolean): string {
   }
 }
 
+const ADDITION_NAME_MAP_AR: Record<string, string> = {
+  'EXTRA BEEF PATTY': 'شريحة لحم أنجوس إضافية',
+  'CRISPY CHKN PIECE': 'قطعة دجاج كريسبي إضافية',
+  'EXTRA CHEDDAR CHEESE': 'جبنة شيدر إضافية',
+  'EXTRA BACON': 'بيكون مدخن إضافي',
+  'EXTRA JALAPEÑO': 'هالابينو إضافي',
+  'EXTRA MUSHROOMS': 'مشروم مشوي إضافي',
+  'extra-smash-beef-patty': 'شريحة لحم أنجوس إضافية',
+  'extra-crispy-chicken-piece': 'قطعة دجاج كريسبي إضافية',
+  'extra-cheddar-cheese': 'جبنة شيدر إضافية',
+  'extra-bacon': 'بيكون مدخن إضافي',
+  'extra-jalapeno': 'هالابينو إضافي',
+  'extra-mushrooms': 'مشروم مشوي إضافي',
+  'add-extra-smash-beef-patty': 'شريحة لحم أنجوس إضافية',
+  'add-extra-crispy-chicken-piece': 'قطعة دجاج كريسبي إضافية',
+  'add-extra-cheddar-cheese': 'جبنة شيدر إضافية',
+  'add-extra-bacon': 'بيكون مدخن إضافي',
+  'add-extra-jalapeno': 'هالابينو إضافي',
+  'add-extra-mushrooms': 'مشروم مشوي إضافي',
+};
+
+export function getAdditionName(add: AdditionItem, isAr: boolean): string {
+  if (isAr) {
+    if (add.name_ar && add.name_ar.trim().length > 0) return add.name_ar;
+    if (ADDITION_NAME_MAP_AR[add.name]) return ADDITION_NAME_MAP_AR[add.name];
+    if (ADDITION_NAME_MAP_AR[add.id]) return ADDITION_NAME_MAP_AR[add.id];
+  }
+  return add.name;
+}
+
 export const INITIAL_ADDITIONS: AdditionItem[] = [
   { id: 'extra-smash-beef-patty', name: 'EXTRA BEEF PATTY', name_ar: 'شريحة لحم أنجوس إضافية', price: 50 },
   { id: 'extra-crispy-chicken-piece', name: 'CRISPY CHKN PIECE', name_ar: 'قطعة دجاج كريسبي إضافية', price: 40 },

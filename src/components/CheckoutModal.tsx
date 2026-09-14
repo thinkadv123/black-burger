@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { X, CheckCircle2, Phone, MapPin, Send, Truck, ShieldCheck, MessageSquare } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
-import { getProductName } from '@/data/menu';
+import { getProductName, getAdditionName } from '@/data/menu';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
@@ -74,7 +74,7 @@ export function CheckoutModal() {
 
         if (item.options.addedAdditions.length > 0) {
           const adds = item.options.addedAdditions
-            .map((a) => `+ ${isAr && a.name_ar ? a.name_ar : a.name} (+${a.price} ${isAr ? 'ج.م' : 'EGP'})`)
+            .map((a) => `+ ${getAdditionName(a, isAr)} (+${a.price} ${isAr ? 'ج.م' : 'EGP'})`)
             .join('\n      ');
           optionTags.push(`🧀 *${isAr ? 'الإضافات' : 'Extras'}:*\n      ${adds}`);
         }

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, Flame, Utensils } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
-import { getProductName } from '@/data/menu';
+import { getProductName, getAdditionName } from '@/data/menu';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function CartDrawer() {
@@ -138,7 +138,7 @@ export function CartDrawer() {
                             </span>
                           )}
                           {item.options.addedAdditions?.map((add) => {
-                            const addName = isAr && add.name_ar ? add.name_ar : add.name;
+                            const addName = getAdditionName(add, isAr);
                             return (
                               <span
                                 key={add.id}

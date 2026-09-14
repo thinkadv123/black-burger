@@ -183,12 +183,12 @@ export function HeroSlider() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="space-y-1.5"
+            className="space-y-2 pb-2 overflow-visible"
           >
-            <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-white block leading-tight drop-shadow-lg whitespace-nowrap">
+            <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-white block leading-snug sm:leading-normal py-1 drop-shadow-lg whitespace-nowrap overflow-visible">
               {getText(slide.title, slide.title_ar)}
             </span>
-            <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-red-gradient block leading-tight drop-shadow-[0_0_25px_rgba(220,38,38,0.6)] whitespace-nowrap">
+            <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-red-gradient block leading-snug sm:leading-normal py-2 drop-shadow-[0_0_25px_rgba(220,38,38,0.6)] whitespace-nowrap overflow-visible">
               {getText(slide.highlightTitle, slide.highlightTitle_ar)}
             </span>
           </motion.h1>
