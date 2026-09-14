@@ -20,6 +20,26 @@
     font-family: var(--font-title), 'OldNavyGrunge', sans-serif !important;
     letter-spacing: 0.04em;
   }
+
+  [dir="rtl"], [dir="rtl"] body, .rtl-mode, .rtl-mode body {
+    font-family: var(--font-cairo), 'Cairo', sans-serif !important;
+  }
+
+  [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6,
+  [dir="rtl"] button, [dir="rtl"] button *,
+  [dir="rtl"] input, [dir="rtl"] textarea, [dir="rtl"] select,
+  [dir="rtl"] a, [dir="rtl"] a *,
+  [dir="rtl"] .btn, [dir="rtl"] [role="button"],
+  [dir="rtl"] .font-title, [dir="rtl"] .font-mono,
+  .rtl-mode h1, .rtl-mode h2, .rtl-mode h3, .rtl-mode h4, .rtl-mode h5, .rtl-mode h6,
+  .rtl-mode button, .rtl-mode button *,
+  .rtl-mode input, .rtl-mode textarea, .rtl-mode select,
+  .rtl-mode a, .rtl-mode a *,
+  .rtl-mode .btn, .rtl-mode [role="button"],
+  .rtl-mode .font-title, .rtl-mode .font-mono {
+    font-family: var(--font-cairo), 'Cairo', sans-serif !important;
+    letter-spacing: normal !important;
+  }
 }
 
 @layer base {

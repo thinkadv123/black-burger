@@ -66,6 +66,12 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
                   return {
                     ...init,
                     ...found,
+                    name_ar: found.name_ar || init.name_ar,
+                    name_en: found.name_en || init.name_en || init.name,
+                    description_ar: found.description_ar || init.description_ar,
+                    description_en: found.description_en || init.description_en || init.description,
+                    ingredients_ar: (found.ingredients_ar && found.ingredients_ar.length > 0) ? found.ingredients_ar : init.ingredients_ar,
+                    ingredients_en: (found.ingredients_en && found.ingredients_en.length > 0) ? found.ingredients_en : (init.ingredients_en || init.ingredients),
                     bundleChoices: found.bundleChoices || init.bundleChoices,
                     // Keep original local image path if firebase image is missing
                     image: found.image || init.image,

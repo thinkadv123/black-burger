@@ -4,9 +4,11 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Phone, MapPin, Clock, Flame, ShieldCheck, Heart } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function Footer() {
   const [year, setYear] = useState<number>(2025);
+  const { isAr, t } = useLanguage();
 
   useEffect(() => {
     setYear(new Date().getFullYear());
@@ -28,48 +30,48 @@ export function Footer() {
                   src="/images/logo.png"
                   alt="BLACK BURGER"
                   fill
-                  className="object-contain object-left"
+                  className="object-contain object-left rtl:object-right"
                   priority
                 />
               </div>
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed">
-              Black Burger was created for people who believe burgers should be bold, handcrafted, and unforgettable. 100% Angus Beef smashed to crispy perfection.
+              {t('footerTagline')}
             </p>
             <div className="flex items-center gap-2 pt-2">
               <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#EA1F27]/10 text-[#EA1F27] border border-[#EA1F27]/30 flex items-center gap-1.5">
-                <Flame className="w-3.5 h-3.5" /> 100% Angus Beef
+                <Flame className="w-3.5 h-3.5" /> {isAr ? '100% لحم أنجوس' : '100% Angus Beef'}
               </span>
               <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#03A0E5]/10 text-[#03A0E5] border border-[#03A0E5]/30">
-                Fast Delivery
+                {isAr ? 'توصيل سريع' : 'Fast Delivery'}
               </span>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-black tracking-wider uppercase text-white mb-4 border-l-4 border-[#EA1F27] pl-3">
-              Quick Navigation
+            <h3 className="text-lg font-black tracking-wider uppercase text-white mb-4 border-l-4 rtl:border-l-0 rtl:border-r-4 border-[#EA1F27] pl-3 rtl:pl-0 rtl:pr-3">
+              {t('quickLinks')}
             </h3>
             <ul className="space-y-2.5 text-sm font-semibold">
               <li>
                 <Link href="/" className="text-zinc-400 hover:text-[#EA1F27] transition-colors">
-                  Black Burger Home
+                  {isAr ? 'الرئيسية' : 'Black Burger Home'}
                 </Link>
               </li>
               <li>
                 <Link href="/menu" className="text-zinc-400 hover:text-[#EA1F27] transition-colors">
-                  Order Online Now
+                  {isAr ? 'طلب أونلاين' : 'Order Online Now'}
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="text-zinc-400 hover:text-[#EA1F27] transition-colors">
-                  About BB
+                  {isAr ? 'عن بلاك برجر' : 'About BB'}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-zinc-400 hover:text-[#EA1F27] transition-colors">
-                  Contact us
+                  {isAr ? 'تواصل معنا' : 'Contact Us'}
                 </Link>
               </li>
             </ul>
@@ -77,14 +79,14 @@ export function Footer() {
 
           {/* Contact Details */}
           <div>
-            <h3 className="text-lg font-black tracking-wider uppercase text-white mb-4 border-l-4 border-[#03A0E5] pl-3">
-              Order Hotline & Location
+            <h3 className="text-lg font-black tracking-wider uppercase text-white mb-4 border-l-4 rtl:border-l-0 rtl:border-r-4 border-[#03A0E5] pl-3 rtl:pl-0 rtl:pr-3">
+              {t('contactUs')}
             </h3>
             <ul className="space-y-3.5 text-sm">
               <li className="flex items-start gap-3 text-zinc-300">
                 <Phone className="w-5 h-5 text-[#03A0E5] shrink-0 mt-0.5" />
                 <div>
-                  <span className="block text-xs text-zinc-500 font-medium">Order Hotline:</span>
+                  <span className="block text-xs text-zinc-500 font-medium">{isAr ? 'الخط الساخن للطلبات:' : 'Order Hotline:'}</span>
                   <a href="tel:01515821555" className="text-base font-bold text-[#CDB32D] hover:underline">
                     01515821555
                   </a>
@@ -93,18 +95,18 @@ export function Footer() {
               <li className="flex items-start gap-3 text-zinc-300">
                 <MapPin className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block text-xs text-zinc-500 font-medium">Branch Location:</span>
+                  <span className="block text-xs text-zinc-500 font-medium">{isAr ? 'موقع الفرع:' : 'Branch Location:'}</span>
                   <span className="font-semibold text-zinc-200">
-                    Faisal - In front of Tawheed & Nour
+                    {isAr ? 'فيصل - أمام التوحيد والنور' : 'Faisal - In front of Tawheed & Nour'}
                   </span>
                 </div>
               </li>
               <li className="flex items-start gap-3 text-zinc-300">
                 <Clock className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block text-xs text-zinc-500 font-medium">Opening Hours:</span>
+                  <span className="block text-xs text-zinc-500 font-medium">{t('openingHours')}:</span>
                   <span className="font-semibold text-zinc-200">
-                    Everyday: 12:00 PM – 3:00 AM
+                    {t('everydayHours')}
                   </span>
                 </div>
               </li>
@@ -113,8 +115,8 @@ export function Footer() {
 
           {/* Order Guarantee & Payment */}
           <div>
-            <h3 className="text-lg font-black tracking-wider uppercase text-white mb-4 border-l-4 border-amber-500 pl-3">
-              Delivery & Guarantee
+            <h3 className="text-lg font-black tracking-wider uppercase text-white mb-4 border-l-4 rtl:border-l-0 rtl:border-r-4 border-amber-500 pl-3 rtl:pl-0 rtl:pr-3">
+              {isAr ? 'التوصيل والضمان' : 'Delivery & Guarantee'}
             </h3>
             <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-4 space-y-3">
               <div className="flex items-center gap-3">
@@ -122,16 +124,16 @@ export function Footer() {
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-white uppercase">Piping Hot Guarantee</h4>
-                  <p className="text-[11px] text-zinc-400">Freshly smashed upon receiving your order.</p>
+                  <h4 className="text-xs font-bold text-white uppercase">{isAr ? 'ضمان السخونة والجودة' : 'Piping Hot Guarantee'}</h4>
+                  <p className="text-[11px] text-zinc-400">{isAr ? 'يتم تحضيرها فور استلام الطلب مباشرة.' : 'Freshly smashed upon receiving your order.'}</p>
                 </div>
               </div>
 
               <div className="pt-2 border-t border-zinc-800/80">
-                <span className="text-xs text-zinc-400 block mb-2 font-medium">Payment Methods:</span>
+                <span className="text-xs text-zinc-400 block mb-2 font-medium">{isAr ? 'طريقة الدفع:' : 'Payment Methods:'}</span>
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="px-2.5 py-1 rounded bg-zinc-800 text-[11px] text-zinc-200 font-bold border border-zinc-700">
-                    💵 Cash on Delivery
+                    💵 {isAr ? 'الدفع عند الاستلام' : 'Cash on Delivery'}
                   </span>
                   <a
                     href="https://wa.me/201144484008?text=Hello%20Black%20Burger!%20I%20want%20to%20place%20an%20order."
@@ -139,7 +141,7 @@ export function Footer() {
                     rel="noreferrer"
                     className="px-2.5 py-1 rounded bg-emerald-950/80 hover:bg-emerald-900 text-[11px] text-emerald-400 font-bold border border-emerald-800/60 transition-colors"
                   >
-                    💬 WhatsApp Order
+                    💬 {isAr ? 'طلب عبر الواتساب' : 'WhatsApp Order'}
                   </a>
                 </div>
               </div>
@@ -150,9 +152,9 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-4">
-          <p>© {year} BLACK BURGER. All rights reserved. Smash Burgers Made Different.</p>
+          <p>© {year} BLACK BURGER. {t('allRightsReserved')}</p>
           <p className="flex items-center gap-1">
-            Crafted with <Heart className="w-3.5 h-3.5 text-red-600 fill-red-600" /> for smash burger lovers.
+            {isAr ? 'تم التطوير بـ' : 'Crafted with'} <Heart className="w-3.5 h-3.5 text-red-600 fill-red-600" /> {isAr ? 'لعشاق البرجر المشوي.' : 'for smash burger lovers.'}
           </p>
         </div>
       </div>

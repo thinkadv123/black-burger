@@ -4,13 +4,15 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, Menu as MenuIcon, X, Phone, Flame, ChevronRight } from 'lucide-react';
+import { ShoppingBag, Menu as MenuIcon, X, Phone, Flame, ChevronRight, Globe } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useLanguage } from '@/context/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function Navbar() {
   const pathname = usePathname();
   const { totalItemsCount, setIsCartOpen } = useCart();
+  const { lang, toggleLang, isAr, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -23,10 +25,10 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: 'Black Burger Home', href: '/' },
-    { name: 'Order Online Now', href: '/menu' },
-    { name: 'About BB', href: '/about' },
-    { name: 'Contact us', href: '/contact' },
+    { name: isAr ? 'الرئيسية' : 'Home', href: '/' },
+    { name: isAr ? 'المنيو والطلب' : 'Order Online', href: '/menu' },
+    { name: isAr ? 'عن بلاك برجر' : 'About BB', href: '/about' },
+    { name: isAr ? 'تواصل معنا' : 'Contact Us', href: '/contact' },
   ];
 
   return (
@@ -90,7 +92,7 @@ export function Navbar() {
         </div>
 
 
-        {/* Right Actions: Phone + Cart + Order CTA */}
+        {/* Right Actions: Phone + Language + Cart + Order CTA */}
         <div className="flex items-center gap-2 sm:gap-3">
           
           {/* Hotline Button (Desktop) */}
@@ -101,6 +103,17 @@ export function Navbar() {
             <Phone className="w-3.5 h-3.5 text-[#03A0E5]" />
             <span>01515821555</span>
           </a>
+
+          {/* Language Switcher Button */}
+          <button
+            onClick={toggleLang}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-[#CDB32D]/60 text-xs font-mono font-bold text-zinc-200 hover:text-white transition-all shadow-sm"
+            aria-label="Switch Language"
+            title={isAr ? "Switch to English" : "التحويل إلى العربية"}
+          >
+            <Globe className="w-4 h-4 text-[#CDB32D]" />
+            <span className="tracking-wide">{isAr ? 'EN' : 'العربية'}</span>
+          </button>
 
           {/* Cart Icon Button */}
           <button
@@ -126,7 +139,7 @@ export function Navbar() {
             className="relative group overflow-hidden bg-gradient-to-r from-[#EA1F27] via-[#D11820] to-[#B00E15] text-white font-mono font-bold px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(234,31,39,0.5)] border border-[#EA1F27]/30 hover:shadow-[0_0_30px_rgba(234,31,39,0.8)] transition-all flex items-center gap-1.5"
           >
             <Flame className="w-4 h-4 text-[#CDB32D] animate-pulse" />
-            <span>ORDER NOW</span>
+            <span>{t('orderNow')}</span>
           </Link>
         </div>
       </div>
@@ -153,17 +166,28 @@ export function Navbar() {
                   }`}
                 >
                   <span>{link.name}</span>
-                  <ChevronRight className="w-4 h-4 text-zinc-500" />
+                  <ChevronRight className="w-4 h-4 text-zinc-500 rtl:rotate-180" />
                 </Link>
               ))}
 
               <div className="pt-4 border-t border-zinc-800 flex flex-col gap-3">
+                <button
+                  onClick={() => {
+                    toggleLang();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center justify-center gap-2 text-xs font-bold text-zinc-200 bg-zinc-900 border border-zinc-800 py-3 rounded-xl hover:text-amber-400"
+                >
+                  <Globe className="w-4 h-4 text-[#CDB32D]" />
+                  <span>{isAr ? 'تغيير إلى الإنجليزية (English)' : 'التحويل إلى اللغة العربية'}</span>
+                </button>
+
                 <a
                   href="tel:01515821555"
                   className="flex items-center justify-center gap-2 text-xs font-bold text-amber-400 bg-zinc-900 border border-zinc-800 py-3 rounded-xl"
                 >
                   <Phone className="w-4 h-4 text-red-500" />
-                  <span>Call Hotline: 01515821555</span>
+                  <span>{isAr ? 'الخط الساخن: 01515821555' : 'Call Hotline: 01515821555'}</span>
                 </a>
               </div>
             </div>

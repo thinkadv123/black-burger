@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
-import { X, CheckCircle2, Phone, MapPin, Send, Truck, ShieldCheck, Flame, MessageSquare } from 'lucide-react';
+import { X, CheckCircle2, Phone, MapPin, Send, Truck, ShieldCheck, MessageSquare } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useLanguage } from '@/context/LanguageContext';
+import { getProductName } from '@/data/menu';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
@@ -16,13 +18,13 @@ export function CheckoutModal() {
     totalPrice,
     clearCart,
   } = useCart();
+  const { isAr, t } = useLanguage();
 
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     address: '',
     notes: '',
-    paymentMethod: 'whatsapp', // default to WhatsApp for direct ordering
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,36 +53,39 @@ export function CheckoutModal() {
   const formatWhatsAppMessage = (generatedId: string) => {
     const itemsList = cart
       .map((item, idx) => {
-        let details = `*${idx + 1}. ${item.product.name}*  (x${item.quantity})\n   💵 *Price:* ${item.unitPrice * item.quantity} EGP`;
+        const pName = getProductName(item.product, isAr);
+        let details = `*${idx + 1}. ${pName}*  (x${item.quantity})\n   💵 *${isAr ? 'السعر' : 'Price'}:* ${item.unitPrice * item.quantity} ${isAr ? 'ج.م' : 'EGP'}`;
         
         const optionTags: string[] = [];
         if (item.options.variant === 'combo') {
-          optionTags.push('🍟🥤 Combo Meal (Includes Fries & Soft Drink)');
+          optionTags.push(isAr ? '🍟🥤 وجبة (تشمل بطاطس ومشروب غازي)' : '🍟🥤 Combo Meal (Includes Fries & Soft Drink)');
         } else if (item.product.comboPrice) {
-          optionTags.push('🍔 Solo Sandwich');
+          optionTags.push(isAr ? '🍔 ساندوتش فقط' : '🍔 Solo Sandwich');
         }
 
         if (item.options.size) {
-          optionTags.push(`📏 Size: ${item.options.size}`);
+          optionTags.push(`${isAr ? '📏 الحجم' : '📏 Size'}: ${item.options.size}`);
         }
 
         if (item.options.selectedSandwiches) {
           const choices = Object.values(item.options.selectedSandwiches).join(' + ');
-          optionTags.push(`🥪 *Chosen Sandwiches:* ${choices}`);
+          optionTags.push(`🥪 *${isAr ? 'الساندوتشات المختارة' : 'Chosen Sandwiches'}:* ${choices}`);
         }
 
         if (item.options.addedAdditions.length > 0) {
-          const adds = item.options.addedAdditions.map((a) => `+ ${a.name} (+${a.price} EGP)`).join('\n      ');
-          optionTags.push(`🧀 *Extras:*\n      ${adds}`);
+          const adds = item.options.addedAdditions
+            .map((a) => `+ ${isAr && a.name_ar ? a.name_ar : a.name} (+${a.price} ${isAr ? 'ج.م' : 'EGP'})`)
+            .join('\n      ');
+          optionTags.push(`🧀 *${isAr ? 'الإضافات' : 'Extras'}:*\n      ${adds}`);
         }
 
         if (item.options.removedIngredients.length > 0) {
-          const removed = item.options.removedIngredients.map((ing) => `❌ No ${ing}`).join(', ');
-          optionTags.push(`🚫 *Customizations:* ${removed}`);
+          const removed = item.options.removedIngredients.map((ing) => `❌ ${isAr ? 'بدون' : 'No'} ${ing}`).join(', ');
+          optionTags.push(`🚫 *${isAr ? 'الاستبعادات' : 'Customizations'}:* ${removed}`);
         }
 
         if (item.options.specialInstructions) {
-          optionTags.push(`💬 *Note:* "${item.options.specialInstructions}"`);
+          optionTags.push(`💬 *${isAr ? 'ملاحظة' : 'Note'}:* "${item.options.specialInstructions}"`);
         }
 
         if (optionTags.length > 0) {
@@ -91,27 +96,27 @@ export function CheckoutModal() {
       })
       .join('\n\n');
 
-    const message = `🍔🔥 *BLACK BURGER | NEW ORDER* 🔥🍔
-🆔 *Order Ref:* #${generatedId}
+    const message = `🍔🔥 *BLACK BURGER | ${isAr ? 'طلب جديد' : 'NEW ORDER'}* 🔥🍔
+🆔 *${isAr ? 'رقم الطلب' : 'Order Ref'}:* #${generatedId}
 
-👤 *CUSTOMER DETAILS*
+👤 *${isAr ? 'بيانات العميل' : 'CUSTOMER DETAILS'}*
 ━━━━━━━━━━━━━━━━━━━━━
-▫️ *Name:* ${formData.name}
-▫️ *Phone:* ${formData.phone}
-▫️ *Delivery Address:* ${formData.address}
-${formData.notes ? `▫️ *Special Instructions:* ${formData.notes}\n` : ''}
-🛒 *ORDER BREAKDOWN*
+▫️ *${isAr ? 'الاسم' : 'Name'}:* ${formData.name}
+▫️ *${isAr ? 'الهاتف' : 'Phone'}:* ${formData.phone}
+▫️ *${isAr ? 'عنوان التوصيل' : 'Delivery Address'}:* ${formData.address}
+${formData.notes ? `▫️ *${isAr ? 'تعليمات خاصة' : 'Special Instructions'}:* ${formData.notes}\n` : ''}
+🛒 *${isAr ? 'تفاصيل الطلب' : 'ORDER BREAKDOWN'}*
 ━━━━━━━━━━━━━━━━━━━━━
 ${itemsList}
 
-💰 *BILL SUMMARY*
+💰 *${isAr ? 'ملخص الفاتورة' : 'BILL SUMMARY'}*
 ━━━━━━━━━━━━━━━━━━━━━
-▫️ *Subtotal:* ${subtotalPrice} EGP
-▫️ *Delivery Fee (Faisal):* ${deliveryFee} EGP
-🔥 *TOTAL DUE:* *${totalPrice} EGP*
-💳 *Payment Method:* Cash on Delivery
+▫️ *${isAr ? 'المجموع الفرعي' : 'Subtotal'}:* ${subtotalPrice} ${isAr ? 'ج.م' : 'EGP'}
+▫️ *${isAr ? 'رسوم التوصيل (فيصل)' : 'Delivery Fee (Faisal)'}:* ${deliveryFee} ${isAr ? 'ج.م' : 'EGP'}
+🔥 *${isAr ? 'الإجمالي الكلي' : 'TOTAL DUE'}:* *${totalPrice} ${isAr ? 'ج.م' : 'EGP'}*
+💳 *${isAr ? 'طريقة الدفع' : 'Payment Method'}:* ${isAr ? 'الدفع نقداً عند الاستلام' : 'Cash on Delivery'}
 
-⚡ _Sent via Black Burger Web App_`;
+⚡ _${isAr ? 'تم الإرسال عبر موقع بلاك برجر' : 'Sent via Black Burger Web App'}_`;
 
     return encodeURIComponent(message);
   };
@@ -146,7 +151,7 @@ ${itemsList}
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto font-sans">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -168,7 +173,7 @@ ${itemsList}
             <div className="flex items-center gap-2">
               <Truck className="w-5 h-5 text-red-500" />
               <h2 className="text-xl font-black uppercase tracking-wider text-white">
-                {orderCompleted ? 'Order Sent to WhatsApp' : 'Checkout & Delivery'}
+                {orderCompleted ? t('orderSentTitle') : t('checkoutTitle')}
               </h2>
             </div>
             <button
@@ -190,21 +195,21 @@ ${itemsList}
 
                 <div>
                   <span className="text-xs font-black tracking-widest text-emerald-400 uppercase block">
-                    WHATSAPP ORDER OPENED
+                    {t('whatsappOpened')}
                   </span>
                   <h3 className="text-3xl font-black text-white mt-1">
-                    Order #{orderId}
+                    {isAr ? `طلب رقم #${orderId}` : `Order #${orderId}`}
                   </h3>
                   <p className="text-sm text-zinc-400 mt-2 max-w-md mx-auto font-sans">
-                    Thank you, <strong className="text-white">{formData.name}</strong>! Your order details have been formatted and passed directly to WhatsApp.
+                    {t('thankYou')}, <strong className="text-white">{formData.name}</strong>! {t('whatsappRedirectNote')}
                   </p>
                 </div>
 
                 {/* Delivery details breakdown card */}
-                <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 text-left space-y-3 font-sans">
+                <div className="bg-zinc-900/90 border border-zinc-800 rounded-2xl p-5 text-left rtl:text-right space-y-3 font-sans">
                   <div className="flex items-center justify-between border-b border-zinc-800 pb-3 font-mono">
-                    <span className="text-xs text-zinc-500 font-bold uppercase">Estimated Delivery</span>
-                    <span className="text-sm font-extrabold text-amber-400">25 – 35 Mins</span>
+                    <span className="text-xs text-zinc-500 font-bold uppercase">{t('estimatedDelivery')}</span>
+                    <span className="text-sm font-extrabold text-amber-400">{t('minsRange')}</span>
                   </div>
 
                   <div className="space-y-1.5 text-xs">
@@ -219,8 +224,8 @@ ${itemsList}
                   </div>
 
                   <div className="pt-2 border-t border-zinc-800 flex justify-between items-center text-sm font-black text-white font-mono">
-                    <span>Payment Method</span>
-                    <span className="text-emerald-400">Cash on Delivery ({totalPrice} EGP)</span>
+                    <span>{t('paymentMethod')}</span>
+                    <span className="text-emerald-400">{t('cashOnDelivery')} ({totalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
                   </div>
                 </div>
 
@@ -232,13 +237,13 @@ ${itemsList}
                     className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-2xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-lg"
                   >
                     <MessageSquare className="w-4 h-4" />
-                    <span>Re-open WhatsApp Chat</span>
+                    <span>{t('reopenWhatsapp')}</span>
                   </a>
                   <button
                     onClick={handleClose}
                     className="flex-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white font-black py-3.5 rounded-2xl text-xs uppercase tracking-wider transition-all"
                   >
-                    Back to Menu
+                    {t('backToMenu')}
                   </button>
                 </div>
               </div>
@@ -248,32 +253,32 @@ ${itemsList}
                 {/* Order Summary banner */}
                 <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between font-mono">
                   <div>
-                    <span className="text-xs text-zinc-400 font-bold block">Total Amount to Pay</span>
-                    <span className="text-xs text-zinc-500">Includes delivery fee in Faisal</span>
+                    <span className="text-xs text-zinc-400 font-bold block">{t('totalToPay')}</span>
+                    <span className="text-xs text-zinc-500">{t('includesDeliveryNotice')}</span>
                   </div>
-                  <span className="text-2xl font-black text-amber-400">{totalPrice} EGP</span>
+                  <span className="text-2xl font-black text-amber-400">{totalPrice} {isAr ? 'ج.م' : 'EGP'}</span>
                 </div>
 
                 {/* Form Inputs */}
                 <div className="space-y-4">
                   <div>
                     <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1 font-mono">
-                      Full Name *
+                      {t('fullName')}
                     </label>
                     <input
                       type="text"
                       name="name"
                       required
-                      placeholder="e.g. Ahmed Hassan"
+                      placeholder={isAr ? "مثال: أحمد حسن" : "e.g. Ahmed Hassan"}
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-red-600"
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-red-600 font-sans"
                     />
                   </div>
 
                   <div>
                     <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1 font-mono">
-                      Phone Number *
+                      {t('phoneNumber')}
                     </label>
                     <input
                       type="tel"
@@ -288,30 +293,30 @@ ${itemsList}
 
                   <div>
                     <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1 font-mono">
-                      Delivery Address (Faisal Area) *
+                      {t('address')}
                     </label>
                     <textarea
                       name="address"
                       required
                       rows={2}
-                      placeholder="Street name, building number, floor, landmark (e.g., Near Tawheed & Nour)..."
+                      placeholder={isAr ? "اسم الشارع، رقم العمارة، الطابق، علامة مميزة (مثال: أمام التوحيد والنور)..." : "Street name, building number, floor, landmark (e.g., Near Tawheed & Nour)..."}
                       value={formData.address}
                       onChange={handleInputChange}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-red-600 resize-none"
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-red-600 resize-none font-sans"
                     />
                   </div>
 
                   <div>
                     <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1 font-mono">
-                      Order Notes (Optional)
+                      {t('orderNotes')}
                     </label>
                     <input
                       type="text"
                       name="notes"
-                      placeholder="Any specific delivery or sauce preference..."
+                      placeholder={isAr ? "أي تعليمات خاصة بالوصول أو الصوصات..." : "Any specific delivery or sauce preference..."}
                       value={formData.notes}
                       onChange={handleInputChange}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-red-600"
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-red-600 font-sans"
                     />
                   </div>
                 </div>
@@ -319,7 +324,7 @@ ${itemsList}
                 {/* Security Guarantee */}
                 <div className="flex items-center gap-2 text-xs text-zinc-400 bg-emerald-950/30 p-3 rounded-xl border border-emerald-800/40">
                   <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Your full cart details & delivery address will be sent formatted directly to WhatsApp.</span>
+                  <span>{t('whatsappGuarantee')}</span>
                 </div>
 
                 {/* Submit CTA */}
@@ -331,12 +336,12 @@ ${itemsList}
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
                       <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      GENERATING WHATSAPP ORDER...
+                      {t('generatingWhatsapp')}
                     </span>
                   ) : (
                     <>
                       <Send className="w-4 h-4 text-emerald-300" />
-                      <span>SEND ORDER TO WHATSAPP ({totalPrice} EGP)</span>
+                      <span>{t('sendToWhatsapp')} ({totalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
                     </>
                   )}
                 </button>

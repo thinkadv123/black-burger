@@ -5,11 +5,13 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Flame, ShieldCheck, CheckCircle2, ChevronRight, Sparkles, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function ScrollStorytelling() {
   const [activeMobileTab, setActiveMobileTab] = useState(0);
+  const { isAr } = useLanguage();
 
-  const ingredientsList = [
+  const ingredientsListEn = [
     {
       step: '01',
       tag: '100% PURE ANGUS',
@@ -45,6 +47,43 @@ export function ScrollStorytelling() {
     },
   ];
 
+  const ingredientsListAr = [
+    {
+      step: '01',
+      tag: '100% أنجوس صافي',
+      title: '100% لحم أنجوس',
+      subtitle: 'بدون إضافات • مفروم طازج يومياً',
+      desc: 'بدون فول صويا أو إضافات. لحم أنجوس فاخر مفروم بعناية لضمان أقصى درجات النكهة الغنية والطرواة.',
+      image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?q=80&w=800&auto=format&fit=crop',
+      accentColor: 'border-red-600/70 hover:border-red-500 shadow-xl',
+      badgeBg: 'bg-red-600 text-white',
+      bgGradient: 'from-red-950/80 via-zinc-900 to-zinc-950',
+    },
+    {
+      step: '02',
+      tag: 'مخبوز طازج يومياً',
+      title: 'خبز بريوش طازج',
+      subtitle: 'خبز بريوش ذهبي هش',
+      desc: 'خبز بريوش فاخر مخبوز طازجاً كل صباح، مدهون بلمسة زبدة خفيفة ومحمص على الصاج ليحتفظ بكل قطرة صوص.',
+      image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?q=80&w=800&auto=format&fit=crop',
+      accentColor: 'border-amber-500/70 hover:border-amber-400 shadow-xl',
+      badgeBg: 'bg-amber-500 text-black',
+      bgGradient: 'from-amber-950/80 via-zinc-900 to-zinc-950',
+    },
+    {
+      step: '03',
+      tag: 'وصفات بلاك برجر السرية',
+      title: 'الصوصات الخاصة',
+      subtitle: 'مجهزة طازجة يومياً',
+      desc: 'صوصات خاصة مجهزة يدوياً يومياً—من صوص بي بي السري الخاص بنا إلى صوص الترافل الفاخر والتشيبوتلي والبافالو الحار.',
+      image: 'https://images.unsplash.com/photo-1472476443507-c7a5948772fc?q=80&w=800&auto=format&fit=crop',
+      accentColor: 'border-red-600/70 hover:border-red-500 shadow-xl',
+      badgeBg: 'bg-red-600 text-white',
+      bgGradient: 'from-red-950/80 via-zinc-900 to-zinc-950',
+    },
+  ];
+
+  const ingredientsList = isAr ? ingredientsListAr : ingredientsListEn;
   const currentMobileCard = ingredientsList[activeMobileTab];
 
   return (
@@ -71,22 +110,22 @@ export function ScrollStorytelling() {
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
             
             {/* Floating Gold Quality Seal */}
-            <div className="absolute top-6 left-6 bg-zinc-950/90 border border-amber-500/50 p-3 rounded-2xl flex items-center gap-3 shadow-xl backdrop-blur-md">
+            <div className="absolute top-6 left-6 rtl:left-auto rtl:right-6 bg-zinc-950/90 border border-amber-500/50 p-3 rounded-2xl flex items-center gap-3 shadow-xl backdrop-blur-md">
               <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 font-bold">
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs font-black tracking-widest text-amber-400 uppercase block">100% GUARANTEED</span>
-                <span className="text-[11px] text-zinc-300">Always Fresh, Never Frozen</span>
+                <span className="text-xs font-black tracking-widest text-amber-400 uppercase block">{isAr ? '100% مضمون' : '100% GUARANTEED'}</span>
+                <span className="text-[11px] text-zinc-300">{isAr ? 'طازج دائماً، غير مجمد' : 'Always Fresh, Never Frozen'}</span>
               </div>
             </div>
 
-            <div className="absolute bottom-6 left-6 right-6">
+            <div className="absolute bottom-6 left-6 rtl:left-auto rtl:right-6 right-6 rtl:right-auto">
               <span className="text-xs font-black tracking-widest text-red-500 uppercase block mb-1">
-                HANDCRAFTED PERFECTION
+                {isAr ? 'صنعت بشغف وإتقان' : 'HANDCRAFTED PERFECTION'}
               </span>
               <h3 className="text-2xl sm:text-3xl font-black text-white">
-                BUILT WITH QUALITY
+                {isAr ? 'الجودة أولاً وأخيراً' : 'BUILT WITH QUALITY'}
               </h3>
             </div>
           </motion.div>
@@ -100,31 +139,42 @@ export function ScrollStorytelling() {
             className="space-y-6"
           >
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-950/80 border border-red-800/60 text-red-400 text-xs font-black tracking-widest uppercase">
-              <Flame className="w-3.5 h-3.5" /> THE BLACK BURGER STANDARD
+              <Flame className="w-3.5 h-3.5" /> {isAr ? 'معايير بلاك برجر' : 'THE BLACK BURGER STANDARD'}
             </div>
 
             <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-              WE DON&apos;T CUT CORNERS. <br />
-              WE <span className="text-red-gradient">SMASH THEM.</span>
+              {isAr ? (
+                <>
+                  نحن لا نختصر الطرق. <br />
+                  بل <span className="text-red-gradient">نشويها على الأصول!</span>
+                </>
+              ) : (
+                <>
+                  WE DON&apos;T CUT CORNERS. <br />
+                  WE <span className="text-red-gradient">SMASH THEM.</span>
+                </>
+              )}
             </h2>
 
             <p className="text-zinc-400 text-base sm:text-lg leading-relaxed">
-              Every burger at Black Burger is crafted with precision. We start with custom-blended 100% Angus beef chuck, press it onto scorching cast iron, and sear it to caramelized perfection with paper-thin crispy lacy edges.
+              {isAr
+                ? 'كل برجر في بلاك برجر مصنوع بدقة عالية. نبدأ بلحم أنجوس صافي 100% مفروم طازجاً، يُكبس على الصاج المشتعل ليعطي الطبقة المقرمشة الخارجية الشهيرة.'
+                : 'Every burger at Black Burger is crafted with precision. We start with custom-blended 100% Angus beef chuck, press it onto scorching cast iron, and sear it to caramelized perfection with paper-thin crispy lacy edges.'}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div className="bg-zinc-900/80 border border-zinc-800 p-4 rounded-2xl space-y-1">
                 <h4 className="font-bold text-white text-sm flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-red-500" /> Searing Heat Tech
+                  <CheckCircle2 className="w-4 h-4 text-red-500" /> {isAr ? 'شواء على الصاج الساخن' : 'Searing Heat Tech'}
                 </h4>
-                <p className="text-xs text-zinc-400">Creates the Maillard reaction for maximum flavor crust.</p>
+                <p className="text-xs text-zinc-400">{isAr ? 'تفاعل الحرارة العالية للشواء بقرمشة خارجية ممتازة.' : 'Creates the Maillard reaction for maximum flavor crust.'}</p>
               </div>
 
               <div className="bg-zinc-900/80 border border-zinc-800 p-4 rounded-2xl space-y-1">
                 <h4 className="font-bold text-white text-sm flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-amber-400" /> Butter Brioche
+                  <CheckCircle2 className="w-4 h-4 text-amber-400" /> {isAr ? 'خبز بريوش بالزبدة' : 'Butter Brioche'}
                 </h4>
-                <p className="text-xs text-zinc-400">Lightly toasted daily for soft, pillowy texture.</p>
+                <p className="text-xs text-zinc-400">{isAr ? 'محمص طازجاً يومياً بقوام هش وطري.' : 'Lightly toasted daily for soft, pillowy texture.'}</p>
               </div>
             </div>
 
@@ -133,8 +183,8 @@ export function ScrollStorytelling() {
                 href="/menu"
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-800 text-white font-black px-6 py-3.5 rounded-full text-xs tracking-widest uppercase shadow-lg hover:shadow-red-600/50 transition-all"
               >
-                <span>TASTE THE DIFFERENCE</span>
-                <ChevronRight className="w-4 h-4" />
+                <span>{isAr ? 'جرب الفرق بنفسك' : 'TASTE THE DIFFERENCE'}</span>
+                <ChevronRight className="w-4 h-4 rtl:rotate-180" />
               </Link>
             </div>
           </motion.div>
@@ -149,13 +199,21 @@ export function ScrollStorytelling() {
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs font-black tracking-widest text-amber-400 uppercase flex items-center justify-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              PURE UNCOMPROMISED INGREDIENTS
+              {isAr ? 'مكونات فاخرة بدون مساومة' : 'PURE UNCOMPROMISED INGREDIENTS'}
             </span>
             <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
-              WHAT MAKES IT <span className="text-red-gradient">UNFORGETTABLE?</span>
+              {isAr ? (
+                <>
+                  سر <span className="text-red-gradient">الطعم الفريد؟</span>
+                </>
+              ) : (
+                <>
+                  WHAT MAKES IT <span className="text-red-gradient">UNFORGETTABLE?</span>
+                </>
+              )}
             </h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Explore our core pillars of flavor.
+              {isAr ? 'استكشف الركائز الأساسية لنكهتنا.' : 'Explore our core pillars of flavor.'}
             </p>
           </div>
 
@@ -180,7 +238,7 @@ export function ScrollStorytelling() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                   
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
+                  <div className="absolute top-3 left-3 rtl:left-auto rtl:right-3 flex items-center gap-2">
                     <span className={`px-2.5 py-1 rounded-lg text-xs font-mono font-black uppercase ${item.badgeBg}`}>
                       {item.step}
                     </span>
@@ -206,7 +264,7 @@ export function ScrollStorytelling() {
 
                   <div className="pt-3 border-t border-zinc-800/80 flex items-center gap-2 text-xs font-mono font-bold text-amber-400">
                     <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                    <span>Black Burger Master Standard</span>
+                    <span>{isAr ? 'معايير جودة بلاك برجر' : 'Black Burger Master Standard'}</span>
                   </div>
                 </div>
               </motion.div>
@@ -230,7 +288,7 @@ export function ScrollStorytelling() {
                     }`}
                   >
                     <span>{item.step}.</span>
-                    <span className="truncate">{item.title.split(' ')[1] || item.title}</span>
+                    <span className="truncate">{item.title.split(' ')[0]}</span>
                   </button>
                 );
               })}
@@ -256,7 +314,7 @@ export function ScrollStorytelling() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                   
-                  <div className="absolute top-3 left-3 flex items-center gap-2">
+                  <div className="absolute top-3 left-3 rtl:left-auto rtl:right-3 flex items-center gap-2">
                     <span className={`px-2.5 py-1 rounded-lg text-xs font-mono font-black uppercase ${currentMobileCard.badgeBg}`}>
                       {currentMobileCard.step}
                     </span>
@@ -284,7 +342,7 @@ export function ScrollStorytelling() {
                   <div className="pt-3 border-t border-zinc-800/80 flex items-center justify-between text-xs font-mono font-bold text-amber-400">
                     <span className="flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                      <span>Black Burger Master Standard</span>
+                      <span>{isAr ? 'معايير جودة بلاك برجر' : 'Black Burger Master Standard'}</span>
                     </span>
                   </div>
                 </div>
@@ -295,7 +353,7 @@ export function ScrollStorytelling() {
                     onClick={() => setActiveMobileTab((prev) => (prev > 0 ? prev - 1 : ingredientsList.length - 1))}
                     className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white flex items-center gap-1 text-xs font-mono font-bold"
                   >
-                    <ChevronLeft className="w-4 h-4 text-red-500" /> Prev
+                    <ChevronLeft className="w-4 h-4 text-red-500 rtl:rotate-180" /> {isAr ? 'السابق' : 'Prev'}
                   </button>
                   <span className="text-xs font-mono text-zinc-500 font-bold">
                     {activeMobileTab + 1} / {ingredientsList.length}
@@ -304,7 +362,7 @@ export function ScrollStorytelling() {
                     onClick={() => setActiveMobileTab((prev) => (prev < ingredientsList.length - 1 ? prev + 1 : 0))}
                     className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white flex items-center gap-1 text-xs font-mono font-bold"
                   >
-                    Next <ChevronRight className="w-4 h-4 text-red-500" />
+                    {isAr ? 'التالي' : 'Next'} <ChevronRight className="w-4 h-4 text-red-500 rtl:rotate-180" />
                   </button>
                 </div>
               </motion.div>

@@ -2,9 +2,10 @@
 
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, Flame, Utensils } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useLanguage } from '@/context/LanguageContext';
+import { getProductName } from '@/data/menu';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function CartDrawer() {
@@ -20,6 +21,7 @@ export function CartDrawer() {
     totalPrice,
     totalItemsCount,
   } = useCart();
+  const { isAr, t } = useLanguage();
 
   if (!isCartOpen) return null;
 
@@ -35,23 +37,23 @@ export function CartDrawer() {
           className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
         />
 
-        <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex">
+        <div className="fixed inset-y-0 right-0 rtl:right-auto rtl:left-0 pl-10 rtl:pl-0 rtl:pr-10 max-w-full flex">
           <motion.div
-            initial={{ x: '100%' }}
+            initial={{ x: isAr ? '-100%' : '100%' }}
             animate={{ x: 0 }}
-            exit={{ x: '100%' }}
+            exit={{ x: isAr ? '-100%' : '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="w-screen max-w-md bg-zinc-950 border-l border-zinc-800 text-white shadow-2xl flex flex-col justify-between"
+            className="w-screen max-w-md bg-zinc-950 border-l rtl:border-l-0 rtl:border-r border-zinc-800 text-white shadow-2xl flex flex-col justify-between"
           >
             {/* Header */}
             <div className="p-6 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/60">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5 text-red-500" />
                 <h2 className="text-xl font-black uppercase tracking-wider text-white">
-                  Your Order
+                  {t('yourOrder')}
                 </h2>
                 <span className="bg-red-600/30 text-red-400 border border-red-600/40 text-xs font-bold px-2.5 py-0.5 rounded-full">
-                  {totalItemsCount} {totalItemsCount === 1 ? 'item' : 'items'}
+                  {totalItemsCount} {totalItemsCount === 1 ? t('item') : t('items')}
                 </span>
               </div>
               <button
@@ -70,9 +72,9 @@ export function CartDrawer() {
                     <ShoppingBag className="w-10 h-10" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-black text-white">Your Cart is Empty</h3>
+                    <h3 className="text-lg font-black text-white">{t('cartEmptyTitle')}</h3>
                     <p className="text-xs text-zinc-400 mt-1 max-w-xs font-sans">
-                      Explore our smash burger menu and stack up your ultimate feast.
+                      {t('cartEmptySub')}
                     </p>
                   </div>
                   <a
@@ -81,12 +83,14 @@ export function CartDrawer() {
                     className="mt-2 bg-gradient-to-r from-red-600 to-red-800 text-white font-bold px-6 py-2.5 rounded-full text-xs uppercase tracking-wider shadow-lg hover:shadow-red-600/40 transition-all flex items-center gap-1.5"
                   >
                     <Flame className="w-4 h-4 text-amber-400" />
-                    <span>EXPLORE MENU</span>
+                    <span>{t('exploreMenu')}</span>
                   </a>
                 </div>
               ) : (
                 cart.map((item) => {
                   const itemTotal = item.unitPrice * item.quantity;
+                  const name = getProductName(item.product, isAr);
+
                   return (
                     <motion.div
                       key={item.cartItemId}
@@ -100,7 +104,7 @@ export function CartDrawer() {
                       <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-zinc-800 shrink-0">
                         <Image
                           src={item.product.image}
-                          alt={item.product.name}
+                          alt={name}
                           fill
                           className="object-cover"
                         />
@@ -109,8 +113,8 @@ export function CartDrawer() {
                       {/* Content details */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between">
-                          <h4 className="font-bold text-sm text-white truncate pr-2 uppercase">
-                            {item.product.name}
+                          <h4 className="font-bold text-sm text-white truncate pr-2 rtl:pr-0 rtl:pl-2 uppercase">
+                            {name}
                           </h4>
                           <button
                             onClick={() => removeFromCart(item.cartItemId)}
@@ -125,28 +129,31 @@ export function CartDrawer() {
                         <div className="flex flex-wrap gap-1 mt-1 font-sans">
                           {item.options.variant === 'combo' && (
                             <span className="text-[10px] font-extrabold bg-amber-950/80 text-amber-400 border border-amber-800/60 px-2 py-0.5 rounded-full flex items-center gap-0.5">
-                              <Utensils className="w-2.5 h-2.5" /> Combo
+                              <Utensils className="w-2.5 h-2.5" /> {t('combo')}
                             </span>
                           )}
                           {item.options.size && (
                             <span className="text-[10px] font-extrabold bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded-full">
-                              Size: {item.options.size}
+                              {isAr ? 'الحجم:' : 'Size:'} {item.options.size}
                             </span>
                           )}
-                          {item.options.addedAdditions?.map((add) => (
-                            <span
-                              key={add.id}
-                              className="text-[10px] font-semibold bg-red-950/60 text-red-300 border border-red-900/50 px-2 py-0.5 rounded-full"
-                            >
-                              +{add.name} (+{add.price} EGP)
-                            </span>
-                          ))}
+                          {item.options.addedAdditions?.map((add) => {
+                            const addName = isAr && add.name_ar ? add.name_ar : add.name;
+                            return (
+                              <span
+                                key={add.id}
+                                className="text-[10px] font-semibold bg-red-950/60 text-red-300 border border-red-900/50 px-2 py-0.5 rounded-full"
+                              >
+                                +{addName} (+{add.price} {isAr ? 'ج.م' : 'EGP'})
+                              </span>
+                            );
+                          })}
                           {item.options.removedIngredients?.map((ing) => (
                             <span
                               key={ing}
                               className="text-[10px] line-through text-red-400 bg-zinc-800/80 px-1.5 py-0.5 rounded"
                             >
-                              No {ing}
+                              {isAr ? 'بدون' : 'No'} {ing}
                             </span>
                           ))}
                         </div>
@@ -159,7 +166,7 @@ export function CartDrawer() {
                                 key={key}
                                 className="text-[10px] font-mono font-bold bg-red-950/80 text-amber-300 border border-red-800/60 px-2 py-0.5 rounded-md flex items-center gap-1"
                               >
-                                <span className="text-red-400">Sandwich {idx + 1}:</span> {val}
+                                <span className="text-red-400">{isAr ? `الساندوتش ${idx + 1}:` : `Sandwich ${idx + 1}:`}</span> {val}
                               </span>
                             ))}
                           </div>
@@ -192,7 +199,7 @@ export function CartDrawer() {
                           </div>
 
                           <span className="font-black text-sm text-amber-400">
-                            {itemTotal} EGP
+                            {itemTotal} {isAr ? 'ج.م' : 'EGP'}
                           </span>
                         </div>
                       </div>
@@ -207,16 +214,16 @@ export function CartDrawer() {
               <div className="p-6 bg-zinc-900 border-t border-zinc-800 space-y-4">
                 <div className="space-y-2 text-xs text-zinc-400">
                   <div className="flex justify-between">
-                    <span>Subtotal (VAT Inclusive)</span>
-                    <span className="font-bold text-zinc-200">{subtotalPrice} EGP</span>
+                    <span>{t('subtotal')}</span>
+                    <span className="font-bold text-zinc-200">{subtotalPrice} {isAr ? 'ج.م' : 'EGP'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Delivery (Faisal Zone)</span>
-                    <span className="font-bold text-zinc-200">{deliveryFee} EGP</span>
+                    <span>{t('deliveryFee')}</span>
+                    <span className="font-bold text-zinc-200">{deliveryFee} {isAr ? 'ج.م' : 'EGP'}</span>
                   </div>
                   <div className="pt-2 border-t border-zinc-800 flex justify-between text-base font-black text-white">
-                    <span>Total Order</span>
-                    <span className="text-amber-400 text-lg">{totalPrice} EGP</span>
+                    <span>{t('totalOrder')}</span>
+                    <span className="text-amber-400 text-lg">{totalPrice} {isAr ? 'ج.م' : 'EGP'}</span>
                   </div>
                 </div>
 
@@ -227,8 +234,8 @@ export function CartDrawer() {
                   }}
                   className="w-full bg-gradient-to-r from-red-600 via-red-700 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-4 rounded-2xl text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(220,38,38,0.5)] border border-red-500/30 transition-all flex items-center justify-center gap-2"
                 >
-                  <span>PROCEED TO CHECKOUT</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span>{t('proceedToCheckout')}</span>
+                  <ArrowRight className="w-4 h-4 rtl:rotate-180" />
                 </button>
               </div>
             )}

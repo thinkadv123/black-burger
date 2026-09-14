@@ -5,42 +5,59 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Flame, ArrowRight, ChevronLeft, ChevronRight, Award, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/context/LanguageContext';
 
 const SLIDES = [
   {
     id: 1,
     badge: '100% SMASHED ANGUS BEEF',
+    badge_ar: '100% لحم أنجوس مشوي سمواش',
     title: 'SMASH BURGERS',
+    title_ar: 'برجر أنجوس',
     highlightTitle: 'MADE DIFFERENT',
+    highlightTitle_ar: 'مشوي على الأصول',
     subtitle: '100% ANGUS BEEF • SIGNATURE SAUCES • UNFORGETTABLE FLAVOR',
+    subtitle_ar: '100% لحم أنجوس صافي • صوصات خاصة • طعم لا يُنسى',
     image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1920&auto=format&fit=crop',
     video: '/videos/hero-smash.mp4',
     ctaText: 'ORDER NOW',
+    ctaText_ar: 'اطلب الآن',
     ctaLink: '/menu',
   },
   {
     id: 2,
     badge: 'GOLDEN CRISPY CRAFT',
+    badge_ar: 'دجاج كريسبي مقرمش',
     title: 'REAL CHICKEN.',
+    title_ar: 'دجاج كريسبي.',
     highlightTitle: 'REAL FLAVOR.',
+    highlightTitle_ar: 'طعم حقيقي.',
     subtitle: 'HAND-BREADED CRISPY FILLET • CAYENNE BUFFALO • HOUSE RANCH',
+    subtitle_ar: 'صدور دجاج كريسبي مقرمشة • صوص بافالو • صوص رانش',
     image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?q=80&w=1920&auto=format&fit=crop',
     ctaText: 'EXPLORE CHICKEN',
+    ctaText_ar: 'استكشف الدجاج',
     ctaLink: '/menu',
   },
   {
     id: 3,
     badge: 'ULTIMATE LOADED APPS',
+    badge_ar: 'مقبلات وتشاوس غنية',
     title: 'BIG FLAVOR.',
+    title_ar: 'نكهات قوية.',
     highlightTitle: 'NO COMPROMISE.',
+    highlightTitle_ar: 'بدون تفريط.',
     subtitle: 'BB BEEF CHAOS FRIES • TRUFFLE AIOLI • LOADED APPETIZERS',
+    subtitle_ar: 'بطاطس تشاوس باللحم • صوص ترافل • مقبلات مميزة',
     image: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?q=80&w=1920&auto=format&fit=crop',
     ctaText: 'TRY CHAOS FRIES',
+    ctaText_ar: 'جرب تشاوس فرايز',
     ctaLink: '/menu',
   },
 ];
 
 export function HeroSlider() {
+  const { isAr, getText } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -151,7 +168,7 @@ export function HeroSlider() {
           >
             <Flame className="w-4 h-4 text-[#EA1F27] animate-pulse" />
             <span className="text-xs font-black tracking-widest text-[#03A0E5] uppercase">
-              {slide.badge}
+              {getText(slide.badge, slide.badge_ar)}
             </span>
             <div className="flex items-center gap-0.5 ml-1 text-[#CDB32D]">
               <Star className="w-3 h-3 fill-[#CDB32D]" />
@@ -169,10 +186,10 @@ export function HeroSlider() {
             className="space-y-1.5"
           >
             <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-white block leading-tight drop-shadow-lg whitespace-nowrap">
-              {slide.title}
+              {getText(slide.title, slide.title_ar)}
             </span>
             <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-red-gradient block leading-tight drop-shadow-[0_0_25px_rgba(220,38,38,0.6)] whitespace-nowrap">
-              {slide.highlightTitle}
+              {getText(slide.highlightTitle, slide.highlightTitle_ar)}
             </span>
           </motion.h1>
 
@@ -182,9 +199,9 @@ export function HeroSlider() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="text-sm sm:text-base md:text-lg text-zinc-300 font-bold tracking-wider uppercase max-w-xl border-l-4 border-[#EA1F27] pl-4 py-1"
+            className="text-sm sm:text-base md:text-lg text-zinc-300 font-bold tracking-wider uppercase max-w-xl border-l-4 rtl:border-l-0 rtl:border-r-4 border-[#EA1F27] pl-4 rtl:pl-0 rtl:pr-4 py-1"
           >
-            {slide.subtitle}
+            {getText(slide.subtitle, slide.subtitle_ar)}
           </motion.p>
 
           {/* CTAs */}
@@ -200,8 +217,8 @@ export function HeroSlider() {
               className="group relative overflow-hidden bg-gradient-to-r from-[#EA1F27] via-[#D11820] to-[#B00E15] text-white font-black px-8 py-4 rounded-full text-sm sm:text-base tracking-widest uppercase shadow-[0_0_30px_rgba(234,31,39,0.7)] border border-[#EA1F27]/50 hover:shadow-[0_0_45px_rgba(234,31,39,0.9)] transition-all flex items-center gap-2"
             >
               <Flame className="w-5 h-5 text-[#CDB32D] group-hover:scale-125 transition-transform" />
-              <span>{slide.ctaText}</span>
-              <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform" />
+              <span>{getText(slide.ctaText, slide.ctaText_ar)}</span>
+              <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1 rtl:group-hover:-translate-x-1 rtl:rotate-180 transition-transform" />
             </Link>
 
             <Link
@@ -209,7 +226,7 @@ export function HeroSlider() {
               className="px-6 py-4 rounded-full text-xs sm:text-sm font-bold tracking-wider uppercase bg-zinc-900/80 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-[#03A0E5]/40 hover:border-[#03A0E5] transition-all flex items-center gap-2 backdrop-blur-sm"
             >
               <Award className="w-4 h-4 text-[#03A0E5]" />
-              <span>THE SMASH CRAFT</span>
+              <span>{isAr ? 'قصة الشواء' : 'THE SMASH CRAFT'}</span>
             </Link>
           </motion.div>
 
@@ -254,12 +271,25 @@ export function HeroSlider() {
       {/* Bottom ticker bar */}
       <div className="absolute bottom-0 left-0 right-0 bg-red-950/80 border-t border-red-900/40 py-2.5 overflow-hidden z-20 backdrop-blur-sm hidden sm:block">
         <div className="flex whitespace-nowrap gap-12 text-xs font-black tracking-widest text-white uppercase animate-marquee">
-          <span className="flex items-center gap-2">🔥 100% ANGUS BEEF SMASHED DAILY</span>
-          <span className="flex items-center gap-2">⭐ FAISAL BRANCH NOW OPEN</span>
-          <span className="flex items-center gap-2">📞 HOTLINE: 01515821555</span>
-          <span className="flex items-center gap-2">🚀 FAST CASH ON DELIVERY</span>
-          <span className="flex items-center gap-2">🔥 100% ANGUS BEEF SMASHED DAILY</span>
-          <span className="flex items-center gap-2">⭐ FAISAL BRANCH NOW OPEN</span>
+          {isAr ? (
+            <>
+              <span className="flex items-center gap-2">🔥 100% لحم أنجوس طازج يومياً</span>
+              <span className="flex items-center gap-2">⭐ فرع فيصل مفتوح الآن</span>
+              <span className="flex items-center gap-2">📞 الخط الساخن: 01515821555</span>
+              <span className="flex items-center gap-2">🚀 توصيل سريع والدفع عند الاستلام</span>
+              <span className="flex items-center gap-2">🔥 100% لحم أنجوس طازج يومياً</span>
+              <span className="flex items-center gap-2">⭐ فرع فيصل مفتوح الآن</span>
+            </>
+          ) : (
+            <>
+              <span className="flex items-center gap-2">🔥 100% ANGUS BEEF SMASHED DAILY</span>
+              <span className="flex items-center gap-2">⭐ FAISAL BRANCH NOW OPEN</span>
+              <span className="flex items-center gap-2">📞 HOTLINE: 01515821555</span>
+              <span className="flex items-center gap-2">🚀 FAST CASH ON DELIVERY</span>
+              <span className="flex items-center gap-2">🔥 100% ANGUS BEEF SMASHED DAILY</span>
+              <span className="flex items-center gap-2">⭐ FAISAL BRANCH NOW OPEN</span>
+            </>
+          )}
         </div>
       </div>
     </section>

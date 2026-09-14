@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Cairo } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import { LanguageProvider } from "@/context/LanguageContext";
 import { MenuProvider } from "@/context/MenuContext";
 import { CartProvider } from "@/context/CartContext";
 import { Navbar } from "@/components/Navbar";
@@ -19,6 +20,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const cairo = Cairo({
+  variable: "--font-cairo",
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const titleFont = localFont({
@@ -44,23 +51,25 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${titleFont.variable} bg-black text-white antialiased min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} ${titleFont.variable} ${cairo.variable} bg-black text-white antialiased min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white`}
       >
-        <MenuProvider>
-          <CartProvider>
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
+        <LanguageProvider>
+          <MenuProvider>
+            <CartProvider>
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
 
-            {/* Interactive Modals & Drawers */}
-            <GlobalProductModal />
-            <CartDrawer />
-            <CheckoutModal />
+              {/* Interactive Modals & Drawers */}
+              <GlobalProductModal />
+              <CartDrawer />
+              <CheckoutModal />
 
-            {/* Toast Notification Provider */}
-            <Toaster position="bottom-right" theme="dark" />
-          </CartProvider>
-        </MenuProvider>
+              {/* Toast Notification Provider */}
+              <Toaster position="bottom-right" theme="dark" />
+            </CartProvider>
+          </MenuProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -1,15 +1,17 @@
 "use client";
 
 import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { HeroSlider } from '@/components/HeroSlider';
 import { ScrollStorytelling } from '@/components/ScrollStorytelling';
 import { TalabatMenu } from '@/components/TalabatMenu';
 import { BrandSection } from '@/components/BrandSection';
-import { Flame, Phone, MapPin, Clock, ArrowRight, ShieldCheck } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { Flame, Phone, MapPin, Clock } from 'lucide-react';
 
 export default function HomePage() {
+  const { isAr } = useLanguage();
+
   return (
     <div className="bg-black text-white min-h-screen">
       
@@ -32,29 +34,39 @@ export default function HomePage() {
             
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-400 text-xs font-mono font-bold uppercase">
-                <MapPin className="w-4 h-4 text-red-500" /> FAISAL BRANCH HOTLINE
+                <MapPin className="w-4 h-4 text-red-500" /> {isAr ? 'الخط الساخن فرع فيصل' : 'FAISAL BRANCH HOTLINE'}
               </div>
 
               <h2 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight font-mono">
-                HOT SMASH BURGERS DELIVERED TO <span className="text-red-600">YOUR DOOR</span>
+                {isAr ? (
+                  <>
+                    برجر أنجوس ساخن يصلك <span className="text-red-600">حتى باب المنزل</span>
+                  </>
+                ) : (
+                  <>
+                    HOT SMASH BURGERS DELIVERED TO <span className="text-red-600">YOUR DOOR</span>
+                  </>
+                )}
               </h2>
 
               <p className="text-zinc-300 text-sm sm:text-base leading-relaxed">
-                Located right in front of Tawheed & Nour in Faisal. Order online for instant Cash on Delivery or call our hotline directly.
+                {isAr
+                  ? 'موقعنا أمام التوحيد والنور في فيصل مباشرة. اطلب أونلاين والدفع عند الاستلام، أو اتصل بنا مباشرة.'
+                  : 'Located right in front of Tawheed & Nour in Faisal. Order online for instant Cash on Delivery or call our hotline directly.'}
               </p>
 
               <div className="space-y-3 pt-2">
                 <div className="flex items-center gap-3 text-sm text-zinc-300 font-mono">
                   <Phone className="w-5 h-5 text-red-500 shrink-0" />
-                  <span>Call Us: <strong className="text-amber-400 font-extrabold text-lg">01515821555</strong></span>
+                  <span>{isAr ? 'اتصل بنا:' : 'Call Us:'} <strong className="text-amber-400 font-extrabold text-lg">01515821555</strong></span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-zinc-300">
                   <MapPin className="w-5 h-5 text-red-500 shrink-0" />
-                  <span>Address: <strong>Faisal - In front of Tawheed & Nour</strong></span>
+                  <span>{isAr ? 'العنوان:' : 'Address:'} <strong>{isAr ? 'فيصل - أمام التوحيد والنور' : 'Faisal - In front of Tawheed & Nour'}</strong></span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-zinc-300">
                   <Clock className="w-5 h-5 text-red-500 shrink-0" />
-                  <span>Open Everyday: <strong>12:00 PM – 3:00 AM</strong></span>
+                  <span>{isAr ? 'ساعات العمل:' : 'Open Everyday:'} <strong>{isAr ? 'يومياً: 12:00 ظهراً – 3:00 صباحاً' : '12:00 PM – 3:00 AM'}</strong></span>
                 </div>
               </div>
 
@@ -64,14 +76,14 @@ export default function HomePage() {
                   className="bg-gradient-to-r from-[#EA1F27] via-[#D11820] to-[#B00E15] text-white font-mono font-bold px-8 py-4 rounded-full text-xs sm:text-sm tracking-wider uppercase shadow-[0_0_25px_rgba(234,31,39,0.6)] hover:shadow-[#EA1F27]/80 transition-all flex items-center gap-2"
                 >
                   <Flame className="w-4 h-4 text-[#CDB32D] animate-pulse" />
-                  <span>ORDER ONLINE NOW</span>
+                  <span>{isAr ? 'اطلب أونلاين الآن' : 'ORDER ONLINE NOW'}</span>
                 </a>
                 <a
                   href="tel:01515821555"
                   className="bg-zinc-900 border border-zinc-700 hover:border-[#CDB32D] text-[#CDB32D] font-mono font-bold px-6 py-4 rounded-full text-xs sm:text-sm tracking-wider uppercase transition-colors flex items-center gap-2"
                 >
                   <Phone className="w-4 h-4 text-[#EA1F27]" />
-                  <span>CALL HOTLINE</span>
+                  <span>{isAr ? 'اتصل بالخط الساخن' : 'CALL HOTLINE'}</span>
                 </a>
               </div>
             </div>
@@ -85,12 +97,12 @@ export default function HomePage() {
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6">
+              <div className="absolute bottom-6 left-6 rtl:left-auto rtl:right-6 right-6 rtl:right-auto">
                 <span className="text-xs font-mono font-bold text-amber-400 uppercase tracking-widest block">
-                  CASH ON DELIVERY ACCEPTED
+                  {isAr ? 'متاح الدفع عند الاستلام' : 'CASH ON DELIVERY ACCEPTED'}
                 </span>
                 <span className="text-xl font-mono font-black text-white">
-                  Fast, Hot & Handcrafted Smash
+                  {isAr ? 'برجر أنجوس طازج وساخن ومصنوع بدقة' : 'Fast, Hot & Handcrafted Smash'}
                 </span>
               </div>
             </div>
