@@ -19,6 +19,7 @@ import {
   Settings,
 } from 'lucide-react';
 import Link from 'next/link';
+import { MediaUploadInput } from '@/components/admin/MediaUploadInput';
 
 export default function AdminDashboardPage() {
   const { products, updateProduct, toggleAvailability, addProduct, deleteProduct, resetToDefaultMenu } =
@@ -357,17 +358,10 @@ export default function AdminDashboardPage() {
                   />
                 </div>
 
-                <div>
-                  <label className="text-neutral-400 block mb-1">Image URL</label>
-                  <input
-                    type="text"
-                    value={editingProduct.image}
-                    onChange={(e) =>
-                      setEditingProduct({ ...editingProduct, image: e.target.value })
-                    }
-                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white"
-                  />
-                </div>
+                <MediaUploadInput
+                  value={editingProduct.image}
+                  onChange={(url) => setEditingProduct({ ...editingProduct, image: url })}
+                />
 
                 <div>
                   <label className="text-neutral-400 block mb-1">
@@ -489,15 +483,10 @@ export default function AdminDashboardPage() {
                   />
                 </div>
 
-                <div>
-                  <label className="text-neutral-400 block mb-1">Image URL</label>
-                  <input
-                    type="text"
-                    value={newProd.image}
-                    onChange={(e) => setNewProd({ ...newProd, image: e.target.value })}
-                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white"
-                  />
-                </div>
+                <MediaUploadInput
+                  value={newProd.image || '/images/offers/triple-king.jpeg'}
+                  onChange={(url) => setNewProd({ ...newProd, image: url })}
+                />
 
                 <div>
                   <label className="text-neutral-400 block mb-1">
