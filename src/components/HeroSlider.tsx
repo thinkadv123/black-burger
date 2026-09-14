@@ -244,42 +244,49 @@ export function HeroSlider() {
             </Link>
           </motion.div>
 
-        </div>
-      </div>
-
-      {/* Slider Nav Buttons */}
-      <div className="absolute bottom-10 right-6 sm:right-12 rtl:right-auto rtl:left-6 sm:rtl:left-12 z-30 flex items-center gap-3" dir="ltr">
-        <button
-          onClick={prevSlide}
-          className="p-3 rounded-full bg-zinc-900/80 border border-zinc-800 text-white hover:border-red-600 hover:text-red-500 transition-all backdrop-blur-md"
-          aria-label="Previous Slide"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-
-        {/* Indicators */}
-        <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-zinc-900/80 border border-zinc-800 backdrop-blur-md">
-          {SLIDES.map((s, idx) => (
+          {/* Slider Nav Buttons directly under CTA buttons */}
+          <motion.div
+            key={`nav-${slide.id}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
+            className="pt-2 flex items-center gap-3"
+            dir="ltr"
+          >
             <button
-              key={s.id}
-              onClick={() => setCurrentSlide(idx)}
-              className={`h-2 rounded-full transition-all ${
-                idx === currentSlide
-                  ? 'w-8 bg-gradient-to-r from-red-600 to-amber-500 shadow-[0_0_10px_rgba(220,38,38,0.8)]'
-                  : 'w-2 bg-zinc-700 hover:bg-zinc-500'
-              }`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
-        </div>
+              onClick={prevSlide}
+              className="p-3 rounded-full bg-zinc-900/80 border border-zinc-800 text-white hover:border-red-600 hover:text-red-500 transition-all backdrop-blur-md shadow-lg"
+              aria-label="Previous Slide"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
 
-        <button
-          onClick={nextSlide}
-          className="p-3 rounded-full bg-zinc-900/80 border border-zinc-800 text-white hover:border-red-600 hover:text-red-500 transition-all backdrop-blur-md"
-          aria-label="Next Slide"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
+            {/* Indicators */}
+            <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-zinc-900/80 border border-zinc-800 backdrop-blur-md shadow-lg">
+              {SLIDES.map((s, idx) => (
+                <button
+                  key={s.id}
+                  onClick={() => setCurrentSlide(idx)}
+                  className={`h-2 rounded-full transition-all ${
+                    idx === currentSlide
+                      ? 'w-8 bg-gradient-to-r from-red-600 to-amber-500 shadow-[0_0_10px_rgba(220,38,38,0.8)]'
+                      : 'w-2 bg-zinc-700 hover:bg-zinc-500'
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={nextSlide}
+              className="p-3 rounded-full bg-zinc-900/80 border border-zinc-800 text-white hover:border-red-600 hover:text-red-500 transition-all backdrop-blur-md shadow-lg"
+              aria-label="Next Slide"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </motion.div>
+
+        </div>
       </div>
 
       {/* Bottom ticker bar */}
