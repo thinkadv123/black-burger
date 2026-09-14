@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMenu } from '@/context/MenuContext';
 import { ProductItem, CATEGORIES_LIST } from '@/data/menu';
 import {
@@ -17,13 +17,23 @@ import {
   Flame,
   ArrowLeft,
   Settings,
+  LogOut,
+  UserCheck,
+  Loader2,
 } from 'lucide-react';
 import Link from 'next/link';
 import { MediaUploadInput } from '@/components/admin/MediaUploadInput';
+import { AdminLogin } from '@/components/admin/AdminLogin';
+import { onAuthStateChanged, signOut, User } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { toast } from 'sonner';
 
 export default function AdminDashboardPage() {
   const { products, updateProduct, toggleAvailability, addProduct, deleteProduct, resetToDefaultMenu } =
     useMenu();
+
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [editingProduct, setEditingProduct] = useState<ProductItem | null>(null);
@@ -40,6 +50,24 @@ export default function AdminDashboardPage() {
     image: '/images/offers/triple-king.jpeg',
     isAvailable: true,
   });
+
+  // Listen to Firebase Auth state
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setIsAuthLoading(false);
+    });
+    return () => unsub();
+  }, []);
+
+  const handleLogOut = async () => {
+    try {
+      await signOut(auth);
+      toast.info('Signed out from Admin Dashboard');
+    } catch (e) {
+      console.error('Logout error:', e);
+    }
+  };
 
   const filteredProducts = products.filter((p) =>
     selectedCategory === 'All' ? true : p.category === selectedCategory
@@ -82,6 +110,24 @@ export default function AdminDashboardPage() {
     }
   };
 
+  // Auth Loading State
+  if (isAuthLoading) {
+    return (
+      <div className="min-h-screen bg-[#0A0A0C] flex flex-col items-center justify-center text-white font-mono gap-3">
+        <Loader2 className="w-8 h-8 animate-spin text-red-600" />
+        <p className="text-xs text-neutral-400 uppercase tracking-widest">
+          Checking Firebase Admin Credentials...
+        </p>
+      </div>
+    );
+  }
+
+  // Render Login Form if User is NOT Authenticated in Firebase Auth
+  if (!currentUser) {
+    return <AdminLogin onSuccess={() => {}} />;
+  }
+
+  // Render Admin Dashboard when User is Authenticated
   return (
     <div className="bg-[#0A0A0C] text-white min-h-screen pt-28 pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -99,12 +145,22 @@ export default function AdminDashboardPage() {
             <h1 className="text-3xl sm:text-4xl font-black font-mono uppercase text-white mt-1">
               BLACK BURGER <span className="text-red-600">MENU MANAGER</span>
             </h1>
-            <p className="text-xs text-neutral-400 mt-1">
-              Real-time database editor. Edit prices, toggle availability, or add items dynamically.
-            </p>
+            <div className="flex items-center gap-2 text-xs text-neutral-400 mt-1">
+              <UserCheck className="w-3.5 h-3.5 text-green-400" />
+              <span>Logged in as: <strong className="text-white font-mono">{currentUser.email}</strong></span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={handleLogOut}
+              className="bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-300 font-mono text-xs px-3.5 py-2.5 rounded-xl transition-all flex items-center gap-2"
+            >
+              <LogOut className="w-3.5 h-3.5 text-red-400" />
+              Log Out
+            </button>
+
             <button
               type="button"
               onClick={resetToDefaultMenu}
