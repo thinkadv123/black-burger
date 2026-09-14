@@ -7,6 +7,20 @@ import { Flame, ArrowRight, ChevronLeft, ChevronRight, Award, Star } from 'lucid
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 
+const TICKER_ITEMS_AR = [
+  '🔥 100% لحم أنجوس طازج يومياً',
+  '⭐ فرع فيصل مفتوح الآن',
+  '📞 الخط الساخن: 01515821555',
+  '🚀 توصيل سريع والدفع عند الاستلام',
+];
+
+const TICKER_ITEMS_EN = [
+  '🔥 100% ANGUS BEEF SMASHED DAILY',
+  '⭐ FAISAL BRANCH NOW OPEN',
+  '📞 HOTLINE: 01515821555',
+  '🚀 FAST CASH ON DELIVERY',
+];
+
 const SLIDES = [
   {
     id: 1,
@@ -269,27 +283,22 @@ export function HeroSlider() {
       </div>
 
       {/* Bottom ticker bar */}
-      <div className="absolute bottom-0 left-0 right-0 bg-red-950/80 border-t border-red-900/40 py-2.5 overflow-hidden z-20 backdrop-blur-sm hidden sm:block">
-        <div className="flex whitespace-nowrap gap-12 text-xs font-black tracking-widest text-white uppercase animate-marquee">
-          {isAr ? (
-            <>
-              <span className="flex items-center gap-2">🔥 100% لحم أنجوس طازج يومياً</span>
-              <span className="flex items-center gap-2">⭐ فرع فيصل مفتوح الآن</span>
-              <span className="flex items-center gap-2">📞 الخط الساخن: 01515821555</span>
-              <span className="flex items-center gap-2">🚀 توصيل سريع والدفع عند الاستلام</span>
-              <span className="flex items-center gap-2">🔥 100% لحم أنجوس طازج يومياً</span>
-              <span className="flex items-center gap-2">⭐ فرع فيصل مفتوح الآن</span>
-            </>
-          ) : (
-            <>
-              <span className="flex items-center gap-2">🔥 100% ANGUS BEEF SMASHED DAILY</span>
-              <span className="flex items-center gap-2">⭐ FAISAL BRANCH NOW OPEN</span>
-              <span className="flex items-center gap-2">📞 HOTLINE: 01515821555</span>
-              <span className="flex items-center gap-2">🚀 FAST CASH ON DELIVERY</span>
-              <span className="flex items-center gap-2">🔥 100% ANGUS BEEF SMASHED DAILY</span>
-              <span className="flex items-center gap-2">⭐ FAISAL BRANCH NOW OPEN</span>
-            </>
-          )}
+      <div className="absolute bottom-0 left-0 right-0 bg-red-950/90 border-t border-red-900/50 py-2.5 overflow-hidden z-20 backdrop-blur-md hidden sm:block">
+        <div className="flex w-full overflow-hidden select-none" dir="ltr">
+          <div className="flex shrink-0 items-center justify-around gap-12 min-w-full animate-marquee">
+            {(isAr ? TICKER_ITEMS_AR : TICKER_ITEMS_EN).map((item, idx) => (
+              <span key={`t1-${idx}`} className="flex items-center gap-2 text-xs font-black tracking-widest text-white uppercase whitespace-nowrap">
+                {item}
+              </span>
+            ))}
+          </div>
+          <div className="flex shrink-0 items-center justify-around gap-12 min-w-full animate-marquee" aria-hidden="true">
+            {(isAr ? TICKER_ITEMS_AR : TICKER_ITEMS_EN).map((item, idx) => (
+              <span key={`t2-${idx}`} className="flex items-center gap-2 text-xs font-black tracking-widest text-white uppercase whitespace-nowrap">
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>
