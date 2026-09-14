@@ -7,7 +7,7 @@ export interface AdditionItem {
 export interface ProductItem {
   id: string;
   name: string;
-  category: 'Smash Burgers' | 'Chicken Collection' | 'Salads' | 'Appetizers' | 'Sauces' | 'Additions' | 'Online Only Offers';
+  category: 'Smash Burgers' | 'Chicken Collection' | 'Salads' | 'Appetizers' | 'Sauces' | 'Additions' | 'Offers' | 'Online Only Offers';
   soloPrice: number;
   comboPrice?: number; // For burgers & chicken
   hasSizes?: boolean; // For onion rings
@@ -27,7 +27,7 @@ export const CATEGORIES_LIST = [
   'Appetizers',
   'Sauces',
   'Additions',
-  'Online Only Offers',
+  'Offers',
 ] as const;
 
 export const INITIAL_ADDITIONS: AdditionItem[] = [
@@ -434,74 +434,55 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     isAvailable: true,
   },
 
-  // 7. ONLINE ONLY OFFERS (Placed after Additions)
+  // 7. OFFERS
+  {
+    id: 'triple-king',
+    name: 'TRIPLE KING',
+    category: 'Offers',
+    soloPrice: 475,
+    description: '2 BB Classic Triple + 2 BB Sauce + 2 Mini Soda + 1 Fries XL',
+    ingredients: [],
+    image: '/images/offers/triple-king.jpeg',
+    isAvailable: true,
+  },
   {
     id: 'bb-duo-box',
     name: 'BB DUO BOX',
-    category: 'Online Only Offers',
+    category: 'Offers',
     soloPrice: 400,
-    description: '2 Sandwiches (1 BB Classic + 1 BB Chicken) + 1 XL Fries + 2 BB Sauces + 2 Soda Drinks.',
-    ingredients: [
-      '1 BB Classic Burger',
-      '1 BB Chicken Burger',
-      '1 XL Fries',
-      '2 BB Sauce Cups',
-      '2 Soda Drinks',
-    ],
+    description: '1 BB Classic + 1 BB Classic + 1 Fries XL + 2 Mini Soda + 2 BB Sauce',
+    ingredients: [],
     image: '/images/offers/bb-duo-box.jpeg',
+    isAvailable: true,
+  },
+  {
+    id: 'premium-box',
+    name: 'PREMIUM BOX',
+    category: 'Offers',
+    soloPrice: 450,
+    description: '2 Smash Beef (Ranchavoo or Chipotle or Mexicali or BB Truffle or Hawaiian) + 2 BB Sauce + 2 Mini Soda + 1 Fries XL',
+    ingredients: [],
+    image: '/images/offers/premium-box.jpeg',
+    isAvailable: true,
+  },
+  {
+    id: 'hawaiian-family',
+    name: 'HAWAIIAN FAMILY',
+    category: 'Offers',
+    soloPrice: 875,
+    description: '2 Hawaiian Beef + 2 Hawaiian Chicken + 2 BB Sauce + 2 Hawaiian Sauce + 1 Fries XL + 1 Fries with Cheese XL + 4 Mini Soda',
+    ingredients: [],
+    image: '/images/offers/hawaiian-chicken.jpeg',
     isAvailable: true,
   },
   {
     id: 'chicken-box',
     name: 'CHICKEN BOX',
-    category: 'Online Only Offers',
-    soloPrice: 725,
-    description: 'Choose any 3 Chicken Sandwiches + Large Fries + Large Cheese Fries + 3 BB Sauces + 3 Soda Drinks.',
-    ingredients: [
-      '3 Chicken Sandwiches of your choice',
-      '1 Large Fries',
-      '1 Large Cheese Fries',
-      '3 BB Sauces',
-      '3 Soda Drinks',
-    ],
+    category: 'Offers',
+    soloPrice: 520,
+    description: '3 Sandwich Chicken (BB Chicken - Buffalo Chicken - Chickenito) + 3 BB Sauce + 3 Mini Soda + 1 Fries L + 1 Fries with Cheese L',
+    ingredients: [],
     image: '/images/offers/chicken-box.jpeg',
-    isAvailable: true,
-  },
-  {
-    id: 'hawaiian-family-box',
-    name: 'HAWAIIAN FAMILY BOX',
-    category: 'Online Only Offers',
-    soloPrice: 875,
-    description: '2 Hawaiian Beef + 2 Hawaiian Chicken Teriyaki + 1 XL Fries + 1 XL Cheese Fries + 4 Soda Drinks + 2 Hawaiian Sauces + 2 BB Sauces.',
-    ingredients: [
-      '2 Hawaiian Beef Burgers',
-      '2 Hawaiian Chicken Teriyaki',
-      '1 XL Fries',
-      '1 XL Cheese Fries',
-      '4 Soda Drinks',
-      '2 Hawaiian Sauces',
-      '2 BB Sauces',
-    ],
-    image: '/images/offers/hawaiian-family.jpeg',
-    isAvailable: true,
-  },
-  {
-    id: 'hawaiian-beef',
-    name: 'HAWAIIAN BEEF',
-    category: 'Online Only Offers',
-    soloPrice: 200,
-    comboPrice: 250,
-    description: 'Two 150g Angus beef patties with grilled pineapple, teriyaki sauce, caramelized onions, roast beef, cheddar cheese, and Batavia lettuce.',
-    ingredients: [
-      'Two 150g Angus beef patties',
-      'Grilled pineapple',
-      'Teriyaki sauce',
-      'Caramelized onions in Hawaiian sauce',
-      'Roast beef',
-      'Cheddar cheese',
-      'Batavia lettuce',
-    ],
-    image: '/images/offers/hawaiian-beef.jpeg',
     isAvailable: true,
   },
 ];

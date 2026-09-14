@@ -41,7 +41,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   const isBurgerOrChicken =
     product.category === 'Smash Burgers' || product.category === 'Chicken Collection';
 
-  const isOfferProduct = product.category === 'Online Only Offers';
+  const isOfferProduct = product.category === 'Offers' || product.category === 'Online Only Offers';
 
   // Calculate live item unit price
   let basePrice = product.soloPrice;
@@ -209,55 +209,6 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             </div>
           )}
 
-          {/* Hawaiian Beef Variant (if applicable) */}
-          {product.id === 'hawaiian-beef' && product.comboPrice && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
-                <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
-                  <span className="w-2 h-4 bg-red-600 rounded-sm" />
-                  Select Sandwich or Combo
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 pt-1">
-                <button
-                  type="button"
-                  onClick={() => setVariant('solo')}
-                  className={`p-4 rounded-xl border text-left transition-all ${
-                    variant === 'solo'
-                      ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600 shadow-md'
-                      : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
-                  }`}
-                >
-                  <div className="font-mono font-black text-sm uppercase tracking-wide">SOLO</div>
-                  <div className="text-xs text-neutral-400 mt-1">Sandwich only</div>
-                  <div className="text-sm font-bold font-mono text-yellow-400 mt-2">
-                    200 EGP
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setVariant('combo')}
-                  className={`p-4 rounded-xl border text-left transition-all relative ${
-                    variant === 'combo'
-                      ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600 shadow-md'
-                      : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
-                  }`}
-                >
-                  <span className="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full bg-red-600 text-[10px] font-bold text-white uppercase tracking-wider font-mono">
-                    BEST VALUE
-                  </span>
-                  <div className="font-mono font-black text-sm uppercase tracking-wide">COMBO</div>
-                  <div className="text-xs text-neutral-300 mt-1">Includes fries & drink</div>
-                  <div className="text-sm font-bold font-mono text-yellow-400 mt-2">
-                    250 EGP
-                  </div>
-                </button>
-              </div>
-            </div>
-          )}
-
           {/* Onion Rings Size Selection */}
           {product.id === 'onion-rings' && product.sizePrices && (
             <div className="space-y-3">
@@ -287,7 +238,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             </div>
           )}
 
-          {/* SECTION 2: REMOVE INGREDIENTS (Hidden for Online Only Offers) */}
+          {/* SECTION 2: REMOVE INGREDIENTS (Hidden for Offers) */}
           {!isOfferProduct && product.ingredients && product.ingredients.length > 0 && (
             <div className="space-y-3">
               <div className="border-b border-neutral-800 pb-2">
@@ -340,7 +291,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             </div>
           )}
 
-          {/* Offer Package Includes Summary */}
+          {/* Offer Package Includes Summary (if ingredients provided) */}
           {isOfferProduct && product.ingredients && product.ingredients.length > 0 && (
             <div className="bg-neutral-900/90 border border-neutral-800 p-4 rounded-xl space-y-2">
               <span className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider block">

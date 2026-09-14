@@ -10,10 +10,11 @@ import { Search, Flame, Plus, ShieldCheck } from 'lucide-react';
 export function TalabatMenu() {
   const { products } = useMenu();
   const { setCustomizingProduct } = useCart();
-  const [selectedCategory, setSelectedCategory] = useState<string>('Smash Burgers');
+  const [selectedCategory, setSelectedCategory] = useState<string>('Offers');
   const [searchQuery, setSearchQuery] = useState('');
 
   const categoryNotes: Record<string, string> = {
+    'Offers': 'Special bundled offer deals and boxes, prepared fresh for fast local delivery in Faisal & Haram.',
     'Smash Burgers':
       'Served in a 5-inch brioche bun without sesame. Every beef sandwich contains two 150g pure Angus beef smash patties. Combo includes sandwich, fries, and soft drink.',
     'Chicken Collection':
@@ -23,7 +24,7 @@ export function TalabatMenu() {
     'Sauces': 'Dipper sauce cups made in-house.',
     'Additions': 'Extra toppings and sides.',
     'Online Only Offers':
-      'Exclusive combo boxes and special deal meals available for online delivery in Faisal & Haram.',
+      'Exclusive combo boxes and special deal meals available for online delivery.',
   };
 
   // Filter products based on search query AND active category
@@ -88,13 +89,14 @@ export function TalabatMenu() {
             {CATEGORIES_LIST.map((cat) => {
               const isSelected = selectedCategory === cat && !searchQuery;
               let displayLabel: string = cat;
-              if (cat === 'Smash Burgers') displayLabel = '🍔 Beef Burgers';
+              if (cat === 'Offers') displayLabel = '🔥 Offers';
+              else if (cat === 'Smash Burgers') displayLabel = '🍔 Beef Burgers';
               else if (cat === 'Chicken Collection') displayLabel = '🍗 Chicken';
               else if (cat === 'Salads') displayLabel = '🥗 Salads';
               else if (cat === 'Appetizers') displayLabel = '🍟 Appetizers';
               else if (cat === 'Sauces') displayLabel = '🌶️ Sauces';
               else if (cat === 'Additions') displayLabel = '🧀 Additions';
-              else if (cat === 'Online Only Offers') displayLabel = '🔥 Online Only Offers';
+              else if (cat as string === 'Online Only Offers') displayLabel = '🔥 Offers';
 
               return (
                 <button
@@ -122,7 +124,7 @@ export function TalabatMenu() {
             const categoryProducts = filteredProducts.filter((p) => p.category === category);
             if (categoryProducts.length === 0) return null;
 
-            const isOfferCategory = category === 'Online Only Offers';
+            const isOfferCategory = category === 'Offers' || (category as string) === 'Online Only Offers';
 
             return (
               <div key={category} className="space-y-6">
@@ -151,7 +153,7 @@ export function TalabatMenu() {
                     : 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
                 }`}>
                   {categoryProducts.map((product) => {
-                    const ingredientsText = product.ingredients
+                    const ingredientsText = product.ingredients && product.ingredients.length > 0
                       ? product.ingredients.join(', ')
                       : product.description || '';
 
@@ -169,7 +171,7 @@ export function TalabatMenu() {
                         }`}
                       >
                         <div>
-                          {/* Image & Badges (full size uncropped object-contain for offer flyers) */}
+                          {/* Image & Badges */}
                           <div className={`relative w-full rounded-xl overflow-hidden bg-neutral-950 mb-3 flex items-center justify-center ${
                             isOfferCategory
                               ? 'aspect-[3/4]'
@@ -272,7 +274,7 @@ export function TalabatMenu() {
               <button
                 onClick={() => {
                   setSearchQuery('');
-                  setSelectedCategory('Smash Burgers');
+                  setSelectedCategory('Offers');
                 }}
                 className="mt-3 text-xs text-red-400 hover:underline font-mono uppercase"
               >

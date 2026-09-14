@@ -31,12 +31,12 @@ export default function AdminDashboardPage() {
   // New product initial state
   const [newProd, setNewProd] = useState<Partial<ProductItem>>({
     name: '',
-    category: 'Smash Burgers',
-    soloPrice: 180,
-    comboPrice: 220,
+    category: 'Offers',
+    soloPrice: 400,
+    comboPrice: undefined,
     description: '',
-    ingredients: ['Two smash beef patties', 'Lettuce', 'Cheddar sauce', 'Special BB Sauce'],
-    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop',
+    ingredients: [],
+    image: '/images/offers/triple-king.jpeg',
     isAvailable: true,
   });
 
@@ -58,24 +58,24 @@ export default function AdminDashboardPage() {
       const created: ProductItem = {
         id: `prod-${Date.now()}`,
         name: newProd.name.toUpperCase(),
-        category: (newProd.category as any) || 'Smash Burgers',
+        category: (newProd.category as any) || 'Offers',
         soloPrice: Number(newProd.soloPrice),
         comboPrice: newProd.comboPrice ? Number(newProd.comboPrice) : undefined,
         description: newProd.description || '',
         ingredients: newProd.ingredients || [],
-        image: newProd.image || 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop',
+        image: newProd.image || '/images/offers/triple-king.jpeg',
         isAvailable: true,
       };
       addProduct(created);
       setIsAddingNew(false);
       setNewProd({
         name: '',
-        category: 'Smash Burgers',
-        soloPrice: 180,
-        comboPrice: 220,
+        category: 'Offers',
+        soloPrice: 400,
+        comboPrice: undefined,
         description: '',
-        ingredients: ['Two smash beef patties', 'Lettuce'],
-        image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop',
+        ingredients: [],
+        image: '/images/offers/triple-king.jpeg',
         isAvailable: true,
       });
     }
@@ -152,7 +152,7 @@ export default function AdminDashboardPage() {
         {/* Products Table / Cards List */}
         <div className="bg-neutral-900/60 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl">
           <div className="p-4 bg-neutral-900 border-b border-neutral-800 flex items-center justify-between font-mono text-xs text-neutral-400 uppercase font-bold">
-            <span>Product List</span>
+            <span>Product List ({filteredProducts.length} items)</span>
             <span>Availability & Pricing Controls</span>
           </div>
 
@@ -163,11 +163,11 @@ export default function AdminDashboardPage() {
                 className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-neutral-900/80 transition-colors"
               >
                 <div className="flex items-center gap-4">
-                  <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-neutral-950 shrink-0 border border-neutral-800">
+                  <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-neutral-950 shrink-0 border border-neutral-800 flex items-center justify-center">
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                     {!product.isAvailable && (
                       <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
@@ -181,7 +181,7 @@ export default function AdminDashboardPage() {
                       <h3 className="font-mono font-extrabold text-base text-white">
                         {product.name}
                       </h3>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-neutral-800 text-neutral-400 uppercase">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-neutral-800 text-neutral-400 uppercase font-bold">
                         {product.category}
                       </span>
                       {product.spicy && (
@@ -192,7 +192,7 @@ export default function AdminDashboardPage() {
                     </div>
 
                     <p className="text-xs text-neutral-400 line-clamp-1 mt-0.5 max-w-lg">
-                      {product.ingredients?.join(', ') || product.description}
+                      {product.description || (product.ingredients && product.ingredients.join(', '))}
                     </p>
                   </div>
                 </div>
@@ -201,7 +201,7 @@ export default function AdminDashboardPage() {
                 <div className="flex items-center gap-4 justify-between sm:justify-end">
                   <div className="text-right font-mono">
                     <span className="text-xs text-neutral-400 block">
-                      Solo: <strong className="text-yellow-400">{product.soloPrice} EGP</strong>
+                      Price: <strong className="text-yellow-400">{product.soloPrice} EGP</strong>
                     </span>
                     {product.comboPrice && (
                       <span className="text-[11px] text-neutral-500 block">
@@ -287,9 +287,29 @@ export default function AdminDashboardPage() {
                   />
                 </div>
 
+                <div>
+                  <label className="text-neutral-400 block mb-1">Category</label>
+                  <select
+                    value={editingProduct.category}
+                    onChange={(e) =>
+                      setEditingProduct({
+                        ...editingProduct,
+                        category: e.target.value as any,
+                      })
+                    }
+                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white"
+                  >
+                    {CATEGORIES_LIST.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-neutral-400 block mb-1">Solo Price (EGP)</label>
+                    <label className="text-neutral-400 block mb-1">Price (EGP)</label>
                     <input
                       type="number"
                       value={editingProduct.soloPrice}
@@ -322,6 +342,18 @@ export default function AdminDashboardPage() {
                 </div>
 
                 <div>
+                  <label className="text-neutral-400 block mb-1">Description / Items Included</label>
+                  <input
+                    type="text"
+                    value={editingProduct.description || ''}
+                    onChange={(e) =>
+                      setEditingProduct({ ...editingProduct, description: e.target.value })
+                    }
+                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white"
+                  />
+                </div>
+
+                <div>
                   <label className="text-neutral-400 block mb-1">Image URL</label>
                   <input
                     type="text"
@@ -335,15 +367,15 @@ export default function AdminDashboardPage() {
 
                 <div>
                   <label className="text-neutral-400 block mb-1">
-                    Ingredients (comma separated)
+                    Ingredients (comma separated, or leave blank)
                   </label>
                   <input
                     type="text"
-                    value={editingProduct.ingredients?.join(', ')}
+                    value={editingProduct.ingredients?.join(', ') || ''}
                     onChange={(e) =>
                       setEditingProduct({
                         ...editingProduct,
-                        ingredients: e.target.value.split(',').map((s) => s.trim()),
+                        ingredients: e.target.value ? e.target.value.split(',').map((s) => s.trim()) : [],
                       })
                     }
                     className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white"
@@ -375,7 +407,7 @@ export default function AdminDashboardPage() {
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
             <div className="bg-[#0F0F12] border border-neutral-800 rounded-2xl max-w-xl w-full p-6 space-y-4 font-mono">
               <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
-                <h3 className="text-lg font-bold text-white uppercase">Add New Menu Item</h3>
+                <h3 className="text-lg font-bold text-white uppercase">Add New Offer / Menu Item</h3>
                 <button
                   onClick={() => setIsAddingNew(false)}
                   className="text-neutral-400 hover:text-white"
@@ -390,7 +422,7 @@ export default function AdminDashboardPage() {
                   <input
                     type="text"
                     required
-                    placeholder="e.g. BB SPECIAL SMASH"
+                    placeholder="e.g. TRIPLE KING"
                     value={newProd.name}
                     onChange={(e) => setNewProd({ ...newProd, name: e.target.value })}
                     className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white"
@@ -414,7 +446,7 @@ export default function AdminDashboardPage() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-neutral-400 block mb-1">Solo Price (EGP) *</label>
+                    <label className="text-neutral-400 block mb-1">Price (EGP) *</label>
                     <input
                       type="number"
                       required
@@ -443,6 +475,17 @@ export default function AdminDashboardPage() {
                 </div>
 
                 <div>
+                  <label className="text-neutral-400 block mb-1">Description / Items Included</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 2 BB Classic Triple + 2BB Sauce + 2 Mini Soda + 1 Fries XL"
+                    value={newProd.description}
+                    onChange={(e) => setNewProd({ ...newProd, description: e.target.value })}
+                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white"
+                  />
+                </div>
+
+                <div>
                   <label className="text-neutral-400 block mb-1">Image URL</label>
                   <input
                     type="text"
@@ -454,15 +497,16 @@ export default function AdminDashboardPage() {
 
                 <div>
                   <label className="text-neutral-400 block mb-1">
-                    Ingredients (comma separated)
+                    Ingredients (comma separated, or leave blank for Offers)
                   </label>
                   <input
                     type="text"
+                    placeholder="Leave blank if no removable ingredients"
                     value={newProd.ingredients?.join(', ')}
                     onChange={(e) =>
                       setNewProd({
                         ...newProd,
-                        ingredients: e.target.value.split(',').map((s) => s.trim()),
+                        ingredients: e.target.value ? e.target.value.split(',').map((s) => s.trim()) : [],
                       })
                     }
                     className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white"
@@ -481,7 +525,7 @@ export default function AdminDashboardPage() {
                     type="submit"
                     className="px-4 py-2 rounded-xl bg-red-600 text-white font-bold"
                   >
-                    Add Product
+                    Add Item
                   </button>
                 </div>
               </form>

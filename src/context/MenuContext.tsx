@@ -20,7 +20,7 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<ProductItem[]>(INITIAL_PRODUCTS);
   const [additions, setAdditions] = useState<AdditionItem[]>(INITIAL_ADDITIONS);
 
-  // Load from localStorage on mount & sync missing items and image paths from INITIAL_PRODUCTS
+  // Load from localStorage on mount & sync missing items, categories, descriptions, and images from INITIAL_PRODUCTS
   useEffect(() => {
     try {
       const savedProductsStr = localStorage.getItem('black_burger_db_products');
@@ -28,22 +28,27 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
         const parsed: ProductItem[] = JSON.parse(savedProductsStr);
         const parsedMap = new Map(parsed.map((p) => [p.id, p]));
 
-        // Merge initial products so any new products (e.g., Online Only Offers) are added automatically
+        // Merge initial products so any new products (e.g., Offers) are updated automatically
         const mergedProducts = INITIAL_PRODUCTS.map((init) => {
           const existing = parsedMap.get(init.id);
           if (existing) {
             return {
               ...existing,
               image: init.image, // Always sync latest local image path
-              category: init.category, // Sync latest category ordering
+              category: init.category, // Sync latest category
               ingredients: init.ingredients, // Sync updated ingredients
               soloPrice: init.soloPrice, // Sync updated price
+              description: init.description || existing.description,
             };
           }
           return init;
         });
 
-        setProducts(mergedProducts);
+        // Retain custom items added by admin through local storage
+        const initialIds = new Set(INITIAL_PRODUCTS.map((p) => p.id));
+        const customProducts = parsed.filter((p) => !initialIds.has(p.id));
+
+        setProducts([...mergedProducts, ...customProducts]);
       } else {
         setProducts(INITIAL_PRODUCTS);
       }
