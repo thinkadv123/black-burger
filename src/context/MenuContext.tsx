@@ -64,7 +64,9 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
                 const found = firebaseProds.find((p) => p.id === init.id);
                 if (found) {
                   return {
+                    ...init,
                     ...found,
+                    bundleChoices: found.bundleChoices || init.bundleChoices,
                     // Keep original local image path if firebase image is missing
                     image: found.image || init.image,
                   };

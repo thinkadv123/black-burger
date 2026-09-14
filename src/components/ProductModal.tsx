@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { ProductItem, AdditionItem } from '@/data/menu';
+import { ProductItem, AdditionItem, INITIAL_PRODUCTS } from '@/data/menu';
 import { useCart, CartItemOption } from '@/context/CartContext';
 import { useMenu } from '@/context/MenuContext';
 import { Plus, Minus, Flame, Check, AlertTriangle, X, ShoppingBag, MessageSquare } from 'lucide-react';
@@ -36,9 +36,10 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
       setSpecialInstructions('');
 
       // Initialize default sandwich selections if product has bundleChoices
-      if (product.bundleChoices && product.bundleChoices.length > 0) {
+      const bundleChoices = product.bundleChoices || INITIAL_PRODUCTS.find((p) => p.id === product.id)?.bundleChoices;
+      if (bundleChoices && bundleChoices.length > 0) {
         const initialSelections: Record<string, string> = {};
-        product.bundleChoices.forEach((group) => {
+        bundleChoices.forEach((group) => {
           initialSelections[group.id] = group.options[0] || '';
         });
         setSelectedSandwiches(initialSelections);
@@ -49,6 +50,8 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   }, [product]);
 
   if (!product) return null;
+
+  const effectiveBundleChoices = product.bundleChoices || INITIAL_PRODUCTS.find((p) => p.id === product.id)?.bundleChoices;
 
   const isBurgerOrChicken =
     product.category === 'Smash Burgers' || product.category === 'Chicken Collection';
@@ -171,7 +174,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           )}
 
           {/* BUNDLE SANDWICH SELECTION (FOR OFFERS LIKE PREMIUM BOX & CHICKEN BOX) */}
-          {product.bundleChoices && product.bundleChoices.length > 0 && (
+          {effectiveBundleChoices && effectiveBundleChoices.length > 0 && (
             <div className="space-y-4 bg-red-950/20 border border-red-800/50 p-4 sm:p-5 rounded-2xl">
               <div className="border-b border-red-900/40 pb-2.5 flex items-center justify-between">
                 <h3 className="text-sm sm:text-base font-black text-white uppercase tracking-wider font-mono flex items-center gap-2">
@@ -184,7 +187,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
               </div>
 
               <div className="space-y-4">
-                {product.bundleChoices.map((group, idx) => (
+                {effectiveBundleChoices.map((group, idx) => (
                   <div key={group.id} className="space-y-2">
                     <label className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
                       <span className="w-5 h-5 rounded-full bg-red-600/30 border border-red-500/50 text-red-300 font-mono text-[11px] flex items-center justify-center font-bold">
