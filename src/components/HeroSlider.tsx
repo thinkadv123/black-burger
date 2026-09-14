@@ -248,7 +248,7 @@ export function HeroSlider() {
       </div>
 
       {/* Slider Nav Buttons */}
-      <div className="absolute bottom-10 right-6 sm:right-12 z-30 flex items-center gap-3">
+      <div className="absolute bottom-10 right-6 sm:right-12 rtl:right-auto rtl:left-6 sm:rtl:left-12 z-30 flex items-center gap-3" dir="ltr">
         <button
           onClick={prevSlide}
           className="p-3 rounded-full bg-zinc-900/80 border border-zinc-800 text-white hover:border-red-600 hover:text-red-500 transition-all backdrop-blur-md"

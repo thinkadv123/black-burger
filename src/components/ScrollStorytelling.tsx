@@ -353,7 +353,7 @@ export function ScrollStorytelling() {
                     onClick={() => setActiveMobileTab((prev) => (prev > 0 ? prev - 1 : ingredientsList.length - 1))}
                     className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white flex items-center gap-1 text-xs font-mono font-bold"
                   >
-                    <ChevronLeft className="w-4 h-4 text-red-500 rtl:rotate-180" /> {isAr ? 'السابق' : 'Prev'}
+                    <ChevronLeft className="w-4 h-4 text-red-500" /> {isAr ? 'السابق' : 'Prev'}
                   </button>
                   <span className="text-xs font-mono text-zinc-500 font-bold">
                     {activeMobileTab + 1} / {ingredientsList.length}
@@ -362,7 +362,7 @@ export function ScrollStorytelling() {
                     onClick={() => setActiveMobileTab((prev) => (prev < ingredientsList.length - 1 ? prev + 1 : 0))}
                     className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white flex items-center gap-1 text-xs font-mono font-bold"
                   >
-                    {isAr ? 'التالي' : 'Next'} <ChevronRight className="w-4 h-4 text-red-500 rtl:rotate-180" />
+                    {isAr ? 'التالي' : 'Next'} <ChevronRight className="w-4 h-4 text-red-500" />
                   </button>
                 </div>
               </motion.div>
