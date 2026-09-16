@@ -19,7 +19,7 @@ export interface ProductItem {
   name_en?: string;
   name_ar?: string;
 
-  category: 'Smash Burgers' | 'Chicken Collection' | 'Salads' | 'Appetizers' | 'Sauces' | 'Additions' | 'Offers' | 'Online Only Offers';
+  category: 'Smash Burgers' | 'Chicken Collection' | 'Salads' | 'Appetizers' | 'Sauces' | 'Additions' | 'Offers' | 'Online Only Offers' | 'Exclusive';
   category_en?: string;
   category_ar?: string;
 
@@ -47,6 +47,7 @@ export interface ProductItem {
 
 export const CATEGORIES_LIST = [
   'Offers',
+  'Exclusive',
   'Smash Burgers',
   'Chicken Collection',
   'Salads',
@@ -92,6 +93,8 @@ export function getCategoryDisplayName(cat: string, isAr: boolean): string {
     return cat;
   }
   switch (cat) {
+    case 'Exclusive':
+      return '⭐ حصري';
     case 'Offers':
     case 'Online Only Offers':
       return '🔥 العروض والبوكسات';

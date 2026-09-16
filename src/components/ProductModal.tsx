@@ -73,7 +73,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   const isBurgerOrChicken =
     isSmashBurger || product.category === 'Chicken Collection';
 
-  const isOfferProduct = product.category === 'Offers' || (product.category as string) === 'Online Only Offers';
+  const isOfferProduct = product.category === 'Offers' || product.category === 'Exclusive' || (product.category as string) === 'Online Only Offers';
 
   // Calculate live item unit price
   let basePrice = product.soloPrice;

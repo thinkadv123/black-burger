@@ -23,6 +23,7 @@ export function TalabatMenu() {
 
   const categoryNotesEn: Record<string, string> = {
     'Offers': 'Special bundled offer deals and boxes, prepared fresh for fast local delivery in Faisal & Haram.',
+    'Exclusive': 'Exclusive items and limited special offers created specially for Black Burger fans.',
     'Smash Burgers':
       'Served in a 5-inch brioche bun without sesame. Every beef sandwich contains two 150g pure Angus beef smash patties. Combo includes sandwich, fries, and soft drink.',
     'Chicken Collection':
@@ -37,6 +38,7 @@ export function TalabatMenu() {
 
   const categoryNotesAr: Record<string, string> = {
     'Offers': 'عروض وبوكسات مميزة، يتم تحضيرها طازجة للتوصيل السريع في فيصل والهرم.',
+    'Exclusive': 'منتجات وأصناف حصرية مميزة لعشاق بلاك برجر.',
     'Smash Burgers':
       'تقدم في خبز بريوش 5 بوصة بدون سمسم. تحتوي كل ساندوتش على قطعتين لحم أنجوس صافي 150 جرام. الوجبة تشمل ساندوتش، بطاطس ومشروب غازي.',
     'Chicken Collection':
@@ -152,7 +154,7 @@ export function TalabatMenu() {
             const categoryProducts = filteredProducts.filter((p) => p.category === category);
             if (categoryProducts.length === 0) return null;
 
-            const isOfferCategory = category === 'Offers' || (category as string) === 'Online Only Offers';
+            const isOfferCategory = category === 'Offers' || category === 'Exclusive' || (category as string) === 'Online Only Offers';
             const catNote = isAr ? categoryNotesAr[category] : categoryNotesEn[category];
 
             return (

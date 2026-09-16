@@ -137,6 +137,7 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Category Names
   catOffers: { en: 'Offers', ar: 'العروض' },
+  catExclusive: { en: 'Exclusive', ar: 'حصري' },
   catBurgers: { en: 'Smash Burgers', ar: 'برجر أنجوس' },
   catChicken: { en: 'Chicken Collection', ar: 'دجاج كريسبي' },
   catSalads: { en: 'Salads', ar: 'سلطات' },
