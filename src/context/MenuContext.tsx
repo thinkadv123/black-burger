@@ -105,9 +105,19 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
               setAdditions([...mergedAdds, ...customAdds]);
             }
           } else {
-            // First time setup: Seed Firebase "blackburger" database with default menu
+            // First time setup: Seed Firebase "blackburger" database with products
             console.log('Seeding initial products into Firebase "blackburger" database...');
-            syncToFirebase(INITIAL_PRODUCTS, INITIAL_ADDITIONS);
+            const savedProductsStr = typeof window !== 'undefined' ? localStorage.getItem('black_burger_db_products') : null;
+            let initialProdsToSeed = INITIAL_PRODUCTS;
+            if (savedProductsStr) {
+              try {
+                const parsed = JSON.parse(savedProductsStr);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                  initialProdsToSeed = parsed;
+                }
+              } catch (e) {}
+            }
+            syncToFirebase(initialProdsToSeed, INITIAL_ADDITIONS);
           }
           setIsLoadingFirebase(false);
         },
@@ -196,6 +206,11 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
   const addProduct = (newProduct: ProductItem) => {
     const updated = [...products, newProduct];
     setProducts(updated);
+    try {
+      localStorage.setItem('black_burger_db_products', JSON.stringify(updated));
+    } catch (e) {
+      console.error('Error writing to localStorage:', e);
+    }
     syncToFirebase(updated, additions);
     toast.success(`Added ${newProduct.name} to Black Burger Firebase database!`);
   };

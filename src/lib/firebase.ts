@@ -16,15 +16,8 @@ const firebaseConfig = {
 // Initialize Firebase app
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
-// Initialize Firestore targeting "blackburger" database ID with fallback to default database
-let dbInstance;
-try {
-  dbInstance = getFirestore(app, "blackburger");
-} catch (e) {
-  dbInstance = getFirestore(app);
-}
-
-export const db = dbInstance;
+// Initialize Firestore targeting default database (documents stored in 'blackburger' collection)
+export const db = getFirestore(app);
 export const storage = getStorage(app);
 export const auth = getAuth(app);
 export default app;
