@@ -154,7 +154,7 @@ export function TalabatMenu() {
             const categoryProducts = filteredProducts.filter((p) => p.category === category);
             if (categoryProducts.length === 0) return null;
 
-            const isOfferCategory = category === 'Offers' || category === 'Exclusive' || (category as string) === 'Online Only Offers';
+            const isOfferCategory = category === 'Offers' || (category as string) === 'Online Only Offers';
             const catNote = isAr ? categoryNotesAr[category] : categoryNotesEn[category];
 
             return (
@@ -230,7 +230,7 @@ export function TalabatMenu() {
                               </div>
                             )}
 
-                            {product.category === 'Smash Burgers' ? (
+                            {product.category === 'Smash Burgers' || product.category === 'Exclusive' ? (
                               <div className="absolute top-2.5 right-2.5 rtl:right-auto rtl:left-2.5 bg-neutral-900/90 border border-[#03A0E5]/60 text-[#03A0E5] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
                                 {t('smashSizesBadge')}
                               </div>
@@ -273,7 +273,7 @@ export function TalabatMenu() {
                         <div className="pt-4 mt-3 border-t border-neutral-800/80 flex items-center justify-between gap-2">
                           <div>
                             <span className="text-[10px] text-neutral-400 font-mono block uppercase">
-                              {product.category === 'Smash Burgers'
+                              {product.category === 'Smash Burgers' || product.category === 'Exclusive'
                                 ? `${t('sizeDouble')} / ${t('sizeTriple')} / ${t('sizeQuad')}`
                                 : product.comboPrice
                                 ? `${t('solo')}: ${product.soloPrice} ${isAr ? 'ج.م' : 'EGP'} | ${t('combo')}: ${product.comboPrice} ${isAr ? 'ج.م' : 'EGP'}`
@@ -282,7 +282,7 @@ export function TalabatMenu() {
                                 : t('price')}
                             </span>
                             <span className="font-mono font-extrabold text-sm sm:text-base text-[#CDB32D]">
-                              {product.category === 'Smash Burgers'
+                              {product.category === 'Smash Burgers' || product.category === 'Exclusive'
                                 ? `${t('from')} ${product.soloPrice} ${isAr ? 'ج.م' : 'EGP'}`
                                 : product.comboPrice
                                 ? `${product.soloPrice} / ${product.comboPrice} ${isAr ? 'ج.م' : 'EGP'}`

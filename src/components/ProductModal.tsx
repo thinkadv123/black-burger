@@ -69,11 +69,11 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
 
   const effectiveBundleChoices = product.bundleChoices || INITIAL_PRODUCTS.find((p) => p.id === product.id)?.bundleChoices;
 
-  const isSmashBurger = product.category === 'Smash Burgers';
+  const isSmashBurger = product.category === 'Smash Burgers' || product.category === 'Exclusive';
   const isBurgerOrChicken =
     isSmashBurger || product.category === 'Chicken Collection';
 
-  const isOfferProduct = product.category === 'Offers' || product.category === 'Exclusive' || (product.category as string) === 'Online Only Offers';
+  const isOfferProduct = product.category === 'Offers' || (product.category as string) === 'Online Only Offers';
 
   // Calculate live item unit price
   let basePrice = product.soloPrice;

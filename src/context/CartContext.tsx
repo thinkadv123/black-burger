@@ -72,7 +72,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     let price = product.soloPrice;
 
     // Handle Smash Burgers sizes (Double, Triple, Quad) & Solo / Combo
-    if (product.category === 'Smash Burgers') {
+    if (product.category === 'Smash Burgers' || product.category === 'Exclusive') {
       const sz = options.size || 'Double';
       if (sz === 'Triple') {
         price += 40;

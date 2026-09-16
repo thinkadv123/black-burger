@@ -118,7 +118,7 @@ export function MediaUploadInput({ value, onChange }: MediaUploadInputProps) {
     }
   };
 
-  const categories = ["All", "Offers", "Smash Burgers", "Chicken Collection", "Salads", "Appetizers", "Sauces", "Additions"];
+  const categories = ["All", "Offers", "Exclusive", "Smash Burgers", "Chicken Collection", "Salads", "Appetizers", "Sauces", "Additions"];
 
   const filteredPresetImages = PRESET_MEDIA_LIBRARY.filter((item) =>
     libraryTab === "All" ? true : item.category === libraryTab
