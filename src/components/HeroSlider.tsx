@@ -25,7 +25,7 @@ const SLIDES = [
   {
     id: 1,
     badge: '100% SMASHED ANGUS BEEF',
-    badge_ar: '100% لحم أنجوس مشوي سمواش',
+    badge_ar: '100% لحم أنجوس مشوي سماش',
     title: 'SMASH BURGERS',
     title_ar: 'برجر أنجوس',
     highlightTitle: 'MADE DIFFERENT',

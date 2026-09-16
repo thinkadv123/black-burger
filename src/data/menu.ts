@@ -155,7 +155,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     comboPrice: 220,
     description: 'Served in a 5-inch brioche bun without sesame. Contains two 150g pure Angus beef smash patties.',
     description_en: 'Served in a 5-inch brioche bun without sesame. Contains two 150g pure Angus beef smash patties.',
-    description_ar: 'يقدم في خبز بريوش 5 بوصة بدون سمسم. يحتوي على قطعتين لحم أنجوس صافي 150 جرام مشوية سمواش.',
+    description_ar: 'يقدم في خبز بريوش 5 بوصة بدون سمسم. يحتوي على قطعتين لحم أنجوس صافي 150 جرام مشوية سماش.',
     ingredients: [
       'Two smash beef patties',
       'Caramelized onions',
@@ -173,7 +173,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Cheddar sauce',
     ],
     ingredients_ar: [
-      'قطعتين برجر لحم سمواش',
+      'قطعتين برجر لحم سماش',
       'بصل مكرمل',
       'خس',
       'خيار مخلل',
@@ -195,7 +195,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     comboPrice: 250,
     description: 'Served in a 5-inch brioche bun without sesame. Contains two 150g pure Angus beef smash patties.',
     description_en: 'Served in a 5-inch brioche bun without sesame. Contains two 150g pure Angus beef smash patties.',
-    description_ar: 'يقدم في خبز بريوش 5 بوصة بدون سمسم. يحتوي على قطعتين لحم أنجوس صافي 150 جرام مشوية سمواش.',
+    description_ar: 'يقدم في خبز بريوش 5 بوصة بدون سمسم. يحتوي على قطعتين لحم أنجوس صافي 150 جرام مشوية سماش.',
     ingredients: [
       'Two smash beef patties',
       'Grilled peppers',
@@ -215,7 +215,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Touch of truffle sauce',
     ],
     ingredients_ar: [
-      'قطعتين برجر لحم سمواش',
+      'قطعتين برجر لحم سماش',
       'فلفل مشوي',
       'مشروم مشوي',
       'بصل مشوي',
@@ -238,7 +238,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     comboPrice: 250,
     description: 'Served in a 5-inch brioche bun without sesame. Contains two 150g pure Angus beef smash patties.',
     description_en: 'Served in a 5-inch brioche bun without sesame. Contains two 150g pure Angus beef smash patties.',
-    description_ar: 'يقدم في خبز بريوش 5 بوصة بدون سمسم. يحتوي على قطعتين لحم أنجوس صافي 150 جرام مشوية سمواش.',
+    description_ar: 'يقدم في خبز بريوش 5 بوصة بدون سمسم. يحتوي على قطعتين لحم أنجوس صافي 150 جرام مشوية سماش.',
     ingredients: [
       'Two smash beef patties',
       'Lettuce',
@@ -256,7 +256,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Chipotle sauce',
     ],
     ingredients_ar: [
-      'قطعتين برجر لحم سمواش',
+      'قطعتين برجر لحم سماش',
       'خس',
       'حلقات بصل',
       'بيكون',
@@ -281,7 +281,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     spicyWarning_ar: 'هذا الساندوتش حار جداً.',
     description: 'Served in a 5-inch brioche bun without sesame. Contains two 150g pure Angus beef smash patties.',
     description_en: 'Served in a 5-inch brioche bun without sesame. Contains two 150g pure Angus beef smash patties.',
-    description_ar: 'يقدم في خبز بريوش 5 بوصة بدون سمسم. يحتوي على قطعتين لحم أنجوس صافي 150 جرام مشوية سمواش.',
+    description_ar: 'يقدم في خبز بريوش 5 بوصة بدون سمسم. يحتوي على قطعتين لحم أنجوس صافي 150 جرام مشوية سماش.',
     ingredients: [
       'Two smash beef patties',
       'Lettuce',
@@ -299,7 +299,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Pepper Jack cheese',
     ],
     ingredients_ar: [
-      'قطعتين برجر لحم سمواش',
+      'قطعتين برجر لحم سماش',
       'خس',
       'هالابينو',
       'تركي مدخن',
@@ -321,7 +321,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
     comboPrice: 250,
     description: 'Served in a 5-inch brioche bun without sesame. Contains two 150g pure Angus beef smash patties.',
     description_en: 'Served in a 5-inch brioche bun without sesame. Contains two 150g pure Angus beef smash patties.',
-    description_ar: 'يقدم في خبز بريوش 5 بوصة بدون سمسم. يحتوي على قطعتين لحم أنجوس صافي 150 جرام مشوية سمواش.',
+    description_ar: 'يقدم في خبز بريوش 5 بوصة بدون سمسم. يحتوي على قطعتين لحم أنجوس صافي 150 جرام مشوية سماش.',
     ingredients: [
       'Two smash beef patties',
       'Lettuce',
@@ -339,7 +339,7 @@ export const INITIAL_PRODUCTS: ProductItem[] = [
       'Ranch sauce',
     ],
     ingredients_ar: [
-      'قطعتين برجر لحم سمواش',
+      'قطعتين برجر لحم سماش',
       'خس',
       'أفوكادو',
       'بيكون',
