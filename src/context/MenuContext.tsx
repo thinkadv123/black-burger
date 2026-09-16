@@ -27,22 +27,27 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
   // Helper to sync state to Firebase Firestore under database/collection "blackburger"
   const syncToFirebase = async (newProds: ProductItem[], newAdds: AdditionItem[]) => {
     try {
+      // Clean undefined fields so Firestore JS SDK doesn't throw "Unsupported field value: undefined"
+      const cleanProds = JSON.parse(JSON.stringify(newProds));
+      const cleanAdds = JSON.parse(JSON.stringify(newAdds));
+
       // 1. Save master menu snapshot document
       await setDoc(doc(db, 'blackburger', 'menu'), {
-        products: newProds,
-        additions: newAdds,
+        products: cleanProds,
+        additions: cleanAdds,
         updatedAt: new Date().toISOString(),
       });
 
       // 2. Save each product as an individual document in collection "blackburger"
-      for (const prod of newProds) {
+      for (const prod of cleanProds) {
         await setDoc(doc(db, 'blackburger', prod.id), {
           ...prod,
           updatedAt: new Date().toISOString(),
         });
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error syncing menu to Firebase Firestore "blackburger":', err);
+      toast.error(`Firebase error: ${err?.message || 'Could not sync to Firebase.'}`);
     }
   };
 
