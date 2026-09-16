@@ -30,6 +30,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   const [variant, setVariant] = useState<'solo' | 'combo'>('combo');
   const [smashSize, setSmashSize] = useState<'Double' | 'Triple' | 'Quad'>('Double');
   const [selectedSize, setSelectedSize] = useState<'Large' | 'X-Large'>('Large');
+  const [flavor, setFlavor] = useState<'Normal' | 'Spicy'>('Normal');
   const [activeIngredients, setActiveIngredients] = useState<string[]>([]);
   const [selectedAdditions, setSelectedAdditions] = useState<AdditionItem[]>([]);
   const [quantity, setQuantity] = useState(1);
@@ -42,6 +43,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
       setVariant('combo');
       setSmashSize('Double');
       setSelectedSize('Large');
+      setFlavor('Normal');
       setActiveIngredients(getProductIngredients(product, isAr) || []);
       setSelectedAdditions([]);
       setQuantity(1);
@@ -124,6 +126,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
     const options: CartItemOption = {
       variant: isBurgerOrChicken || product.comboPrice ? variant : 'solo',
       size: isSmashBurger ? smashSize : product.sizePrices && product.sizePrices.length > 0 ? selectedSize : undefined,
+      flavor: (product.category === 'Exclusive' || product.id === 'hawaiian-chicken' || product.id === 'hawaiian-beef') ? flavor : undefined,
       removedIngredients,
       addedAdditions: selectedAdditions,
       selectedSandwiches: Object.keys(selectedSandwiches).length > 0 ? selectedSandwiches : undefined,
@@ -386,6 +389,54 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                   </button>
                 </div>
               </div>
+
+              {/* Step 3: Flavor Selector (Spicy, Normal) for Exclusive / Hawaiian items */}
+              {(product.category === 'Exclusive' || product.id === 'hawaiian-chicken' || product.id === 'hawaiian-beef') && (
+                <div className="space-y-3 pt-2">
+                  <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
+                    <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                      <span className="w-2 h-4 bg-red-600 rounded-sm" />
+                      {t('chooseFlavor')}
+                    </h3>
+                    <span className="text-[10px] bg-red-950 text-red-400 border border-red-800 px-2 py-0.5 rounded font-mono font-bold uppercase">
+                      {t('required')}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setFlavor('Normal')}
+                      className={`p-4 rounded-xl border text-left rtl:text-right transition-all ${
+                        flavor === 'Normal'
+                          ? 'border-red-600 bg-red-950/40 text-white ring-1 ring-red-600 shadow-md ring-1 ring-red-500'
+                          : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
+                      }`}
+                    >
+                      <div className="font-mono font-black text-sm uppercase tracking-wide">
+                        {t('flavorNormal')}
+                      </div>
+                      <div className="text-xs text-neutral-400 mt-1">{t('flavorDescNormal')}</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setFlavor('Spicy')}
+                      className={`p-4 rounded-xl border text-left rtl:text-right transition-all ${
+                        flavor === 'Spicy'
+                          ? 'border-red-600 bg-red-950/40 text-white ring-1 ring-red-600 shadow-md ring-1 ring-red-500'
+                          : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
+                      }`}
+                    >
+                      <div className="font-mono font-black text-sm uppercase tracking-wide flex items-center gap-1.5 text-red-400">
+                        <Flame className="w-4 h-4 text-red-500 fill-red-500" />
+                        {t('flavorSpicy')}
+                      </div>
+                      <div className="text-xs text-neutral-400 mt-1">{t('flavorDescSpicy')}</div>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ) : isBurgerOrChicken && product.comboPrice ? (
             <div className="space-y-3">

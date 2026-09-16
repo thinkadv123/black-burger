@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 export interface CartItemOption {
   variant: 'solo' | 'combo'; // combo price calculation: product.comboPrice or solo + 40/50 EGP
   size?: 'Double' | 'Triple' | 'Quad' | 'Large' | 'X-Large'; // Double, Triple, Quad for Smash Burgers; Large/X-Large for onion rings
+  flavor?: 'Normal' | 'Spicy'; // Spice level / flavor selector (Spicy, Normal)
   removedIngredients: string[];
   addedAdditions: AdditionItem[];
   selectedSandwiches?: Record<string, string>; // e.g. { 'sandwich-1': 'Ranchavoo', 'sandwich-2': 'Chipotle' }
@@ -109,7 +110,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const sandwichesKey = options.selectedSandwiches
       ? Object.entries(options.selectedSandwiches).map(([k, v]) => `${k}:${v}`).sort().join('-')
       : '';
-    const cartItemId = `${product.id}-${options.variant}-${options.size || 'reg'}-${options.removedIngredients.sort().join('-')}-${options.addedAdditions.map((a) => a.id).sort().join('-')}-${sandwichesKey}-${options.specialInstructions || ''}`;
+    const cartItemId = `${product.id}-${options.variant}-${options.size || 'reg'}-${options.flavor || 'norm'}-${options.removedIngredients.sort().join('-')}-${options.addedAdditions.map((a) => a.id).sort().join('-')}-${sandwichesKey}-${options.specialInstructions || ''}`;
 
     setCart((prevCart) => {
       const existingIndex = prevCart.findIndex((item) => item.cartItemId === cartItemId);

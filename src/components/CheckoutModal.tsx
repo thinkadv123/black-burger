@@ -68,6 +68,11 @@ export function CheckoutModal() {
           optionTags.push(`${isAr ? '📏 الحجم' : '📏 Size'}: ${szName}`);
         }
 
+        if (item.options.flavor) {
+          const flavorLabel = isAr ? (item.options.flavor === 'Spicy' ? 'حار 🔥' : 'عادي') : item.options.flavor;
+          optionTags.push(`🌶️ *${isAr ? 'الطعم' : 'Flavor'}:* ${flavorLabel}`);
+        }
+
         if (item.options.selectedSandwiches) {
           const choices = Object.values(item.options.selectedSandwiches).join(' + ');
           optionTags.push(`🥪 *${isAr ? 'الساندوتشات المختارة' : 'Chosen Sandwiches'}:* ${choices}`);

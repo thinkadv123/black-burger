@@ -137,6 +137,11 @@ export function CartDrawer() {
                               {isAr ? 'الحجم:' : 'Size:'} {getOptionSizeName(item.options.size, isAr)}
                             </span>
                           )}
+                          {item.options.flavor && (
+                            <span className="text-[10px] font-extrabold bg-red-950/80 text-red-300 border border-red-800/60 px-2 py-0.5 rounded-full">
+                              {isAr ? 'الطعم:' : 'Flavor:'} {isAr ? (item.options.flavor === 'Spicy' ? 'حار 🔥' : 'عادي') : item.options.flavor}
+                            </span>
+                          )}
                           {item.options.addedAdditions?.map((add) => {
                             const addName = getAdditionName(add, isAr);
                             return (

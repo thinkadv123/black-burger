@@ -96,6 +96,11 @@ const translations: Record<string, Record<Language, string>> = {
   soldOut: { en: 'Sold Out', ar: 'نفذت الكمية' },
   exclusiveOffer: { en: 'EXCLUSIVE OFFER', ar: 'عرض حصري' },
   twoSizes: { en: '2 Sizes: Solo / Combo', ar: 'حجمين: ساندوتش / وجبة' },
+  chooseFlavor: { en: 'Choose Flavor / Level', ar: 'اختر الطعم (عادي / حار)' },
+  flavorNormal: { en: 'Normal', ar: 'عادي' },
+  flavorSpicy: { en: 'Spicy 🔥', ar: 'حار 🔥' },
+  flavorDescNormal: { en: 'Original non-spicy recipe', ar: 'الوصفة الأصلية العادية' },
+  flavorDescSpicy: { en: 'Extra spicy kick', ar: 'مع إضافة نكهة حارة' },
 
   // Cart Drawer & Checkout
   yourOrder: { en: 'Your Order', ar: 'طلباتك' },
