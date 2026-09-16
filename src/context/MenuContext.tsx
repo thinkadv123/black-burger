@@ -66,11 +66,18 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
               // Merge with local images to ensure fast rendering
               const firebaseProds: ProductItem[] = data.products;
               const mergedProducts = INITIAL_PRODUCTS.map((init) => {
-                const found = firebaseProds.find((p) => p.id === init.id);
+                const initKey = (init.name || init.name_en || init.id).trim().toUpperCase();
+                const found = firebaseProds.find(
+                  (p) =>
+                    p.id === init.id ||
+                    (p.name && p.name.trim().toUpperCase() === initKey) ||
+                    (p.name_en && p.name_en.trim().toUpperCase() === initKey)
+                );
                 if (found) {
                   return {
                     ...init,
                     ...found,
+                    id: init.id,
                     name_ar: found.name_ar || init.name_ar,
                     name_en: found.name_en || init.name_en || init.name,
                     description_ar: found.description_ar || init.description_ar,
@@ -90,7 +97,12 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
 
               // Also include any custom products added via admin that aren't in INITIAL_PRODUCTS
               const initialIds = new Set(INITIAL_PRODUCTS.map((p) => p.id));
-              const customProds = firebaseProds.filter((p) => !initialIds.has(p.id));
+              const initialKeys = new Set(INITIAL_PRODUCTS.map((p) => (p.name || p.name_en || p.id).trim().toUpperCase()));
+
+              const customProds = firebaseProds.filter((p) => {
+                const pKey = (p.name || p.name_en || p.id).trim().toUpperCase();
+                return !initialIds.has(p.id) && !initialKeys.has(pKey);
+              });
 
               setProducts([...mergedProducts, ...customProds]);
             }

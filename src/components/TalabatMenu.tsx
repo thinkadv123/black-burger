@@ -151,8 +151,18 @@ export function TalabatMenu() {
         {/* Display Filtered Category Items */}
         <div className="space-y-12 pt-2">
           {visibleCategories.map((category) => {
-            const categoryProducts = filteredProducts.filter((p) => p.category === category);
-            if (categoryProducts.length === 0) return null;
+            const rawCategoryProducts = filteredProducts.filter((p) => p.category === category);
+            if (rawCategoryProducts.length === 0) return null;
+
+            // Deduplicate products by name / id
+            const seenKeys = new Set<string>();
+            const categoryProducts = rawCategoryProducts.filter((p) => {
+              const key = (p.name || p.name_en || p.id).trim().toUpperCase();
+              if (seenKeys.has(key) || seenKeys.has(p.id)) return false;
+              seenKeys.add(key);
+              seenKeys.add(p.id);
+              return true;
+            });
 
             const isOfferCategory = category === 'Offers' || (category as string) === 'Online Only Offers';
             const catNote = isAr ? categoryNotesAr[category] : categoryNotesEn[category];
