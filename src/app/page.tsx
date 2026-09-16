@@ -66,7 +66,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex items-center gap-3 text-sm text-zinc-300">
                   <Clock className="w-5 h-5 text-red-500 shrink-0" />
-                  <span>{isAr ? 'ساعات العمل:' : 'Open Everyday:'} <strong>{isAr ? 'يومياً: 12:00 ظهراً – 3:00 صباحاً' : '12:00 PM – 3:00 AM'}</strong></span>
+                  <span>{isAr ? 'ساعات العمل:' : 'Open Everyday:'} <strong>{isAr ? 'يومياً: 4:00 عصراً – 4:00 صباحاً' : '4:00 PM – 4:00 AM'}</strong></span>
                 </div>
               </div>
 

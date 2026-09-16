@@ -151,7 +151,7 @@ const translations: Record<string, Record<Language, string>> = {
   },
   quickLinks: { en: 'Quick Links', ar: 'روابط سريعة' },
   openingHours: { en: 'Opening Hours', ar: 'ساعات العمل' },
-  everydayHours: { en: 'Everyday: 12:00 PM – 3:00 AM', ar: 'يومياً: 12:00 ظهراً – 3:00 صباحاً' },
+  everydayHours: { en: 'Everyday: 4:00 PM – 4:00 AM', ar: 'يومياً: 4:00 عصراً – 4:00 صباحاً' },
   deliveryZone: { en: 'Delivery Zone: Faisal, Haram & Nearby Giza Areas', ar: 'منطقة التوصيل: فيصل، الهرم، والمناطق المجاورة' },
   contactUs: { en: 'Contact Us', ar: 'تواصل معنا' },
   allRightsReserved: { en: 'All Rights Reserved.', ar: 'جميع الحقوق محفوظة.' },
