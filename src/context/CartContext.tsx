@@ -84,9 +84,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         const comboUpgrade = product.comboPrice ? (product.comboPrice - product.soloPrice) : 40;
         price += comboUpgrade;
       }
-    } else if (product.id === 'onion-rings' && product.sizePrices) {
+    } else if (product.sizePrices && product.sizePrices.length > 0) {
       const sizeObj = product.sizePrices.find((s) => s.label === options.size);
-      if (sizeObj) price = sizeObj.price;
+      if (sizeObj) {
+        price = sizeObj.price;
+      } else {
+        price = product.soloPrice;
+      }
     } else if (options.variant === 'combo' && product.comboPrice) {
       price = product.comboPrice;
     }

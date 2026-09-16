@@ -88,7 +88,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
       const comboUpgrade = product.comboPrice ? (product.comboPrice - product.soloPrice) : 40;
       basePrice += comboUpgrade;
     }
-  } else if (product.id === 'onion-rings' && product.sizePrices) {
+  } else if (product.sizePrices && product.sizePrices.length > 0) {
     const sz = product.sizePrices.find((s) => s.label === selectedSize);
     if (sz) basePrice = sz.price;
   } else if (variant === 'combo' && product.comboPrice) {
@@ -123,7 +123,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   const handleAddToCart = () => {
     const options: CartItemOption = {
       variant: isBurgerOrChicken || product.comboPrice ? variant : 'solo',
-      size: isSmashBurger ? smashSize : product.id === 'onion-rings' ? selectedSize : undefined,
+      size: isSmashBurger ? smashSize : product.sizePrices && product.sizePrices.length > 0 ? selectedSize : undefined,
       removedIngredients,
       addedAdditions: selectedAdditions,
       selectedSandwiches: Object.keys(selectedSandwiches).length > 0 ? selectedSandwiches : undefined,
@@ -438,8 +438,8 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
             </div>
           ) : null}
 
-          {/* Onion Rings Size Selection */}
-          {product.id === 'onion-rings' && product.sizePrices && (
+          {/* Size Selection for items with sizePrices (e.g. Onion Rings, French Fries) */}
+          {product.sizePrices && product.sizePrices.length > 0 && (
             <div className="space-y-3">
               <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
                 <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">

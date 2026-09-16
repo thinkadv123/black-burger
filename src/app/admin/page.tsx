@@ -59,7 +59,15 @@ export default function AdminDashboardPage() {
       setCurrentUser(user);
       setIsAuthLoading(false);
     });
-    return () => unsub();
+
+    const fallbackTimer = setTimeout(() => {
+      setIsAuthLoading(false);
+    }, 2000);
+
+    return () => {
+      unsub();
+      clearTimeout(fallbackTimer);
+    };
   }, []);
 
   const handleLogOut = async () => {
