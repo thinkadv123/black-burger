@@ -47,16 +47,22 @@ export function ProductCard({ product }: { product: ProductItem }) {
               <Flame className="w-3 h-3 text-[#CDB32D] fill-[#CDB32D]" /> SPICY
             </span>
           )}
-          {product.comboPrice && (
+          {product.sizePrices && product.sizePrices.length > 0 ? (
+            <span className="bg-zinc-950/90 text-[#03A0E5] border border-[#03A0E5]/50 font-black text-[10px] px-2.5 py-1 rounded-full uppercase shadow-md">
+              2 Sizes (Large / X-Large)
+            </span>
+          ) : product.comboPrice ? (
             <span className="bg-zinc-950/90 text-[#03A0E5] border border-[#03A0E5]/50 font-black text-[10px] px-2.5 py-1 rounded-full uppercase shadow-md">
               2 Sizes (Solo / Combo)
             </span>
-          )}
+          ) : null}
         </div>
 
         {/* Price tag badge floating */}
         <div className="absolute bottom-3 right-3 bg-zinc-950/90 border border-[#CDB32D]/50 text-[#CDB32D] font-black px-3 py-1 rounded-xl text-xs sm:text-sm shadow-lg backdrop-blur-md">
-          {product.comboPrice
+          {product.sizePrices && product.sizePrices.length > 0
+            ? `${product.sizePrices[0]?.price} / ${product.sizePrices[1]?.price} EGP`
+            : product.comboPrice
             ? `Solo ${product.soloPrice} / Combo ${product.comboPrice} EGP`
             : priceDisplay}
         </div>

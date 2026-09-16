@@ -234,6 +234,10 @@ export function TalabatMenu() {
                               <div className="absolute top-2.5 right-2.5 rtl:right-auto rtl:left-2.5 bg-neutral-900/90 border border-[#03A0E5]/60 text-[#03A0E5] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
                                 {t('smashSizesBadge')}
                               </div>
+                            ) : (product.sizePrices && product.sizePrices.length > 0) || (product.hasSizes && !product.comboPrice) ? (
+                              <div className="absolute top-2.5 right-2.5 rtl:right-auto rtl:left-2.5 bg-neutral-900/90 border border-[#03A0E5]/60 text-[#03A0E5] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
+                                {isAr ? 'حجمين: كبير / عائلي' : '2 SIZES: LARGE / X-LARGE'}
+                              </div>
                             ) : product.comboPrice ? (
                               <div className="absolute top-2.5 right-2.5 rtl:right-auto rtl:left-2.5 bg-neutral-900/90 border border-[#03A0E5]/60 text-[#03A0E5] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
                                 {t('twoSizes')}
@@ -275,6 +279,8 @@ export function TalabatMenu() {
                             <span className="text-[10px] text-neutral-400 font-mono block uppercase">
                               {product.category === 'Smash Burgers' || product.category === 'Exclusive'
                                 ? `${t('sizeDouble')} / ${t('sizeTriple')} / ${t('sizeQuad')}`
+                                : product.sizePrices && product.sizePrices.length > 0
+                                ? `${isAr ? 'كبير' : 'LARGE'}: ${product.sizePrices[0]?.price || product.soloPrice} ${isAr ? 'ج.م' : 'EGP'} | ${isAr ? 'عائلي' : 'X-LARGE'}: ${product.sizePrices[1]?.price || product.soloPrice + 20} ${isAr ? 'ج.م' : 'EGP'}`
                                 : product.comboPrice
                                 ? `${t('solo')}: ${product.soloPrice} ${isAr ? 'ج.م' : 'EGP'} | ${t('combo')}: ${product.comboPrice} ${isAr ? 'ج.م' : 'EGP'}`
                                 : product.hasSizes
@@ -284,6 +290,8 @@ export function TalabatMenu() {
                             <span className="font-mono font-extrabold text-sm sm:text-base text-[#CDB32D]">
                               {product.category === 'Smash Burgers' || product.category === 'Exclusive'
                                 ? `${t('from')} ${product.soloPrice} ${isAr ? 'ج.م' : 'EGP'}`
+                                : product.sizePrices && product.sizePrices.length > 0
+                                ? `${product.sizePrices[0]?.price || product.soloPrice} / ${product.sizePrices[1]?.price || product.soloPrice + 20} ${isAr ? 'ج.م' : 'EGP'}`
                                 : product.comboPrice
                                 ? `${product.soloPrice} / ${product.comboPrice} ${isAr ? 'ج.م' : 'EGP'}`
                                 : startingPriceText}

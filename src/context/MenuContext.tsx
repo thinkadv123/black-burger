@@ -78,6 +78,9 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
                     ingredients_ar: (found.ingredients_ar && found.ingredients_ar.length > 0) ? found.ingredients_ar : init.ingredients_ar,
                     ingredients_en: (found.ingredients_en && found.ingredients_en.length > 0) ? found.ingredients_en : (init.ingredients_en || init.ingredients),
                     bundleChoices: found.bundleChoices || init.bundleChoices,
+                    hasSizes: init.hasSizes !== undefined ? init.hasSizes : found.hasSizes,
+                    sizePrices: init.sizePrices || found.sizePrices,
+                    comboPrice: init.comboPrice !== undefined ? found.comboPrice : undefined,
                     // Keep original local image path if firebase image is missing
                     image: found.image || init.image,
                   };
