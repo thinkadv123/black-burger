@@ -76,6 +76,16 @@ export function getProductIngredients(product: ProductItem, isAr: boolean): stri
   return product.ingredients_en || product.ingredients || [];
 }
 
+export function getOptionSizeName(size: string | undefined, isAr: boolean): string {
+  if (!size) return '';
+  if (size === 'Double') return isAr ? 'دابل' : 'Double';
+  if (size === 'Triple') return isAr ? 'تريبل' : 'Triple';
+  if (size === 'Quad') return isAr ? 'كواد' : 'Quad';
+  if (size === 'Large') return isAr ? 'كبير' : 'Large';
+  if (size === 'X-Large') return isAr ? 'عائلي' : 'X-Large';
+  return size;
+}
+
 export function getCategoryDisplayName(cat: string, isAr: boolean): string {
   if (!isAr) {
     if (cat === 'Smash Burgers') return 'Beef Smash Burgers';

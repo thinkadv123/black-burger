@@ -228,11 +228,15 @@ export function TalabatMenu() {
                               </div>
                             )}
 
-                            {product.comboPrice && (
+                            {product.category === 'Smash Burgers' ? (
+                              <div className="absolute top-2.5 right-2.5 rtl:right-auto rtl:left-2.5 bg-neutral-900/90 border border-[#03A0E5]/60 text-[#03A0E5] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
+                                {t('smashSizesBadge')}
+                              </div>
+                            ) : product.comboPrice ? (
                               <div className="absolute top-2.5 right-2.5 rtl:right-auto rtl:left-2.5 bg-neutral-900/90 border border-[#03A0E5]/60 text-[#03A0E5] text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase shadow-md font-mono z-10">
                                 {t('twoSizes')}
                               </div>
-                            )}
+                            ) : null}
 
                             {isOfferCategory && (
                               <div className="absolute top-2.5 right-2.5 rtl:right-auto rtl:left-2.5 bg-neutral-900/90 border border-[#03A0E5]/80 text-[#03A0E5] text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase shadow-md font-mono z-10 tracking-wider">
@@ -267,14 +271,18 @@ export function TalabatMenu() {
                         <div className="pt-4 mt-3 border-t border-neutral-800/80 flex items-center justify-between gap-2">
                           <div>
                             <span className="text-[10px] text-neutral-400 font-mono block uppercase">
-                              {product.comboPrice
+                              {product.category === 'Smash Burgers'
+                                ? `${t('sizeDouble')} / ${t('sizeTriple')} / ${t('sizeQuad')}`
+                                : product.comboPrice
                                 ? `${t('solo')}: ${product.soloPrice} ${isAr ? 'ج.م' : 'EGP'} | ${t('combo')}: ${product.comboPrice} ${isAr ? 'ج.م' : 'EGP'}`
                                 : product.hasSizes
                                 ? t('multipleSizes')
                                 : t('price')}
                             </span>
                             <span className="font-mono font-extrabold text-sm sm:text-base text-[#CDB32D]">
-                              {product.comboPrice
+                              {product.category === 'Smash Burgers'
+                                ? `${t('from')} ${product.soloPrice} ${isAr ? 'ج.م' : 'EGP'}`
+                                : product.comboPrice
                                 ? `${product.soloPrice} / ${product.comboPrice} ${isAr ? 'ج.م' : 'EGP'}`
                                 : startingPriceText}
                             </span>

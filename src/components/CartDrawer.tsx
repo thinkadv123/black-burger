@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, Flame, Utensils } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
-import { getProductName, getAdditionName } from '@/data/menu';
+import { getProductName, getAdditionName, getOptionSizeName } from '@/data/menu';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function CartDrawer() {
@@ -134,7 +134,7 @@ export function CartDrawer() {
                           )}
                           {item.options.size && (
                             <span className="text-[10px] font-extrabold bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded-full">
-                              {isAr ? 'الحجم:' : 'Size:'} {item.options.size}
+                              {isAr ? 'الحجم:' : 'Size:'} {getOptionSizeName(item.options.size, isAr)}
                             </span>
                           )}
                           {item.options.addedAdditions?.map((add) => {

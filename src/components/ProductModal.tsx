@@ -28,6 +28,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   const { isAr, t } = useLanguage();
 
   const [variant, setVariant] = useState<'solo' | 'combo'>('combo');
+  const [smashSize, setSmashSize] = useState<'Double' | 'Triple' | 'Quad'>('Double');
   const [selectedSize, setSelectedSize] = useState<'Large' | 'X-Large'>('Large');
   const [activeIngredients, setActiveIngredients] = useState<string[]>([]);
   const [selectedAdditions, setSelectedAdditions] = useState<AdditionItem[]>([]);
@@ -39,6 +40,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   useEffect(() => {
     if (product) {
       setVariant('combo');
+      setSmashSize('Double');
       setSelectedSize('Large');
       setActiveIngredients(getProductIngredients(product, isAr) || []);
       setSelectedAdditions([]);
@@ -67,14 +69,26 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
 
   const effectiveBundleChoices = product.bundleChoices || INITIAL_PRODUCTS.find((p) => p.id === product.id)?.bundleChoices;
 
+  const isSmashBurger = product.category === 'Smash Burgers';
   const isBurgerOrChicken =
-    product.category === 'Smash Burgers' || product.category === 'Chicken Collection';
+    isSmashBurger || product.category === 'Chicken Collection';
 
   const isOfferProduct = product.category === 'Offers' || (product.category as string) === 'Online Only Offers';
 
   // Calculate live item unit price
   let basePrice = product.soloPrice;
-  if (product.id === 'onion-rings' && product.sizePrices) {
+  if (isSmashBurger) {
+    if (smashSize === 'Triple') {
+      basePrice += 40;
+    } else if (smashSize === 'Quad') {
+      basePrice += 80;
+    }
+
+    if (variant === 'combo') {
+      const comboUpgrade = product.comboPrice ? (product.comboPrice - product.soloPrice) : 40;
+      basePrice += comboUpgrade;
+    }
+  } else if (product.id === 'onion-rings' && product.sizePrices) {
     const sz = product.sizePrices.find((s) => s.label === selectedSize);
     if (sz) basePrice = sz.price;
   } else if (variant === 'combo' && product.comboPrice) {
@@ -109,7 +123,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
   const handleAddToCart = () => {
     const options: CartItemOption = {
       variant: isBurgerOrChicken || product.comboPrice ? variant : 'solo',
-      size: product.id === 'onion-rings' ? selectedSize : undefined,
+      size: isSmashBurger ? smashSize : product.id === 'onion-rings' ? selectedSize : undefined,
       removedIngredients,
       addedAdditions: selectedAdditions,
       selectedSandwiches: Object.keys(selectedSandwiches).length > 0 ? selectedSandwiches : undefined,
@@ -246,7 +260,134 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
           )}
 
           {/* SECTION 1: CHOOSE YOUR SIZE / VARIANT */}
-          {isBurgerOrChicken && product.comboPrice && (
+          {isSmashBurger ? (
+            <div className="space-y-6">
+              {/* Step 1: Patty Size Selection */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
+                  <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                    <span className="w-2 h-4 bg-red-600 rounded-sm" />
+                    {t('choosePattySize')}
+                  </h3>
+                  <span className="text-[10px] bg-red-950 text-red-400 border border-red-800 px-2 py-0.5 rounded font-mono font-bold uppercase">
+                    {t('required')}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-1">
+                  {/* Double */}
+                  <button
+                    type="button"
+                    onClick={() => setSmashSize('Double')}
+                    className={`p-3 sm:p-4 rounded-xl border text-left rtl:text-right transition-all ${
+                      smashSize === 'Double'
+                        ? 'border-red-600 bg-red-950/40 text-white ring-1 ring-red-600 shadow-md'
+                        : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
+                    }`}
+                  >
+                    <div className="font-mono font-black text-sm uppercase tracking-wide">
+                      {t('sizeDouble')}
+                    </div>
+                    <div className="text-[11px] text-neutral-400 mt-0.5 leading-snug font-sans">
+                      {t('pattyDoubleDesc')}
+                    </div>
+                    <div className="text-xs sm:text-sm font-bold font-mono text-yellow-400 mt-2">
+                      {product.soloPrice} {isAr ? 'ج.م' : 'EGP'}
+                    </div>
+                  </button>
+
+                  {/* Triple */}
+                  <button
+                    type="button"
+                    onClick={() => setSmashSize('Triple')}
+                    className={`p-3 sm:p-4 rounded-xl border text-left rtl:text-right transition-all ${
+                      smashSize === 'Triple'
+                        ? 'border-red-600 bg-red-950/40 text-white ring-1 ring-red-600 shadow-md'
+                        : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
+                    }`}
+                  >
+                    <div className="font-mono font-black text-sm uppercase tracking-wide">
+                      {t('sizeTriple')}
+                    </div>
+                    <div className="text-[11px] text-neutral-400 mt-0.5 leading-snug font-sans">
+                      {t('pattyTripleDesc')}
+                    </div>
+                    <div className="text-xs sm:text-sm font-bold font-mono text-yellow-400 mt-2">
+                      {product.soloPrice + 40} {isAr ? 'ج.م' : 'EGP'}
+                    </div>
+                  </button>
+
+                  {/* Quad */}
+                  <button
+                    type="button"
+                    onClick={() => setSmashSize('Quad')}
+                    className={`p-3 sm:p-4 rounded-xl border text-left rtl:text-right transition-all ${
+                      smashSize === 'Quad'
+                        ? 'border-red-600 bg-red-950/40 text-white ring-1 ring-red-600 shadow-md'
+                        : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
+                    }`}
+                  >
+                    <div className="font-mono font-black text-sm uppercase tracking-wide">
+                      {t('sizeQuad')}
+                    </div>
+                    <div className="text-[11px] text-neutral-400 mt-0.5 leading-snug font-sans">
+                      {t('pattyQuadDesc')}
+                    </div>
+                    <div className="text-xs sm:text-sm font-bold font-mono text-yellow-400 mt-2">
+                      {product.soloPrice + 80} {isAr ? 'ج.م' : 'EGP'}
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              {/* Step 2: Meal Option Selection */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
+                  <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
+                    <span className="w-2 h-4 bg-red-600 rounded-sm" />
+                    {t('chooseMealOption')}
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setVariant('combo')}
+                    className={`p-4 rounded-xl border text-left rtl:text-right transition-all relative ${
+                      variant === 'combo'
+                        ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600 shadow-md'
+                        : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
+                    }`}
+                  >
+                    <span className="absolute -top-2.5 right-3 rtl:right-auto rtl:left-3 px-2 py-0.5 rounded-full bg-red-600 text-[10px] font-bold text-white uppercase tracking-wider font-mono">
+                      {t('bestValue')}
+                    </span>
+                    <div className="font-mono font-black text-sm uppercase tracking-wide">{t('combo')}</div>
+                    <div className="text-xs text-neutral-300 mt-1">{t('comboDesc')}</div>
+                    <div className="text-xs font-bold font-mono text-amber-400 mt-2">
+                      +{(product.comboPrice ? product.comboPrice - product.soloPrice : 40)} {isAr ? 'ج.م للوجبة' : 'EGP for combo'}
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setVariant('solo')}
+                    className={`p-4 rounded-xl border text-left rtl:text-right transition-all ${
+                      variant === 'solo'
+                        ? 'border-red-600 bg-red-950/30 text-white ring-1 ring-red-600 shadow-md'
+                        : 'border-neutral-800 bg-neutral-900/50 text-neutral-400 hover:border-neutral-700'
+                    }`}
+                  >
+                    <div className="font-mono font-black text-sm uppercase tracking-wide">{t('solo')}</div>
+                    <div className="text-xs text-neutral-400 mt-1">{t('soloDesc')}</div>
+                    <div className="text-xs font-bold font-mono text-neutral-400 mt-2">
+                      {isAr ? 'بدون إضافات وجبة' : 'No combo upgrade'}
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : isBurgerOrChicken && product.comboPrice ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between border-b border-neutral-800 pb-2">
                 <h3 className="text-sm font-bold text-neutral-100 uppercase tracking-wider font-mono flex items-center gap-2">
@@ -295,7 +436,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                 </button>
               </div>
             </div>
-          )}
+          ) : null}
 
           {/* Onion Rings Size Selection */}
           {product.id === 'onion-rings' && product.sizePrices && (

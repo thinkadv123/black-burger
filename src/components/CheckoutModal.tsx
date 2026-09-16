@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { X, CheckCircle2, Phone, MapPin, Send, Truck, ShieldCheck, MessageSquare } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
-import { getProductName, getAdditionName } from '@/data/menu';
+import { getProductName, getAdditionName, getOptionSizeName } from '@/data/menu';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
@@ -64,7 +64,8 @@ export function CheckoutModal() {
         }
 
         if (item.options.size) {
-          optionTags.push(`${isAr ? '📏 الحجم' : '📏 Size'}: ${item.options.size}`);
+          const szName = getOptionSizeName(item.options.size, isAr);
+          optionTags.push(`${isAr ? '📏 الحجم' : '📏 Size'}: ${szName}`);
         }
 
         if (item.options.selectedSandwiches) {

@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 export interface CartItemOption {
   variant: 'solo' | 'combo'; // combo price calculation: product.comboPrice or solo + 40/50 EGP
-  size?: 'Large' | 'X-Large'; // for onion rings: 60 or 80 EGP
+  size?: 'Double' | 'Triple' | 'Quad' | 'Large' | 'X-Large'; // Double, Triple, Quad for Smash Burgers; Large/X-Large for onion rings
   removedIngredients: string[];
   addedAdditions: AdditionItem[];
   selectedSandwiches?: Record<string, string>; // e.g. { 'sandwich-1': 'Ranchavoo', 'sandwich-2': 'Chipotle' }
@@ -71,8 +71,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const calculateUnitPrice = (product: ProductItem, options: CartItemOption): number => {
     let price = product.soloPrice;
 
-    // Handle Onion Rings sizes
-    if (product.id === 'onion-rings' && product.sizePrices) {
+    // Handle Smash Burgers sizes (Double, Triple, Quad) & Solo / Combo
+    if (product.category === 'Smash Burgers') {
+      const sz = options.size || 'Double';
+      if (sz === 'Triple') {
+        price += 40;
+      } else if (sz === 'Quad') {
+        price += 80;
+      }
+
+      if (options.variant === 'combo') {
+        const comboUpgrade = product.comboPrice ? (product.comboPrice - product.soloPrice) : 40;
+        price += comboUpgrade;
+      }
+    } else if (product.id === 'onion-rings' && product.sizePrices) {
       const sizeObj = product.sizePrices.find((s) => s.label === options.size);
       if (sizeObj) price = sizeObj.price;
     } else if (options.variant === 'combo' && product.comboPrice) {
