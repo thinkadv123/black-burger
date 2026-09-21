@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useMenu } from '@/context/MenuContext';
-import { ProductItem, CATEGORIES_LIST, getProductName, getProductDescription } from '@/data/menu';
+import { ProductItem, CATEGORIES_LIST } from '@/data/menu';
 import {
   Settings,
   LogOut,
@@ -17,11 +17,15 @@ import {
   Flame,
   X,
   Globe,
+  ShoppingBag,
+  UtensilsCrossed,
 } from 'lucide-react';
 import { MediaUploadInput } from '@/components/admin/MediaUploadInput';
 import { AdminLogin } from '@/components/admin/AdminLogin';
+import { OrdersManager } from '@/components/admin/OrdersManager';
 import { onAuthStateChanged, signOut, User } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { toast } from 'sonner';
 
 export default function AdminDashboardPage() {
@@ -30,6 +34,12 @@ export default function AdminDashboardPage() {
 
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
+
+  // Main Active Tab: 'orders' or 'menu'
+  const [activeMainTab, setActiveMainTab] = useState<'orders' | 'menu'>('orders');
+
+  // Active Orders Counter for Header Badge
+  const [newOrdersCount, setNewOrdersCount] = useState<number>(0);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [editingProduct, setEditingProduct] = useState<ProductItem | null>(null);
@@ -69,6 +79,28 @@ export default function AdminDashboardPage() {
       clearTimeout(fallbackTimer);
     };
   }, []);
+
+  // Listen to new incoming orders count from Firestore
+  useEffect(() => {
+    if (!currentUser) return;
+
+    const unsubOrders = onSnapshot(
+      collection(db, 'orders'),
+      (snapshot) => {
+        let count = 0;
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          if (data.status === 'New') {
+            count++;
+          }
+        });
+        setNewOrdersCount(count);
+      },
+      (err) => console.error('Orders snapshot count error:', err)
+    );
+
+    return () => unsubOrders();
+  }, [currentUser]);
 
   const handleLogOut = async () => {
     try {
@@ -174,14 +206,14 @@ export default function AdminDashboardPage() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-neutral-800 pb-6">
           <div>
             <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-red-500 uppercase tracking-widest">
-              <Settings className="w-4 h-4" /> Bilingual Product Admin
+              <Settings className="w-4 h-4" /> Black Burger Store Admin
               <span className="bg-emerald-950/80 border border-emerald-500/60 text-emerald-400 font-extrabold px-2.5 py-0.5 rounded-full text-[10px] flex items-center gap-1.5 shadow-sm">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                Firebase DB: blackburger
+                Firebase DB Connected
               </span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-black uppercase text-white mt-1">
-              BLACK BURGER <span className="text-red-600">MENU MANAGER</span>
+              BLACK BURGER <span className="text-red-600">ADMIN CONTROL</span>
             </h1>
             <div className="flex items-center gap-2 text-xs text-neutral-400 mt-1">
               <UserCheck className="w-3.5 h-3.5 text-green-400" />
@@ -199,168 +231,213 @@ export default function AdminDashboardPage() {
               Log Out
             </button>
 
-            <button
-              type="button"
-              onClick={resetToDefaultMenu}
-              className="bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-300 text-xs px-4 py-2.5 rounded-xl transition-all flex items-center gap-2"
-            >
-              <RefreshCw className="w-3.5 h-3.5 text-yellow-400" />
-              Reset Official Menu
-            </button>
+            {activeMainTab === 'menu' && (
+              <>
+                <button
+                  type="button"
+                  onClick={resetToDefaultMenu}
+                  className="bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-300 text-xs px-4 py-2.5 rounded-xl transition-all flex items-center gap-2"
+                >
+                  <RefreshCw className="w-3.5 h-3.5 text-yellow-400" />
+                  Reset Official Menu
+                </button>
 
-            <button
-              type="button"
-              onClick={() => setIsAddingNew(true)}
-              className="bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-lg shadow-red-950/50"
-            >
-              <Plus className="w-4 h-4" /> Add New Item
-            </button>
+                <button
+                  type="button"
+                  onClick={() => setIsAddingNew(true)}
+                  className="bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase px-4 py-2.5 rounded-xl transition-all flex items-center gap-1.5 shadow-lg shadow-red-950/50"
+                >
+                  <Plus className="w-4 h-4" /> Add New Item
+                </button>
+              </>
+            )}
           </div>
         </div>
 
-        {/* Category Filter Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar">
+        {/* Main Tabs Navigation: ORDERS vs MENU MANAGER */}
+        <div className="flex items-center gap-3 border-b border-neutral-800 pb-3">
           <button
-            onClick={() => setSelectedCategory('All')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase transition-all ${
-              selectedCategory === 'All'
-                ? 'bg-red-600 text-white'
+            onClick={() => setActiveMainTab('orders')}
+            className={`px-6 py-3 rounded-2xl text-sm font-black uppercase tracking-wider transition-all flex items-center gap-2.5 relative ${
+              activeMainTab === 'orders'
+                ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-950/50 border border-red-500/40'
                 : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white'
             }`}
           >
-            All Categories ({products.length})
+            <ShoppingBag className="w-4 h-4" />
+            <span>Orders</span>
+            {newOrdersCount > 0 && (
+              <span className="bg-amber-400 text-black font-black text-xs px-2 py-0.5 rounded-full animate-bounce">
+                {newOrdersCount} NEW
+              </span>
+            )}
           </button>
-          {CATEGORIES_LIST.map((cat) => {
-            const count = products.filter((p) => p.category === cat).length;
-            return (
+
+          <button
+            onClick={() => setActiveMainTab('menu')}
+            className={`px-6 py-3 rounded-2xl text-sm font-black uppercase tracking-wider transition-all flex items-center gap-2.5 ${
+              activeMainTab === 'menu'
+                ? 'bg-gradient-to-r from-red-600 to-red-800 text-white shadow-lg shadow-red-950/50 border border-red-500/40'
+                : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white'
+            }`}
+          >
+            <UtensilsCrossed className="w-4 h-4" />
+            <span>Menu Manager</span>
+            <span className="text-xs font-normal text-neutral-400">({products.length})</span>
+          </button>
+        </div>
+
+        {/* TAB 1: ORDERS MANAGER */}
+        {activeMainTab === 'orders' && <OrdersManager />}
+
+        {/* TAB 2: MENU MANAGER */}
+        {activeMainTab === 'menu' && (
+          <div className="space-y-6">
+            {/* Category Filter Tabs */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar">
               <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold uppercase transition-all whitespace-nowrap ${
-                  selectedCategory === cat
+                onClick={() => setSelectedCategory('All')}
+                className={`px-4 py-2 rounded-xl text-xs font-bold uppercase transition-all ${
+                  selectedCategory === 'All'
                     ? 'bg-red-600 text-white'
                     : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white'
                 }`}
               >
-                {cat} ({count})
+                All Categories ({products.length})
               </button>
-            );
-          })}
-        </div>
+              {CATEGORIES_LIST.map((cat) => {
+                const count = products.filter((p) => p.category === cat).length;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold uppercase transition-all whitespace-nowrap ${
+                      selectedCategory === cat
+                        ? 'bg-red-600 text-white'
+                        : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white'
+                    }`}
+                  >
+                    {cat} ({count})
+                  </button>
+                );
+              })}
+            </div>
 
-        {/* Products Table / Cards List */}
-        <div className="bg-neutral-900/60 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl">
-          <div className="p-4 bg-neutral-900 border-b border-neutral-800 flex items-center justify-between text-xs text-neutral-400 uppercase font-bold">
-            <span>Product List ({filteredProducts.length} items)</span>
-            <span>Bilingual Content & Controls</span>
-          </div>
+            {/* Products Table / Cards List */}
+            <div className="bg-neutral-900/60 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl">
+              <div className="p-4 bg-neutral-900 border-b border-neutral-800 flex items-center justify-between text-xs text-neutral-400 uppercase font-bold">
+                <span>Product List ({filteredProducts.length} items)</span>
+                <span>Bilingual Content & Controls</span>
+              </div>
 
-          <div className="divide-y divide-neutral-800/80">
-            {filteredProducts.map((product) => (
-              <div
-                key={product.id}
-                className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-neutral-900/80 transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-neutral-950 shrink-0 border border-neutral-800 flex items-center justify-center">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-contain"
-                    />
-                    {!product.isAvailable && (
-                      <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
-                        <EyeOff className="w-4 h-4 text-red-500" />
+              <div className="divide-y divide-neutral-800/80">
+                {filteredProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-neutral-900/80 transition-colors"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-neutral-950 shrink-0 border border-neutral-800 flex items-center justify-center">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-contain"
+                        />
+                        {!product.isAvailable && (
+                          <div className="absolute inset-0 bg-black/70 flex items-center justify-center">
+                            <EyeOff className="w-4 h-4 text-red-500" />
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
 
-                  <div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="font-extrabold text-base text-white">
-                        {product.name_en || product.name}
-                      </h3>
-                      {product.name_ar && (
-                        <span className="text-sm font-bold text-amber-400 bg-amber-950/60 border border-amber-800/60 px-2 py-0.5 rounded">
-                          {product.name_ar}
-                        </span>
-                      )}
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-neutral-800 text-neutral-400 uppercase font-bold">
-                        {product.category}
-                      </span>
-                      {product.spicy && (
-                        <span className="text-[10px] px-2 py-0.5 rounded bg-red-950 text-red-400 border border-red-800 uppercase flex items-center gap-0.5">
-                          <Flame className="w-3 h-3 text-red-500" /> Spicy
-                        </span>
-                      )}
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h3 className="font-extrabold text-base text-white">
+                            {product.name_en || product.name}
+                          </h3>
+                          {product.name_ar && (
+                            <span className="text-sm font-bold text-amber-400 bg-amber-950/60 border border-amber-800/60 px-2 py-0.5 rounded">
+                              {product.name_ar}
+                            </span>
+                          )}
+                          <span className="text-[10px] px-2 py-0.5 rounded bg-neutral-800 text-neutral-400 uppercase font-bold">
+                            {product.category}
+                          </span>
+                          {product.spicy && (
+                            <span className="text-[10px] px-2 py-0.5 rounded bg-red-950 text-red-400 border border-red-800 uppercase flex items-center gap-0.5">
+                              <Flame className="w-3 h-3 text-red-500" /> Spicy
+                            </span>
+                          )}
+                        </div>
+
+                        <p className="text-xs text-neutral-400 line-clamp-1 mt-1 max-w-lg font-sans">
+                          <strong className="text-zinc-300">EN:</strong> {product.description_en || product.description || product.ingredients?.join(', ')} | <strong className="text-amber-400">AR:</strong> {product.description_ar || product.ingredients_ar?.join(' • ') || '—'}
+                        </p>
+                      </div>
                     </div>
 
-                    <p className="text-xs text-neutral-400 line-clamp-1 mt-1 max-w-lg font-sans">
-                      <strong className="text-zinc-300">EN:</strong> {product.description_en || product.description || product.ingredients?.join(', ')} | <strong className="text-amber-400">AR:</strong> {product.description_ar || product.ingredients_ar?.join(' • ') || '—'}
-                    </p>
+                    {/* Pricing & Actions */}
+                    <div className="flex items-center gap-4 justify-between sm:justify-end">
+                      <div className="text-right">
+                        <span className="text-xs text-neutral-400 block">
+                          Solo: <strong className="text-yellow-400">{product.soloPrice} EGP</strong>
+                        </span>
+                        {product.comboPrice && (
+                          <span className="text-[11px] text-neutral-500 block">
+                            Combo: <strong className="text-red-400">{product.comboPrice} EGP</strong>
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        {/* Toggle Availability */}
+                        <button
+                          type="button"
+                          onClick={() => toggleAvailability(product.id)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition-colors flex items-center gap-1.5 ${
+                            product.isAvailable
+                              ? 'bg-green-950/80 text-green-400 border border-green-800'
+                              : 'bg-red-950/80 text-red-400 border border-red-800'
+                          }`}
+                        >
+                          {product.isAvailable ? (
+                            <>
+                              <Eye className="w-3.5 h-3.5" /> Available
+                            </>
+                          ) : (
+                            <>
+                              <EyeOff className="w-3.5 h-3.5" /> Sold Out
+                            </>
+                          )}
+                        </button>
+
+                        {/* Edit button */}
+                        <button
+                          type="button"
+                          onClick={() => setEditingProduct(product)}
+                          className="p-2 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-white transition-colors"
+                          aria-label="Edit item"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                        </button>
+
+                        {/* Delete button */}
+                        <button
+                          type="button"
+                          onClick={() => deleteProduct(product.id)}
+                          className="p-2 rounded-lg bg-neutral-800 hover:bg-red-950 text-neutral-400 hover:text-red-400 transition-colors"
+                          aria-label="Delete item"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-
-                {/* Pricing & Actions */}
-                <div className="flex items-center gap-4 justify-between sm:justify-end">
-                  <div className="text-right">
-                    <span className="text-xs text-neutral-400 block">
-                      Solo: <strong className="text-yellow-400">{product.soloPrice} EGP</strong>
-                    </span>
-                    {product.comboPrice && (
-                      <span className="text-[11px] text-neutral-500 block">
-                        Combo: <strong className="text-red-400">{product.comboPrice} EGP</strong>
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    {/* Toggle Availability */}
-                    <button
-                      type="button"
-                      onClick={() => toggleAvailability(product.id)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition-colors flex items-center gap-1.5 ${
-                        product.isAvailable
-                          ? 'bg-green-950/80 text-green-400 border border-green-800'
-                          : 'bg-red-950/80 text-red-400 border border-red-800'
-                      }`}
-                    >
-                      {product.isAvailable ? (
-                        <>
-                          <Eye className="w-3.5 h-3.5" /> Available
-                        </>
-                      ) : (
-                        <>
-                          <EyeOff className="w-3.5 h-3.5" /> Sold Out
-                        </>
-                      )}
-                    </button>
-
-                    {/* Edit button */}
-                    <button
-                      type="button"
-                      onClick={() => setEditingProduct(product)}
-                      className="p-2 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-white transition-colors"
-                      aria-label="Edit item"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-
-                    {/* Delete button */}
-                    <button
-                      type="button"
-                      onClick={() => deleteProduct(product.id)}
-                      className="p-2 rounded-lg bg-neutral-800 hover:bg-red-950 text-neutral-400 hover:text-red-400 transition-colors"
-                      aria-label="Delete item"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* EDIT BILINGUAL MODAL */}
         {editingProduct && (
@@ -659,7 +736,7 @@ export default function AdminDashboardPage() {
                       onChange={(e) =>
                         setNewProd({ ...newProd, soloPrice: Number(e.target.value) })
                       }
-                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-mono"
+                      className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2 text-white font-mono"
                     />
                   </div>
 
@@ -674,7 +751,7 @@ export default function AdminDashboardPage() {
                           comboPrice: e.target.value ? Number(e.target.value) : undefined,
                         })
                       }
-                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-white font-mono"
+                      className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2 text-white font-mono"
                     />
                   </div>
                 </div>

@@ -7,6 +7,8 @@ import { useLanguage } from '@/context/LanguageContext';
 import { getProductName, getAdditionName, getOptionSizeName } from '@/data/menu';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
+import { db } from '@/lib/firebase';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 export function CheckoutModal() {
   const {
@@ -127,7 +129,7 @@ ${itemsList}
     return encodeURIComponent(message);
   };
 
-  const handleSubmitOrder = (e: React.FormEvent) => {
+  const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.phone || !formData.address) {
       return;
@@ -137,17 +139,65 @@ ${itemsList}
     const newOrderId = `BB-${Math.floor(1000 + Math.random() * 9000)}`;
     setOrderId(newOrderId);
 
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setOrderCompleted(true);
-      triggerConfetti();
+    // Prepare clean Order object for Firestore & local storage
+    const orderItems = cart.map((item) => ({
+      id: item.product.id,
+      name: item.product.name_en || item.product.name,
+      name_ar: item.product.name_ar || '',
+      quantity: item.quantity,
+      unitPrice: item.unitPrice,
+      totalPrice: item.unitPrice * item.quantity,
+      variant: item.options.variant || 'solo',
+      size: item.options.size || null,
+      flavor: item.options.flavor || null,
+      selectedSandwiches: item.options.selectedSandwiches || null,
+      addedAdditions: item.options.addedAdditions?.map((a) => ({
+        name: getAdditionName(a, isAr),
+        price: a.price,
+      })) || [],
+      removedIngredients: item.options.removedIngredients || [],
+      specialInstructions: item.options.specialInstructions || '',
+    }));
 
-      // Open WhatsApp with formatted order text
-      const text = formatWhatsAppMessage(newOrderId);
-      window.open(`https://wa.me/201144484008?text=${text}`, '_blank');
+    const orderData = {
+      id: newOrderId,
+      customerName: formData.name,
+      customerPhone: formData.phone,
+      customerAddress: formData.address,
+      customerNotes: formData.notes || '',
+      items: orderItems,
+      subtotalPrice,
+      deliveryFee,
+      totalPrice,
+      status: 'New',
+      createdAt: new Date().toISOString(),
+      timestamp: serverTimestamp(),
+    };
 
-      clearCart();
-    }, 1000);
+    try {
+      // Save order document in Firestore 'orders' collection
+      await setDoc(doc(db, 'orders', newOrderId), orderData);
+    } catch (err) {
+      console.error('Error saving order to Firestore:', err);
+    }
+
+    // Save fallback in localStorage
+    try {
+      const existingBackup = JSON.parse(localStorage.getItem('bb_orders_backup') || '[]');
+      localStorage.setItem('bb_orders_backup', JSON.stringify([orderData, ...existingBackup]));
+    } catch (err) {
+      console.error('Error saving backup order to localStorage:', err);
+    }
+
+    setIsSubmitting(false);
+    setOrderCompleted(true);
+    triggerConfetti();
+
+    // Open WhatsApp with formatted order text
+    const text = formatWhatsAppMessage(newOrderId);
+    window.open(`https://wa.me/201144484008?text=${text}`, '_blank');
+
+    clearCart();
   };
 
   const handleClose = () => {
