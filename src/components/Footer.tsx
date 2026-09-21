@@ -153,9 +153,23 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-4">
           <p>© {year} BLACK BURGER. {t('allRightsReserved')}</p>
-          <p className="flex items-center gap-1">
-            {isAr ? 'تم التطوير بـ' : 'Crafted with'} <Heart className="w-3.5 h-3.5 text-red-600 fill-red-600" /> {isAr ? 'لعشاق البرجر المشوي.' : 'for smash burger lovers.'}
-          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <p className="flex items-center gap-1">
+              {isAr ? 'تم التطوير بـ' : 'Crafted with'} <Heart className="w-3.5 h-3.5 text-red-600 fill-red-600" /> {isAr ? 'لعشاق البرجر المشوي.' : 'for smash burger lovers.'}
+            </p>
+            <span className="hidden sm:inline text-zinc-700">•</span>
+            <p>
+              Designed by{' '}
+              <a
+                href="https://thinkadv.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-zinc-300 hover:text-[#03A0E5] transition-colors underline underline-offset-2"
+              >
+                Thinkadv
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
