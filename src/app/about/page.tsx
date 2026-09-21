@@ -80,8 +80,8 @@ export default function AboutPage() {
 
           <div className="relative h-80 sm:h-96 rounded-3xl overflow-hidden border border-zinc-800 shadow-[0_0_40px_rgba(220,38,38,0.3)]">
             <Image
-              src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1000&auto=format&fit=crop"
-              alt="Smash Cooking Technique"
+              src="/images/about-delivery.jpg"
+              alt="Black Burger Feast & Delivery"
               fill
               className="object-cover"
             />
