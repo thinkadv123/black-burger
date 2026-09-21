@@ -102,7 +102,7 @@ export function ScrollStorytelling() {
             className="relative h-[400px] sm:h-[500px] rounded-3xl overflow-hidden border border-zinc-800 shadow-[0_0_40px_rgba(220,38,38,0.3)] group"
           >
             <Image
-              src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=1000&auto=format&fit=crop"
+              src="/images/built-with-quality.jpg"
               alt="Built with quality smash burger"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700"
