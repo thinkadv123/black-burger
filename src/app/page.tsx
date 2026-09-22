@@ -91,7 +91,7 @@ export default function HomePage() {
             {/* Visual Banner */}
             <div className="relative h-72 sm:h-96 w-full rounded-2xl overflow-hidden border border-zinc-800 shadow-xl">
               <Image
-                src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1000&auto=format&fit=crop"
+                src="/images/about-delivery.jpg"
                 alt="Black Burger Faisal"
                 fill
                 className="object-cover"
