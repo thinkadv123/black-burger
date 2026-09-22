@@ -63,48 +63,39 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
           if (snapshot.exists()) {
             const data = snapshot.data();
             if (data && Array.isArray(data.products)) {
-              // Merge with local images to ensure fast rendering
+              // Merge with local defaults for images & translations, but honor deletions in Firebase
               const firebaseProds: ProductItem[] = data.products;
-              const mergedProducts = INITIAL_PRODUCTS.map((init) => {
-                const initKey = (init.name || init.name_en || init.id).trim().toUpperCase();
-                const found = firebaseProds.find(
-                  (p) =>
-                    p.id === init.id ||
-                    (p.name && p.name.trim().toUpperCase() === initKey) ||
-                    (p.name_en && p.name_en.trim().toUpperCase() === initKey)
+              const mergedProducts = firebaseProds.map((p) => {
+                const pKey = (p.name || p.name_en || p.id).trim().toUpperCase();
+                const init = INITIAL_PRODUCTS.find(
+                  (i) =>
+                    i.id === p.id ||
+                    (i.name && i.name.trim().toUpperCase() === pKey) ||
+                    (i.name_en && i.name_en.trim().toUpperCase() === pKey)
                 );
-                if (found) {
+                if (init) {
                   return {
                     ...init,
-                    ...found,
-                    id: init.id,
-                    name_ar: found.name_ar || init.name_ar,
-                    name_en: found.name_en || init.name_en || init.name,
-                    description_ar: found.description_ar || init.description_ar,
-                    description_en: found.description_en || init.description_en || init.description,
-                    ingredients_ar: (found.ingredients_ar && found.ingredients_ar.length > 0) ? found.ingredients_ar : init.ingredients_ar,
-                    ingredients_en: (found.ingredients_en && found.ingredients_en.length > 0) ? found.ingredients_en : (init.ingredients_en || init.ingredients),
-                    bundleChoices: found.bundleChoices || init.bundleChoices,
-                    hasSizes: init.hasSizes !== undefined ? init.hasSizes : found.hasSizes,
-                    sizePrices: init.sizePrices || found.sizePrices,
-                    comboPrice: init.comboPrice !== undefined ? found.comboPrice : undefined,
+                    ...p,
+                    id: p.id || init.id,
+                    name_ar: p.name_ar || init.name_ar,
+                    name_en: p.name_en || init.name_en || init.name,
+                    description_ar: p.description_ar || init.description_ar,
+                    description_en: p.description_en || init.description_en || init.description,
+                    ingredients_ar: (p.ingredients_ar && p.ingredients_ar.length > 0) ? p.ingredients_ar : init.ingredients_ar,
+                    ingredients_en: (p.ingredients_en && p.ingredients_en.length > 0) ? p.ingredients_en : (init.ingredients_en || init.ingredients),
+                    bundleChoices: p.bundleChoices || init.bundleChoices,
+                    hasSizes: p.hasSizes !== undefined ? p.hasSizes : init.hasSizes,
+                    sizePrices: p.sizePrices || init.sizePrices,
+                    comboPrice: p.comboPrice !== undefined ? p.comboPrice : init.comboPrice,
                     // Keep original local image path if firebase image is missing
-                    image: found.image || init.image,
+                    image: p.image || init.image,
                   };
                 }
-                return init;
+                return p;
               });
 
-              // Also include any custom products added via admin that aren't in INITIAL_PRODUCTS
-              const initialIds = new Set(INITIAL_PRODUCTS.map((p) => p.id));
-              const initialKeys = new Set(INITIAL_PRODUCTS.map((p) => (p.name || p.name_en || p.id).trim().toUpperCase()));
-
-              const customProds = firebaseProds.filter((p) => {
-                const pKey = (p.name || p.name_en || p.id).trim().toUpperCase();
-                return !initialIds.has(p.id) && !initialKeys.has(pKey);
-              });
-
-              setProducts([...mergedProducts, ...customProds]);
+              setProducts(mergedProducts);
             }
 
             if (data && Array.isArray(data.additions)) {
@@ -238,6 +229,11 @@ export function MenuProvider({ children }: { children: React.ReactNode }) {
   const deleteProduct = (productId: string) => {
     const updated = products.filter((p) => p.id !== productId);
     setProducts(updated);
+    try {
+      localStorage.setItem('black_burger_db_products', JSON.stringify(updated));
+    } catch (e) {
+      console.error('Error writing to localStorage:', e);
+    }
     syncToFirebase(updated, additions);
 
     // Also delete individual document from collection
