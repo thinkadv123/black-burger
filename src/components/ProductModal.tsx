@@ -87,14 +87,16 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
     }
 
     if (variant === 'combo') {
-      const comboUpgrade = product.comboPrice ? (product.comboPrice - product.soloPrice) : 40;
-      basePrice += comboUpgrade;
+      basePrice += 50;
     }
   } else if (product.sizePrices && product.sizePrices.length > 0) {
     const sz = product.sizePrices.find((s) => s.label === selectedSize);
     if (sz) basePrice = sz.price;
-  } else if (variant === 'combo' && product.comboPrice) {
-    basePrice = product.comboPrice;
+    if (variant === 'combo') {
+      basePrice += 50;
+    }
+  } else if (variant === 'combo') {
+    basePrice = (product.soloPrice || 0) + 50;
   }
 
   const additionsPrice = selectedAdditions.reduce((sum, add) => sum + add.price, 0);
@@ -369,7 +371,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                       <div className="font-mono font-black text-xs sm:text-sm uppercase tracking-wide">{t('combo')}</div>
                       <div className="text-[10px] sm:text-xs text-neutral-300 mt-0.5">{t('comboDesc')}</div>
                       <div className="text-[11px] sm:text-xs font-bold font-mono text-amber-400 mt-1.5">
-                        +{(product.comboPrice ? product.comboPrice - product.soloPrice : 40)} {isAr ? 'ج.م للوجبة' : 'EGP combo'}
+                        +50 {isAr ? 'ج.م للوجبة' : 'EGP COMBO'}
                       </div>
                     </button>
 
@@ -467,7 +469,7 @@ export function ProductModal({ product, onClose }: ProductModalProps) {
                     <div className="font-mono font-black text-xs sm:text-sm uppercase tracking-wide">{t('combo')}</div>
                     <div className="text-[10px] sm:text-xs text-neutral-300 mt-0.5">{t('comboDesc')}</div>
                     <div className="text-xs sm:text-sm font-bold font-mono text-yellow-400 mt-1.5">
-                      {product.comboPrice} {isAr ? 'ج.م' : 'EGP'}
+                      +50 {isAr ? 'ج.م للوجبة' : 'EGP COMBO'}
                     </div>
                   </button>
 

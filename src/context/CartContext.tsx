@@ -82,8 +82,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
 
       if (options.variant === 'combo') {
-        const comboUpgrade = product.comboPrice ? (product.comboPrice - product.soloPrice) : 40;
-        price += comboUpgrade;
+        price += 50;
       }
     } else if (product.sizePrices && product.sizePrices.length > 0) {
       const sizeObj = product.sizePrices.find((s) => s.label === options.size);
@@ -92,8 +91,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       } else {
         price = product.soloPrice;
       }
-    } else if (options.variant === 'combo' && product.comboPrice) {
-      price = product.comboPrice;
+
+      if (options.variant === 'combo') {
+        price += 50;
+      }
+    } else if (options.variant === 'combo') {
+      price = (product.soloPrice || 0) + 50;
     }
 
     // Add cost of extra additions
