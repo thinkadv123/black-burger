@@ -137,7 +137,7 @@ const translations: Record<string, Record<Language, string>> = {
     en: 'Your full cart details & delivery address will be sent formatted directly to WhatsApp.',
     ar: 'سيتم إرسال جميع تفاصيل السلة وعنوانك منسقة مباشرة عبر الواتساب.',
   },
-  sendToWhatsapp: { en: 'SEND ORDER TO WHATSAPP', ar: 'إرسال الطلب إلى الواتساب' },
+  sendToWhatsapp: { en: 'Send Order To Faisal Whatsapp', ar: 'إرسال الطلب لواتساب فرع فيصل' },
   generatingWhatsapp: { en: 'GENERATING WHATSAPP ORDER...', ar: 'جاري تجهيز الطلب للواتساب...' },
 
   // Category Names

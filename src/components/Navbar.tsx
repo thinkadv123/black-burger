@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, Menu as MenuIcon, X, Phone, Flame, ChevronRight, Globe } from 'lucide-react';
+import { ShoppingBag, Menu as MenuIcon, X, Phone, Flame, ChevronRight, Globe, Bike } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { OrderTrackerModal, ActiveOrderData } from '@/components/OrderTrackerModal';
 
 export function Navbar() {
   const pathname = usePathname();
@@ -15,6 +16,33 @@ export function Navbar() {
   const { lang, toggleLang, isAr, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeOrder, setActiveOrder] = useState<ActiveOrderData | null>(null);
+  const [isTrackerOpen, setIsTrackerOpen] = useState(false);
+
+  useEffect(() => {
+    const checkActiveOrder = () => {
+      try {
+        const stored = localStorage.getItem('bb_active_order');
+        if (stored) {
+          setActiveOrder(JSON.parse(stored));
+        } else {
+          setActiveOrder(null);
+        }
+      } catch (e) {
+        setActiveOrder(null);
+      }
+    };
+
+    checkActiveOrder();
+
+    window.addEventListener('bb_order_updated', checkActiveOrder);
+    window.addEventListener('storage', checkActiveOrder);
+
+    return () => {
+      window.removeEventListener('bb_order_updated', checkActiveOrder);
+      window.removeEventListener('storage', checkActiveOrder);
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,6 +112,19 @@ export function Navbar() {
         {/* Right Actions: Language + Cart + Mobile Toggle + Order CTA */}
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           
+          {/* Active Order Live Progress Tracker Pill */}
+          {activeOrder && (
+            <button
+              onClick={() => setIsTrackerOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-red-600 via-amber-600 to-red-600 hover:scale-105 text-white font-mono font-bold text-[11px] sm:text-xs border border-red-400/50 shadow-[0_0_15px_rgba(234,31,39,0.6)] animate-pulse shrink-0"
+              title={isAr ? "متابعة الطلب المباشرة" : "Track Active Order"}
+            >
+              <Bike className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+              <span className="hidden sm:inline">{isAr ? `متابعة الطلب #${activeOrder.orderId}` : `Track #${activeOrder.orderId}`}</span>
+              <span className="sm:hidden">{isAr ? "متابعة الطلب" : "Track"}</span>
+            </button>
+          )}
+
           {/* Hotline Button (Desktop) */}
           <a
             href="tel:01515821555"
@@ -169,6 +210,19 @@ export function Navbar() {
               ))}
 
               <div className="pt-3 border-t border-zinc-800 flex flex-col gap-2.5">
+                {activeOrder && (
+                  <button
+                    onClick={() => {
+                      setIsTrackerOpen(true);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="flex items-center justify-center gap-2 text-xs font-bold text-white bg-gradient-to-r from-red-600 to-amber-600 py-3 rounded-xl shadow-lg border border-red-500/50"
+                  >
+                    <Bike className="w-4 h-4 text-amber-300" />
+                    <span>{isAr ? `متابعة الطلب الحالي #${activeOrder.orderId}` : `Track Active Order #${activeOrder.orderId}`}</span>
+                  </button>
+                )}
+
                 <button
                   onClick={() => {
                     toggleLang();
@@ -192,6 +246,12 @@ export function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <OrderTrackerModal
+        isOpen={isTrackerOpen}
+        onClose={() => setIsTrackerOpen(false)}
+        orderData={activeOrder}
+      />
     </header>
   );
 }

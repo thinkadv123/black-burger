@@ -178,7 +178,7 @@ export function Footer() {
                     💵 {isAr ? 'الدفع عند الاستلام' : 'Cash on Delivery'}
                   </span>
                   <a
-                    href="https://wa.me/201144484008?text=Hello%20Black%20Burger!%20I%20want%20to%20place%20an%20order."
+                    href="https://wa.me/201515821555?text=Hello%20Black%20Burger!%20I%20want%20to%20place%20an%20order."
                     target="_blank"
                     rel="noreferrer"
                     className="px-2.5 py-1 rounded bg-emerald-950/80 hover:bg-emerald-900 text-[11px] text-emerald-400 font-bold border border-emerald-800/60 transition-colors"

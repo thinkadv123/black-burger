@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { db } from '@/lib/firebase';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { OrderTrackerModal, ActiveOrderData } from '@/components/OrderTrackerModal';
 
 export function CheckoutModal() {
   const {
@@ -32,6 +33,8 @@ export function CheckoutModal() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderCompleted, setOrderCompleted] = useState(false);
   const [orderId, setOrderId] = useState('');
+  const [showTrackerModal, setShowTrackerModal] = useState(false);
+  const [placedActiveOrder, setPlacedActiveOrder] = useState<ActiveOrderData | null>(null);
 
   if (!isCheckoutOpen) return null;
 
@@ -189,13 +192,38 @@ ${itemsList}
       console.error('Error saving backup order to localStorage:', err);
     }
 
+    // Save active order for 10-minute stage progress tracking
+    const activeOrderObj: ActiveOrderData = {
+      orderId: newOrderId,
+      customerName: formData.name,
+      phone: formData.phone,
+      address: formData.address,
+      items: orderItems.map((item) => ({
+        name: isAr ? (item.name_ar || item.name) : item.name,
+        quantity: item.quantity,
+        price: item.unitPrice,
+        optionsSummary: item.variant === 'combo' ? (isAr ? 'وجبة' : 'Combo') : (isAr ? 'ساندوتش' : 'Solo'),
+      })),
+      totalPrice,
+      createdAt: Date.now(),
+    };
+
+    setPlacedActiveOrder(activeOrderObj);
+
+    try {
+      localStorage.setItem('bb_active_order', JSON.stringify(activeOrderObj));
+      window.dispatchEvent(new Event('bb_order_updated'));
+    } catch (e) {
+      console.error('Error storing active order:', e);
+    }
+
     setIsSubmitting(false);
     setOrderCompleted(true);
     triggerConfetti();
 
     // Open WhatsApp with formatted order text
     const text = formatWhatsAppMessage(newOrderId);
-    window.open(`https://wa.me/201144484008?text=${text}`, '_blank');
+    window.open(`https://wa.me/201515821555?text=${text}`, '_blank');
 
     clearCart();
   };
@@ -285,9 +313,19 @@ ${itemsList}
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                {/* Live Order Progress Banner */}
+                <button
+                  type="button"
+                  onClick={() => setShowTrackerModal(true)}
+                  className="w-full bg-gradient-to-r from-red-600 via-red-700 to-amber-600 hover:scale-[1.02] text-white font-mono font-black py-4 px-4 rounded-2xl text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_30px_rgba(234,31,39,0.5)] border border-red-500/50 transition-all flex items-center justify-center gap-2 animate-pulse"
+                >
+                  <Truck className="w-5 h-5 text-amber-300" />
+                  <span>{isAr ? "متابعة مراحل تحضير وتوصيل الطلب مباشرة 🚴‍♂️" : "TRACK ORDER PROGRESS LIVE 🚴‍♂️"}</span>
+                </button>
+
+                <div className="flex flex-col sm:flex-row gap-3 pt-1">
                   <a
-                    href={`https://wa.me/201144484008?text=${formatWhatsAppMessage(orderId)}`}
+                    href={`https://wa.me/201515821555?text=${formatWhatsAppMessage(orderId)}`}
                     target="_blank"
                     rel="noreferrer"
                     className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-2xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-lg"
@@ -406,6 +444,12 @@ ${itemsList}
           </div>
         </motion.div>
       </div>
+
+      <OrderTrackerModal
+        isOpen={showTrackerModal}
+        onClose={() => setShowTrackerModal(false)}
+        orderData={placedActiveOrder}
+      />
     </AnimatePresence>
   );
 }
