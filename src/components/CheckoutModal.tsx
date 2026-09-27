@@ -30,6 +30,7 @@ export function CheckoutModal() {
     notes: '',
   });
 
+  const [selectedBranch, setSelectedBranch] = useState<'faisal' | 'district9'>('faisal');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderCompleted, setOrderCompleted] = useState(false);
   const [orderId, setOrderId] = useState('');
@@ -107,8 +108,15 @@ export function CheckoutModal() {
       })
       .join('\n\n');
 
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://blackburger.eg';
+    const trackingUrl = `${origin}/track?id=${generatedId}`;
+    const branchText = selectedBranch === 'district9'
+      ? (isAr ? 'فرع الحي التاسع' : 'District 9 Branch')
+      : (isAr ? 'فرع فيصل' : 'Faisal Branch');
+
     const message = `🍔🔥 *BLACK BURGER | ${isAr ? 'طلب جديد' : 'NEW ORDER'}* 🔥🍔
 🆔 *${isAr ? 'رقم الطلب' : 'Order Ref'}:* #${generatedId}
+🏪 *${isAr ? 'الفرع المستهدف' : 'Target Branch'}:* ${branchText}
 
 👤 *${isAr ? 'بيانات العميل' : 'CUSTOMER DETAILS'}*
 ━━━━━━━━━━━━━━━━━━━━━
@@ -123,9 +131,12 @@ ${itemsList}
 💰 *${isAr ? 'ملخص الفاتورة' : 'BILL SUMMARY'}*
 ━━━━━━━━━━━━━━━━━━━━━
 ▫️ *${isAr ? 'المجموع الفرعي' : 'Subtotal'}:* ${subtotalPrice} ${isAr ? 'ج.م' : 'EGP'}
-▫️ *${isAr ? 'رسوم التوصيل (فيصل)' : 'Delivery Fee (Faisal)'}:* ${deliveryFee} ${isAr ? 'ج.م' : 'EGP'}
+▫️ *${isAr ? 'رسوم التوصيل' : 'Delivery Fee'}:* ${deliveryFee} ${isAr ? 'ج.م' : 'EGP'}
 🔥 *${isAr ? 'الإجمالي الكلي' : 'TOTAL DUE'}:* *${totalPrice} ${isAr ? 'ج.م' : 'EGP'}*
 💳 *${isAr ? 'طريقة الدفع' : 'Payment Method'}:* ${isAr ? 'الدفع نقداً عند الاستلام' : 'Cash on Delivery'}
+
+🚴‍♂️ *${isAr ? 'رابط تتبع حالة الطلب مباشرة' : 'LIVE ORDER TRACKING LINK'}:*
+${trackingUrl}
 
 ⚡ _${isAr ? 'تم الإرسال عبر موقع بلاك برجر' : 'Sent via Black Burger Web App'}_`;
 
@@ -352,18 +363,35 @@ ${itemsList}
               </div>
             ) : (
               /* Checkout Form */
-              <form onSubmit={handleSubmitOrder} className="space-y-5">
+              <form onSubmit={(e) => handleSubmitOrder(e, selectedBranch === 'district9' ? '201034926555' : '201515821555')} className="space-y-5">
                 {/* Order Summary banner */}
                 <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between font-mono">
                   <div>
                     <span className="text-xs text-zinc-400 font-bold block">{t('totalToPay')}</span>
-                    <span className="text-xs text-zinc-500">{t('includesDeliveryNotice')}</span>
+                    <span className="text-xs text-zinc-500">
+                      {selectedBranch === 'district9' ? t('includesDeliveryNoticeDistrict9') : t('includesDeliveryNoticeFaisal')}
+                    </span>
                   </div>
                   <span className="text-2xl font-black text-amber-400">{totalPrice} {isAr ? 'ج.م' : 'EGP'}</span>
                 </div>
 
                 {/* Form Inputs */}
                 <div className="space-y-4">
+                  {/* Branch / Area Selector Dropdown */}
+                  <div>
+                    <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1 font-mono">
+                      {t('selectBranch')}
+                    </label>
+                    <select
+                      value={selectedBranch}
+                      onChange={(e) => setSelectedBranch(e.target.value as 'faisal' | 'district9')}
+                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 font-mono cursor-pointer"
+                    >
+                      <option value="faisal">📍 {isAr ? 'فرع فيصل (01515821555)' : 'Faisal Branch (01515821555)'}</option>
+                      <option value="district9">📍 {isAr ? 'فرع الحي التاسع (01034926555)' : 'District 9 Branch (01034926555)'}</option>
+                    </select>
+                  </div>
+
                   <div>
                     <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1 font-mono">
                       {t('fullName')}
@@ -402,7 +430,7 @@ ${itemsList}
                       name="address"
                       required
                       rows={2}
-                      placeholder={isAr ? "اسم الشارع، رقم العمارة، الطابق، علامة مميزة (مثال: أمام التوحيد والنور)..." : "Street name, building number, floor, landmark (e.g., Near Tawheed & Nour)..."}
+                      placeholder={isAr ? "اسم الشارع، رقم العمارة، الطابق، علامة مميزة..." : "Street name, building number, floor, landmark..."}
                       value={formData.address}
                       onChange={handleInputChange}
                       className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-red-600 resize-none font-sans"
@@ -430,45 +458,45 @@ ${itemsList}
                   <span>{t('whatsappGuarantee')}</span>
                 </div>
 
-                {/* Submit CTAs for both Branches */}
-                <div className="space-y-3 pt-1">
-                  <button
-                    type="button"
-                    disabled={isSubmitting}
-                    onClick={(e) => handleSubmitOrder(e, '201515821555')}
-                    className="w-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-500 hover:to-emerald-700 text-white font-mono font-black py-3.5 sm:py-4 px-4 rounded-2xl text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(16,185,129,0.4)] border border-emerald-500/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center gap-2">
-                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        {t('generatingWhatsapp')}
-                      </span>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4 text-emerald-300 shrink-0" />
-                        <span>{t('sendToFaisalWhatsapp')} ({totalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
-                      </>
-                    )}
-                  </button>
-
-                  <button
-                    type="button"
-                    disabled={isSubmitting}
-                    onClick={(e) => handleSubmitOrder(e, '201034926555')}
-                    className="w-full bg-gradient-to-r from-teal-600 via-teal-700 to-teal-800 hover:from-teal-500 hover:to-teal-700 text-white font-mono font-black py-3.5 sm:py-4 px-4 rounded-2xl text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(20,184,166,0.4)] border border-teal-500/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center gap-2">
-                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        {t('generatingWhatsapp')}
-                      </span>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4 text-teal-300 shrink-0" />
-                        <span>{t('sendToDistrict9Whatsapp')} ({totalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
-                      </>
-                    )}
-                  </button>
+                {/* Dynamic Submit CTA based on Selected Branch */}
+                <div className="pt-1">
+                  {selectedBranch === 'faisal' ? (
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-500 hover:to-emerald-700 text-white font-mono font-black py-4 px-4 rounded-2xl text-sm uppercase tracking-wider shadow-[0_0_30px_rgba(16,185,129,0.5)] border border-emerald-500/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      {isSubmitting ? (
+                        <span className="flex items-center gap-2">
+                          <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          {t('generatingWhatsapp')}
+                        </span>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 text-emerald-300 shrink-0" />
+                          <span>{t('sendToFaisalWhatsapp')} ({totalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
+                        </>
+                      )}
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-teal-600 via-teal-700 to-teal-800 hover:from-teal-500 hover:to-teal-700 text-white font-mono font-black py-4 px-4 rounded-2xl text-sm uppercase tracking-wider shadow-[0_0_30px_rgba(20,184,166,0.5)] border border-teal-500/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      {isSubmitting ? (
+                        <span className="flex items-center gap-2">
+                          <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          {t('generatingWhatsapp')}
+                        </span>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 text-teal-300 shrink-0" />
+                          <span>{t('sendToDistrict9Whatsapp')} ({totalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
+                        </>
+                      )}
+                    </button>
+                  )}
                 </div>
               </form>
             )}
