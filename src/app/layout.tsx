@@ -39,7 +39,12 @@ export const metadata: Metadata = {
   description:
     "Premium urban smash burger restaurant in Faisal. 100% Angus beef smashed to crispy perfection, signature sauces, loaded chaos fries, and online ordering with Cash on Delivery.",
   icons: {
-    icon: "/images/logo.png",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favv.webp", type: "image/webp" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/favv.webp",
   },
 };
 
