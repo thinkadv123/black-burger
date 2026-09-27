@@ -125,19 +125,31 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return [...prevCart, { cartItemId, product, quantity, options, unitPrice }];
     });
 
-    toast.success(`Added ${quantity}x ${product.name} to your order!`, {
+    const isAr = typeof window !== 'undefined' && (localStorage.getItem('bb_lang') === 'ar' || document.documentElement.lang === 'ar');
+    const productName = isAr && product.name_ar ? product.name_ar : product.name;
+    const toastMsg = isAr
+      ? `تمت إضافة ${quantity}x ${productName} إلى طلبك!`
+      : `Added ${quantity}x ${productName} to your order!`;
+
+    toast.success(toastMsg, {
       style: {
-        background: '#121214',
+        background: '#18181b',
         color: '#FFFFFF',
         border: '1px solid #DC2626',
+        borderRadius: '16px',
+        padding: '12px 16px',
+        fontWeight: '700',
+        fontSize: '14px',
+        boxShadow: '0 10px 30px rgba(220, 38, 38, 0.4)',
       },
       icon: '🔥',
     });
   };
 
   const removeFromCart = (cartItemId: string) => {
+    const isAr = typeof window !== 'undefined' && (localStorage.getItem('bb_lang') === 'ar' || document.documentElement.lang === 'ar');
     setCart((prevCart) => prevCart.filter((item) => item.cartItemId !== cartItemId));
-    toast.info('Item removed from order');
+    toast.info(isAr ? 'تم حذف العنصر من الطلب' : 'Item removed from order');
   };
 
   const updateQuantity = (cartItemId: string, newQty: number) => {

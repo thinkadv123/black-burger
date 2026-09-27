@@ -37,19 +37,19 @@ export function CartDrawer() {
           className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
         />
 
-        <div className="fixed inset-y-0 right-0 rtl:right-auto rtl:left-0 pl-10 rtl:pl-0 rtl:pr-10 max-w-full flex">
+        <div className="fixed inset-y-0 right-0 rtl:right-auto rtl:left-0 sm:pl-10 sm:rtl:pl-0 sm:rtl:pr-10 max-w-full flex h-[100dvh]">
           <motion.div
             initial={{ x: isAr ? '-100%' : '100%' }}
             animate={{ x: 0 }}
             exit={{ x: isAr ? '-100%' : '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="w-screen max-w-md bg-zinc-950 border-l rtl:border-l-0 rtl:border-r border-zinc-800 text-white shadow-2xl flex flex-col justify-between"
+            className="w-screen max-w-md h-[100dvh] max-h-[100dvh] bg-zinc-950 border-l rtl:border-l-0 rtl:border-r border-zinc-800 text-white shadow-2xl flex flex-col justify-between overflow-hidden"
           >
             {/* Header */}
-            <div className="p-6 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/60">
+            <div className="p-5 sm:p-6 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/60 shrink-0">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5 text-red-500" />
-                <h2 className="text-xl font-black uppercase tracking-wider text-white">
+                <h2 className="text-lg sm:text-xl font-black uppercase tracking-wider text-white">
                   {t('yourOrder')}
                 </h2>
                 <span className="bg-red-600/30 text-red-400 border border-red-600/40 text-xs font-bold px-2.5 py-0.5 rounded-full">
@@ -65,7 +65,7 @@ export function CartDrawer() {
             </div>
 
             {/* Cart Items List */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
+            <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 space-y-4 custom-scrollbar">
               {cart.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4 py-12">
                   <div className="w-20 h-20 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-600">
@@ -216,7 +216,7 @@ export function CartDrawer() {
 
             {/* Order Summary Footer */}
             {cart.length > 0 && (
-              <div className="p-6 bg-zinc-900 border-t border-zinc-800 space-y-4">
+              <div className="p-4 sm:p-6 pb-8 sm:pb-6 bg-zinc-900 border-t border-zinc-800 space-y-3 sm:space-y-4 shrink-0">
                 <div className="space-y-2 text-xs text-zinc-400">
                   <div className="flex justify-between">
                     <span>{t('subtotal')}</span>
@@ -237,7 +237,7 @@ export function CartDrawer() {
                     setIsCartOpen(false);
                     setIsCheckoutOpen(true);
                   }}
-                  className="w-full bg-gradient-to-r from-red-600 via-red-700 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-4 rounded-2xl text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(220,38,38,0.5)] border border-red-500/30 transition-all flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-red-600 via-red-700 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-bold py-3.5 sm:py-4 rounded-2xl text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(220,38,38,0.5)] border border-red-500/30 transition-all flex items-center justify-center gap-2 active:scale-95"
                 >
                   <span>{t('proceedToCheckout')}</span>
                   <ArrowRight className="w-4 h-4 rtl:rotate-180" />

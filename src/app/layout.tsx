@@ -67,7 +67,7 @@ export default function RootLayout({
               <CheckoutModal />
 
               {/* Toast Notification Provider */}
-              <Toaster position="bottom-right" theme="dark" />
+              <Toaster position="top-center" theme="dark" closeButton />
             </CartProvider>
           </MenuProvider>
         </LanguageProvider>

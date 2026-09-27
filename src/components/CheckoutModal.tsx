@@ -261,7 +261,7 @@ ${trackingUrl}
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-xl bg-zinc-950 border border-zinc-800 rounded-3xl shadow-[0_0_60px_rgba(220,38,38,0.4)] overflow-hidden z-10 max-h-[90vh] flex flex-col font-mono"
+          className="relative w-full max-w-xl bg-zinc-950 border border-zinc-800 rounded-3xl shadow-[0_0_60px_rgba(220,38,38,0.4)] overflow-hidden z-10 max-h-[90dvh] flex flex-col font-mono"
         >
           {/* Header */}
           <div className="p-6 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between">
