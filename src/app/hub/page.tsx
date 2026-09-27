@@ -281,10 +281,10 @@ export default function HiddenHubPage() {
                   </div>
                   <div>
                     <h3 className="text-sm font-black text-white uppercase">
-                      {isAr ? 'فرع الحي التاسع' : 'District 9 Branch'}
+                      {isAr ? 'مول District 9 حدائق الأهرام - البوابة الثالثة' : 'District 9 Mall - Hadayek Pyramids Gate 3'}
                     </h3>
                     <p className="text-[11px] text-zinc-400">
-                      {isAr ? 'الحي التاسع - مقابل المجمع' : 'District 9 - Main Center'}
+                      {isAr ? 'مول District 9 - حدائق الأهرام البوابة الثالثة' : 'District 9 Mall - Hadayek Pyramids Gate 3'}
                     </p>
                   </div>
                 </div>

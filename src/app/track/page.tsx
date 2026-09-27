@@ -418,7 +418,7 @@ function TrackOrderContent() {
           className="bg-teal-950/80 hover:bg-teal-900 border border-teal-800/80 text-teal-400 font-bold py-3.5 px-3 rounded-2xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm"
         >
           <MessageSquare className="w-4 h-4 text-teal-400 shrink-0" />
-          <span>{isAr ? "واتساب فرع الحي التاسع (01034926555)" : "District 9 WhatsApp"}</span>
+          <span>{isAr ? "واتساب مول District 9 (01034926555)" : "District 9 WhatsApp"}</span>
         </a>
       </div>
 

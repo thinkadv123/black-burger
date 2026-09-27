@@ -111,7 +111,7 @@ export function CheckoutModal() {
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://blackburger.eg';
     const trackingUrl = `${origin}/track?id=${generatedId}`;
     const branchText = selectedBranch === 'district9'
-      ? (isAr ? 'فرع الحي التاسع' : 'District 9 Branch')
+      ? (isAr ? 'مول District 9 حدائق الأهرام - البوابة الثالثة' : 'District 9 Branch')
       : (isAr ? 'فرع فيصل' : 'Faisal Branch');
 
     const message = `🍔🔥 *BLACK BURGER | ${isAr ? 'طلب جديد' : 'NEW ORDER'}* 🔥🍔
@@ -388,7 +388,7 @@ ${trackingUrl}
                       className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 font-mono cursor-pointer"
                     >
                       <option value="faisal">📍 {isAr ? 'فرع فيصل (01515821555)' : 'Faisal Branch (01515821555)'}</option>
-                      <option value="district9">📍 {isAr ? 'فرع الحي التاسع (01034926555)' : 'District 9 Branch (01034926555)'}</option>
+                      <option value="district9">📍 {isAr ? 'مول District 9 حدائق الأهرام - البوابة الثالثة (01034926555)' : 'District 9 Branch (01034926555)'}</option>
                     </select>
                   </div>
 
