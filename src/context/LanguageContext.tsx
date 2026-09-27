@@ -130,10 +130,10 @@ const translations: Record<string, Record<Language, string>> = {
   totalToPay: { en: 'Total Amount to Pay', ar: 'المبلغ الإجمالي للدفع' },
   includesDeliveryNotice: { en: 'Includes delivery fee in Faisal', ar: 'شامل رسوم التوصيل في منطقة فيصل' },
   includesDeliveryNoticeFaisal: { en: 'Includes delivery fee in Faisal', ar: 'شامل رسوم التوصيل في منطقة فيصل' },
-  includesDeliveryNoticeDistrict9: { en: 'Includes delivery fee in District 9', ar: 'شامل رسوم التوصيل في مول District 9 حدائق الأهرام - البوابة الثالثة' },
+  includesDeliveryNoticeDistrict9: { en: 'Includes delivery fee in District 9', ar: 'شامل رسوم التوصيل في مول District 9' },
   selectBranch: { en: 'Select Branch / Delivery Area *', ar: 'اختر الفرع / منطقة التوصيل *' },
   faisalBranch: { en: 'Faisal Branch', ar: 'فرع فيصل' },
-  district9Branch: { en: 'District 9 Branch', ar: 'فرع مول District 9 حدائق الأهرام - البوابة الثالثة' },
+  district9Branch: { en: 'District 9 Branch', ar: 'مول District 9' },
   fullName: { en: 'Full Name *', ar: 'الاسم بالكامل *' },
   phoneNumber: { en: 'Phone Number *', ar: 'رقم الهاتف *' },
   address: { en: 'Detailed Delivery Address *', ar: 'عنوان التوصيل بالتفصيل *' },
@@ -144,7 +144,7 @@ const translations: Record<string, Record<Language, string>> = {
   },
   sendToWhatsapp: { en: 'Send Order To Faisal Whatsapp', ar: 'إرسال الطلب لواتساب فرع فيصل' },
   sendToFaisalWhatsapp: { en: 'Send Order To Faisal Whatsapp', ar: 'إرسال الطلب لواتساب فرع فيصل' },
-  sendToDistrict9Whatsapp: { en: 'Send Order To District 9 Whatsapp', ar: 'إرسال الطلب لواتساب مول District 9 حدائق الأهرام - البوابة الثالثة' },
+  sendToDistrict9Whatsapp: { en: 'Send Order To District 9 Whatsapp', ar: 'إرسال الطلب لواتساب مول District 9' },
   generatingWhatsapp: { en: 'GENERATING WHATSAPP ORDER...', ar: 'جاري تجهيز الطلب للواتساب...' },
 
   // Category Names
