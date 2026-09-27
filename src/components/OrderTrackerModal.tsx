@@ -339,23 +339,25 @@ export function OrderTrackerModal({ isOpen, onClose, orderData }: OrderTrackerMo
             </div>
 
             {/* Direct Hotline / Support Actions */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-              <a
-                href="tel:01515821555"
-                className="bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-amber-400 font-mono font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm"
-              >
-                <Phone className="w-4 h-4 text-red-500" />
-                <span>{isAr ? "الاتصال بالفرع 01515821555" : "Call Branch 01515821555"}</span>
-              </a>
-
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 font-mono">
               <a
                 href={`https://wa.me/201515821555?text=Hello%20Black%20Burger!%20I%20am%20following%20up%20on%20my%20order%20%23${activeOrder.orderId}`}
                 target="_blank"
                 rel="noreferrer"
-                className="bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-800/80 text-emerald-400 font-mono font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm"
+                className="bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-800/80 text-emerald-400 font-bold py-3 px-3 rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm"
               >
-                <MessageSquare className="w-4 h-4 text-emerald-400" />
-                <span>{isAr ? "متابعة عبر الواتساب" : "WhatsApp Support"}</span>
+                <MessageSquare className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>{isAr ? "واتساب فرع فيصل (01515821555)" : "Faisal WhatsApp"}</span>
+              </a>
+
+              <a
+                href={`https://wa.me/201034926555?text=Hello%20Black%20Burger!%20I%20am%20following%20up%20on%20my%20order%20%23${activeOrder.orderId}`}
+                target="_blank"
+                rel="noreferrer"
+                className="bg-teal-950/80 hover:bg-teal-900 border border-teal-800/80 text-teal-400 font-bold py-3 px-3 rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm"
+              >
+                <MessageSquare className="w-4 h-4 text-teal-400 shrink-0" />
+                <span>{isAr ? "واتساب فرع الحي التاسع (01034926555)" : "District 9 WhatsApp"}</span>
               </a>
             </div>
 

@@ -138,6 +138,8 @@ const translations: Record<string, Record<Language, string>> = {
     ar: 'سيتم إرسال جميع تفاصيل السلة وعنوانك منسقة مباشرة عبر الواتساب.',
   },
   sendToWhatsapp: { en: 'Send Order To Faisal Whatsapp', ar: 'إرسال الطلب لواتساب فرع فيصل' },
+  sendToFaisalWhatsapp: { en: 'Send Order To Faisal Whatsapp', ar: 'إرسال الطلب لواتساب فرع فيصل' },
+  sendToDistrict9Whatsapp: { en: 'Send Order To District 9 Whatsapp', ar: 'إرسال الطلب لواتساب فرع الحي التاسع' },
   generatingWhatsapp: { en: 'GENERATING WHATSAPP ORDER...', ar: 'جاري تجهيز الطلب للواتساب...' },
 
   // Category Names

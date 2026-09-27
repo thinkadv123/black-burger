@@ -132,7 +132,7 @@ ${itemsList}
     return encodeURIComponent(message);
   };
 
-  const handleSubmitOrder = async (e: React.FormEvent) => {
+  const handleSubmitOrder = async (e: React.FormEvent, targetNumber = '201515821555') => {
     e.preventDefault();
     if (!formData.name || !formData.phone || !formData.address) {
       return;
@@ -223,7 +223,7 @@ ${itemsList}
 
     // Open WhatsApp with formatted order text
     const text = formatWhatsAppMessage(newOrderId);
-    window.open(`https://wa.me/201515821555?text=${text}`, '_blank');
+    window.open(`https://wa.me/${targetNumber}?text=${text}`, '_blank');
 
     clearCart();
   };
@@ -323,19 +323,28 @@ ${itemsList}
                   <span>{isAr ? "متابعة مراحل تحضير وتوصيل الطلب مباشرة 🚴‍♂️" : "TRACK ORDER PROGRESS LIVE 🚴‍♂️"}</span>
                 </button>
 
-                <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                <div className="flex flex-col gap-2.5 pt-1">
                   <a
                     href={`https://wa.me/201515821555?text=${formatWhatsAppMessage(orderId)}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-2xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-lg"
+                    className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-2xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-lg"
                   >
                     <MessageSquare className="w-4 h-4" />
-                    <span>{t('reopenWhatsapp')}</span>
+                    <span>{t('sendToFaisalWhatsapp')}</span>
+                  </a>
+                  <a
+                    href={`https://wa.me/201034926555?text=${formatWhatsAppMessage(orderId)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-3.5 px-4 rounded-2xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-lg"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    <span>{t('sendToDistrict9Whatsapp')}</span>
                   </a>
                   <button
                     onClick={handleClose}
-                    className="flex-1 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white font-black py-3.5 rounded-2xl text-xs uppercase tracking-wider transition-all"
+                    className="w-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-white font-black py-3 px-4 rounded-2xl text-xs uppercase tracking-wider transition-all mt-1"
                   >
                     {t('backToMenu')}
                   </button>
@@ -421,24 +430,46 @@ ${itemsList}
                   <span>{t('whatsappGuarantee')}</span>
                 </div>
 
-                {/* Submit CTA */}
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-500 hover:to-emerald-700 text-white font-mono font-black py-4 rounded-2xl text-sm sm:text-base uppercase tracking-wider shadow-[0_0_30px_rgba(16,185,129,0.5)] border border-emerald-500/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-                >
-                  {isSubmitting ? (
-                    <span className="flex items-center gap-2">
-                      <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      {t('generatingWhatsapp')}
-                    </span>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4 text-emerald-300" />
-                      <span>{t('sendToWhatsapp')} ({totalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
-                    </>
-                  )}
-                </button>
+                {/* Submit CTAs for both Branches */}
+                <div className="space-y-3 pt-1">
+                  <button
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={(e) => handleSubmitOrder(e, '201515821555')}
+                    className="w-full bg-gradient-to-r from-emerald-600 via-emerald-700 to-emerald-800 hover:from-emerald-500 hover:to-emerald-700 text-white font-mono font-black py-3.5 sm:py-4 px-4 rounded-2xl text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(16,185,129,0.4)] border border-emerald-500/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    {isSubmitting ? (
+                      <span className="flex items-center gap-2">
+                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        {t('generatingWhatsapp')}
+                      </span>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4 text-emerald-300 shrink-0" />
+                        <span>{t('sendToFaisalWhatsapp')} ({totalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={(e) => handleSubmitOrder(e, '201034926555')}
+                    className="w-full bg-gradient-to-r from-teal-600 via-teal-700 to-teal-800 hover:from-teal-500 hover:to-teal-700 text-white font-mono font-black py-3.5 sm:py-4 px-4 rounded-2xl text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_25px_rgba(20,184,166,0.4)] border border-teal-500/40 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    {isSubmitting ? (
+                      <span className="flex items-center gap-2">
+                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        {t('generatingWhatsapp')}
+                      </span>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4 text-teal-300 shrink-0" />
+                        <span>{t('sendToDistrict9Whatsapp')} ({totalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </form>
             )}
           </div>
