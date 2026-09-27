@@ -3,16 +3,22 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { Phone, MapPin, Clock, Flame, ShieldCheck, Heart } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
 export function Footer() {
+  const pathname = usePathname();
   const [year, setYear] = useState<number>(2025);
   const { isAr, t } = useLanguage();
 
   useEffect(() => {
     setYear(new Date().getFullYear());
   }, []);
+
+  if (pathname === '/hub') {
+    return null;
+  }
 
   return (
     <footer className="bg-black text-white border-t border-zinc-800/80 relative overflow-hidden">

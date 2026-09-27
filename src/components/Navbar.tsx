@@ -12,6 +12,11 @@ import { OrderTrackerModal, ActiveOrderData } from '@/components/OrderTrackerMod
 
 export function Navbar() {
   const pathname = usePathname();
+
+  if (pathname === '/hub') {
+    return null;
+  }
+
   const { totalItemsCount, setIsCartOpen } = useCart();
   const { lang, toggleLang, isAr, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);

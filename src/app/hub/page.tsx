@@ -59,7 +59,7 @@ export default function HiddenHubPage() {
   };
 
   return (
-    <div className="bg-zinc-950 text-white min-h-screen pt-24 pb-20 px-4 font-sans selection:bg-red-600 selection:text-white">
+    <div className="bg-zinc-950 text-white min-h-screen py-8 sm:py-12 px-4 font-sans selection:bg-red-600 selection:text-white">
       <div className="max-w-xl mx-auto space-y-8">
 
         {/* TOP BAR / LANGUAGE SWITCH */}
