@@ -37,13 +37,13 @@ export function CartDrawer() {
           className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
         />
 
-        <div className="fixed inset-y-0 right-0 rtl:right-auto rtl:left-0 sm:pl-10 sm:rtl:pl-0 sm:rtl:pr-10 max-w-full flex h-[100dvh]">
+        <div className="fixed top-0 bottom-0 right-0 rtl:right-auto rtl:left-0 sm:pl-10 sm:rtl:pl-0 sm:rtl:pr-10 max-w-full flex h-[100svh] h-[100dvh]">
           <motion.div
             initial={{ x: isAr ? '-100%' : '100%' }}
             animate={{ x: 0 }}
             exit={{ x: isAr ? '-100%' : '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="w-screen max-w-md h-[100dvh] max-h-[100dvh] bg-zinc-950 border-l rtl:border-l-0 rtl:border-r border-zinc-800 text-white shadow-2xl flex flex-col justify-between overflow-hidden"
+            className="w-screen max-w-md h-full max-h-full bg-zinc-950 border-l rtl:border-l-0 rtl:border-r border-zinc-800 text-white shadow-2xl flex flex-col justify-between overflow-hidden"
           >
             {/* Header */}
             <div className="p-5 sm:p-6 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/60 shrink-0">
@@ -216,8 +216,8 @@ export function CartDrawer() {
 
             {/* Order Summary Footer */}
             {cart.length > 0 && (
-              <div className="p-4 sm:p-6 pb-8 sm:pb-6 bg-zinc-900 border-t border-zinc-800 space-y-3 sm:space-y-4 shrink-0">
-                <div className="space-y-2 text-xs text-zinc-400">
+              <div className="p-4 sm:p-6 pb-14 sm:pb-6 bg-zinc-900 border-t border-zinc-800 space-y-3 sm:space-y-4 shrink-0 shadow-[0_-10px_25px_rgba(0,0,0,0.5)]">
+                <div className="space-y-1.5 sm:space-y-2 text-xs text-zinc-400">
                   <div className="flex justify-between">
                     <span>{t('subtotal')}</span>
                     <span className="font-bold text-zinc-200">{subtotalPrice} {isAr ? 'ج.م' : 'EGP'}</span>
@@ -226,9 +226,9 @@ export function CartDrawer() {
                     <span>{t('deliveryFee')}</span>
                     <span className="font-bold text-zinc-200">{deliveryFee} {isAr ? 'ج.م' : 'EGP'}</span>
                   </div>
-                  <div className="pt-2 border-t border-zinc-800 flex justify-between text-base font-black text-white">
+                  <div className="pt-1.5 border-t border-zinc-800 flex justify-between text-sm sm:text-base font-black text-white">
                     <span>{t('totalOrder')}</span>
-                    <span className="text-amber-400 text-lg">{totalPrice} {isAr ? 'ج.م' : 'EGP'}</span>
+                    <span className="text-amber-400 text-base sm:text-lg">{totalPrice} {isAr ? 'ج.م' : 'EGP'}</span>
                   </div>
                 </div>
 
