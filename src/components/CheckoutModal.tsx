@@ -387,8 +387,8 @@ ${trackingUrl}
                       onChange={(e) => setSelectedBranch(e.target.value as 'faisal' | 'district9')}
                       className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 font-mono cursor-pointer"
                     >
-                      <option value="faisal">📍 {isAr ? 'فرع فيصل (01515821555)' : 'Faisal Branch (01515821555)'}</option>
-                      <option value="district9">📍 {isAr ? 'مول District 9 حدائق الأهرام - البوابة الثالثة (01034926555)' : 'District 9 Branch (01034926555)'}</option>
+                      <option value="faisal">📍 {isAr ? 'فرع فيصل' : 'Faisal Branch'}</option>
+                      <option value="district9">📍 {isAr ? 'مول District 9 حدائق الأهرام - البوابة الثالثة' : 'District 9 Branch'}</option>
                     </select>
                   </div>
 
