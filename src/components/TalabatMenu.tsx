@@ -17,7 +17,7 @@ import { Search, Flame, Plus, ShieldCheck } from 'lucide-react';
 export function TalabatMenu() {
   const { products } = useMenu();
   const { setCustomizingProduct } = useCart();
-  const { isAr, t, getText } = useLanguage();
+  const { isAr, t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>('Offers');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -77,15 +77,15 @@ export function TalabatMenu() {
 
   return (
     <section id="menu-section" className="bg-[#0A0A0C] text-white py-10 sm:py-16 border-t border-neutral-800 relative min-h-[80vh]">
-      <div className="max-w-[1500px] mx-auto px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         
         {/* Section Title Header */}
-        <div className="text-center space-y-2 sm:space-y-3 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 rounded-full bg-[#EA1F27]/10 border border-[#EA1F27]/40 text-[#EA1F27] text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider">
-            <Flame className="w-3.5 h-3.5 text-[#CDB32D]" />
+        <div className="text-center space-y-3 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EA1F27]/10 border border-[#EA1F27]/40 text-[#EA1F27] text-xs sm:text-sm font-bold uppercase tracking-wider">
+            <Flame className="w-4 h-4 text-[#CDB32D]" />
             {t('officialMenuTitle')}
           </div>
-          <h2 className="text-2xl sm:text-5xl font-black text-white uppercase tracking-tight font-mono">
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-white uppercase tracking-tight">
             {isAr ? (
               <>
                 اطلب <span className="text-[#EA1F27]">بلاك برجر</span> أونلاين
@@ -96,25 +96,25 @@ export function TalabatMenu() {
               </>
             )}
           </h2>
-          <p className="text-neutral-400 text-xs sm:text-sm">
+          <p className="text-neutral-300 text-sm sm:text-base leading-relaxed">
             {t('fastDeliveryNotice')}
           </p>
         </div>
 
         {/* Search Bar */}
-        <div className="max-w-md mx-auto relative">
-          <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 rtl:left-auto rtl:right-3.5 top-1/2 -translate-y-1/2" />
+        <div className="max-w-lg mx-auto relative">
+          <Search className="w-5 h-5 text-neutral-400 absolute left-4 rtl:left-auto rtl:right-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-10 rtl:pl-4 rtl:pr-10 pr-4 py-2.5 sm:py-3 text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-red-600 transition-colors shadow-lg font-mono"
+            className="w-full bg-neutral-900 border border-neutral-700 rounded-2xl pl-12 rtl:pl-4 rtl:pr-12 pr-4 py-3 sm:py-3.5 text-sm sm:text-base text-white placeholder-neutral-400 focus:outline-none focus:border-red-500 transition-colors shadow-lg font-sans"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 rtl:right-auto rtl:left-3 top-1/2 -translate-y-1/2 text-xs text-neutral-400 hover:text-white"
+              className="absolute right-4 rtl:right-auto rtl:left-4 top-1/2 -translate-y-1/2 text-xs sm:text-sm font-semibold text-neutral-400 hover:text-white"
             >
               {isAr ? 'مسح' : 'Clear'}
             </button>
@@ -122,8 +122,8 @@ export function TalabatMenu() {
         </div>
 
         {/* Category Filter Bar */}
-        <div className="relative z-30 bg-[#0A0A0C] py-2 sm:py-3 border-y border-neutral-800 shadow-xl overflow-x-auto custom-scrollbar">
-          <div className="flex items-center gap-1.5 sm:gap-2 px-1 max-w-7xl mx-auto min-w-max">
+        <div className="relative z-30 bg-[#0A0A0C] py-3 sm:py-4 border-y border-neutral-800 shadow-xl overflow-x-auto custom-scrollbar">
+          <div className="flex items-center gap-2 sm:gap-3 px-1 max-w-7xl mx-auto min-w-max">
             {CATEGORIES_LIST.map((cat) => {
               const isSelected = selectedCategory === cat && !searchQuery;
               const displayLabel = getCategoryDisplayName(cat, isAr);
@@ -135,10 +135,10 @@ export function TalabatMenu() {
                     setSearchQuery('');
                     setSelectedCategory(cat);
                   }}
-                  className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-mono font-bold uppercase transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                  className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-xs sm:text-sm md:text-base font-bold uppercase transition-all whitespace-nowrap flex items-center gap-2 ${
                     isSelected
                       ? 'bg-[#EA1F27] text-white shadow-lg shadow-[#EA1F27]/30 scale-105 border border-[#EA1F27]'
-                      : 'bg-neutral-900 text-neutral-400 hover:text-white hover:bg-neutral-800 border border-neutral-800'
+                      : 'bg-neutral-900 text-neutral-300 hover:text-white hover:bg-neutral-800 border border-neutral-800'
                   }`}
                 >
                   <span>{displayLabel}</span>
@@ -149,7 +149,7 @@ export function TalabatMenu() {
         </div>
 
         {/* Display Filtered Category Items */}
-        <div className="space-y-8 sm:space-y-12 pt-1 sm:pt-2">
+        <div className="space-y-10 sm:space-y-14 pt-2">
           {visibleCategories.map((category) => {
             const rawCategoryProducts = filteredProducts.filter((p) => p.category === category);
             if (rawCategoryProducts.length === 0) return null;
@@ -168,30 +168,30 @@ export function TalabatMenu() {
             const catNote = isAr ? categoryNotesAr[category] : categoryNotesEn[category];
 
             return (
-              <div key={category} className="space-y-4 sm:space-y-6">
+              <div key={category} className="space-y-5 sm:space-y-7">
                 {/* Category Header */}
-                <div className="border-b border-neutral-800 pb-2.5 flex flex-col sm:flex-row sm:items-end justify-between gap-1.5">
+                <div className="border-b border-neutral-800 pb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
                   <div>
-                    <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight font-mono flex items-center gap-2">
-                      <span className="w-2 sm:w-2.5 h-5 sm:h-6 bg-[#EA1F27] rounded-sm" />
+                    <h3 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight flex items-center gap-2.5">
+                      <span className="w-2.5 sm:w-3 h-6 sm:h-7 bg-[#EA1F27] rounded-sm" />
                       {getCategoryDisplayName(category, isAr)}
                     </h3>
                     {catNote && (
-                      <p className="text-[11px] sm:text-xs text-neutral-400 mt-1 max-w-2xl leading-relaxed">
+                      <p className="text-xs sm:text-sm text-neutral-300 mt-1.5 max-w-3xl leading-relaxed font-sans">
                         {catNote}
                       </p>
                     )}
                   </div>
-                  <span className="text-[11px] sm:text-xs text-neutral-500 font-mono">
+                  <span className="text-xs sm:text-sm text-neutral-400 font-semibold shrink-0">
                     {t('showing')} {categoryProducts.length} {categoryProducts.length === 1 ? t('item') : t('items')}
                   </span>
                 </div>
 
                 {/* Category Items Grid */}
-                <div className={`grid gap-2.5 sm:gap-4 ${
+                <div className={`grid gap-3 sm:gap-5 ${
                   isOfferCategory
                     ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-                    : 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
+                    : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
                 }`}>
                   {categoryProducts.map((product) => {
                     const name = getProductName(product, isAr);
@@ -211,13 +211,13 @@ export function TalabatMenu() {
                       <div
                         key={product.id}
                         onClick={() => product.isAvailable && setCustomizingProduct(product)}
-                        className={`bg-neutral-900/80 border rounded-2xl p-2.5 sm:p-4 flex flex-col justify-between transition-all duration-300 hover:border-red-600/60 hover:shadow-xl hover:shadow-red-950/20 group relative overflow-hidden cursor-pointer ${
+                        className={`bg-neutral-900/90 border rounded-2xl p-3.5 sm:p-5 flex flex-col justify-between transition-all duration-300 hover:border-red-500/70 hover:shadow-2xl hover:shadow-red-950/30 group relative overflow-hidden cursor-pointer ${
                           !product.isAvailable ? 'opacity-50 grayscale border-neutral-800 cursor-not-allowed' : 'border-neutral-800'
                         }`}
                       >
-                        <div>
+                        <div className="space-y-3">
                           {/* Image & Badges */}
-                          <div className={`relative w-full rounded-xl overflow-hidden bg-neutral-950 mb-2.5 flex items-center justify-center ${
+                          <div className={`relative w-full rounded-xl overflow-hidden bg-neutral-950 flex items-center justify-center ${
                             isOfferCategory
                               ? 'aspect-[3/4]'
                               : 'aspect-square'
@@ -234,35 +234,35 @@ export function TalabatMenu() {
 
                             {/* Spicy badge */}
                             {product.spicy && (
-                              <div className="absolute top-1.5 left-1.5 rtl:left-auto rtl:right-1.5 bg-[#EA1F27] text-white text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full uppercase flex items-center gap-0.5 shadow-md font-mono z-10">
-                                <Flame className="w-2.5 h-2.5 text-[#CDB32D] fill-[#CDB32D]" />
+                              <div className="absolute top-2 left-2 rtl:left-auto rtl:right-2 bg-[#EA1F27] text-white text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full uppercase flex items-center gap-1 shadow-md z-10">
+                                <Flame className="w-3 h-3 text-[#CDB32D] fill-[#CDB32D]" />
                                 {t('spicy')}
                               </div>
                             )}
 
                             {product.category === 'Smash Burgers' || product.category === 'Exclusive' ? (
-                              <div className="absolute top-1.5 right-1.5 rtl:right-auto rtl:left-1.5 bg-neutral-900/90 border border-[#03A0E5]/60 text-[#03A0E5] text-[9px] sm:text-[10px] font-extrabold px-1.5 py-0.5 rounded-full uppercase shadow-md font-mono z-10 truncate max-w-[110px]">
+                              <div className="absolute top-2 right-2 rtl:right-auto rtl:left-2 bg-neutral-900/95 border border-[#03A0E5]/70 text-[#03A0E5] text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full uppercase shadow-md z-10 truncate max-w-[120px]">
                                 {t('smashSizesBadge')}
                               </div>
                             ) : (product.sizePrices && product.sizePrices.length > 0) || (product.hasSizes && !product.comboPrice) ? (
-                              <div className="absolute top-1.5 right-1.5 rtl:right-auto rtl:left-1.5 bg-neutral-900/90 border border-[#03A0E5]/60 text-[#03A0E5] text-[9px] sm:text-[10px] font-extrabold px-1.5 py-0.5 rounded-full uppercase shadow-md font-mono z-10 truncate max-w-[110px]">
+                              <div className="absolute top-2 right-2 rtl:right-auto rtl:left-2 bg-neutral-900/95 border border-[#03A0E5]/70 text-[#03A0E5] text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full uppercase shadow-md z-10 truncate max-w-[120px]">
                                 {isAr ? 'حجمين' : '2 SIZES'}
                               </div>
                             ) : product.comboPrice ? (
-                              <div className="absolute top-1.5 right-1.5 rtl:right-auto rtl:left-1.5 bg-neutral-900/90 border border-[#03A0E5]/60 text-[#03A0E5] text-[9px] sm:text-[10px] font-extrabold px-1.5 py-0.5 rounded-full uppercase shadow-md font-mono z-10 truncate max-w-[110px]">
+                              <div className="absolute top-2 right-2 rtl:right-auto rtl:left-2 bg-neutral-900/95 border border-[#03A0E5]/70 text-[#03A0E5] text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full uppercase shadow-md z-10 truncate max-w-[120px]">
                                 {t('twoSizes')}
                               </div>
                             ) : null}
 
                             {isOfferCategory && (
-                              <div className="absolute top-1.5 right-1.5 rtl:right-auto rtl:left-1.5 bg-neutral-900/90 border border-[#03A0E5]/80 text-[#03A0E5] text-[9px] sm:text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase shadow-md font-mono z-10 tracking-wider">
+                              <div className="absolute top-2 right-2 rtl:right-auto rtl:left-2 bg-neutral-900/95 border border-[#03A0E5]/80 text-[#03A0E5] text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full uppercase shadow-md z-10 tracking-wider">
                                 {t('exclusiveOffer')}
                               </div>
                             )}
 
                             {!product.isAvailable && (
                               <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-10">
-                                <span className="bg-red-600 text-white text-[10px] sm:text-xs font-mono font-bold px-2.5 py-1 rounded-md uppercase">
+                                <span className="bg-red-600 text-white text-xs sm:text-sm font-bold px-3 py-1 rounded-md uppercase">
                                   {t('soldOut')}
                                 </span>
                               </div>
@@ -270,28 +270,28 @@ export function TalabatMenu() {
                           </div>
 
                           {/* Product Details */}
-                          <div className="space-y-1">
-                            <h4 className="font-mono font-extrabold text-sm sm:text-lg lg:text-xl text-white uppercase tracking-tight group-hover:text-red-400 transition-colors leading-tight line-clamp-2">
+                          <div className="space-y-1.5">
+                            <h4 className="font-extrabold text-base sm:text-lg lg:text-xl text-white tracking-tight group-hover:text-red-400 transition-colors leading-snug line-clamp-2">
                               {name}
                             </h4>
 
-                            <p className="text-[11px] sm:text-xs text-neutral-400 line-clamp-2 leading-snug">
+                            <p className="text-xs sm:text-sm text-neutral-300 font-sans line-clamp-3 leading-relaxed">
                               {ingredientsText}
                             </p>
                           </div>
                         </div>
 
                         {/* Price & Customize Button Bar */}
-                        <div className="pt-2.5 sm:pt-3 mt-2 border-t border-neutral-800/80 flex items-center justify-between gap-1.5">
+                        <div className="pt-3 mt-3 border-t border-neutral-800 flex items-center justify-between gap-2">
                           <div className="min-w-0 flex-1">
-                            <span className="text-[9px] sm:text-[10px] text-neutral-400 font-mono block uppercase truncate">
+                            <span className="text-[10px] sm:text-xs text-neutral-400 block uppercase font-medium truncate">
                               {product.category === 'Smash Burgers' || product.category === 'Exclusive'
                                 ? `${t('sizeDouble')} / ${t('sizeTriple')}`
                                 : product.comboPrice
                                 ? `${t('solo')} / ${t('combo')}`
                                 : t('price')}
                             </span>
-                            <span className="font-mono font-extrabold text-xs sm:text-base text-[#CDB32D] block truncate">
+                            <span className="font-extrabold text-sm sm:text-base md:text-lg text-[#CDB32D] block truncate">
                               {product.category === 'Smash Burgers' || product.category === 'Exclusive'
                                 ? `${t('from')} ${product.soloPrice} ${isAr ? 'ج.م' : 'EGP'}`
                                 : product.sizePrices && product.sizePrices.length > 0
@@ -309,9 +309,9 @@ export function TalabatMenu() {
                               e.stopPropagation();
                               if (product.isAvailable) setCustomizingProduct(product);
                             }}
-                            className="bg-[#EA1F27] hover:bg-[#D11820] text-white font-mono font-bold text-[11px] sm:text-xs uppercase px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition-all shadow-lg shadow-[#EA1F27]/30 flex items-center gap-1 active:scale-95 disabled:opacity-50 shrink-0"
+                            className="bg-[#EA1F27] hover:bg-[#D11820] text-white font-bold text-xs sm:text-sm uppercase px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-all shadow-lg shadow-[#EA1F27]/30 flex items-center gap-1.5 active:scale-95 disabled:opacity-50 shrink-0"
                           >
-                            <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                            <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             <span>{t('order')}</span>
                           </button>
                         </div>
@@ -325,13 +325,13 @@ export function TalabatMenu() {
 
           {filteredProducts.length === 0 && (
             <div className="text-center py-16 bg-neutral-900/50 rounded-2xl border border-neutral-800">
-              <p className="text-neutral-400 font-mono text-sm">{t('noItemsFound')}</p>
+              <p className="text-neutral-300 text-base">{t('noItemsFound')}</p>
               <button
                 onClick={() => {
                   setSearchQuery('');
                   setSelectedCategory('Offers');
                 }}
-                className="mt-3 text-xs text-red-400 hover:underline font-mono uppercase"
+                className="mt-3 text-sm text-red-400 hover:underline font-bold uppercase"
               >
                 {t('resetFilter')}
               </button>
@@ -340,7 +340,7 @@ export function TalabatMenu() {
         </div>
 
         {/* VAT Inclusive & Security Notice */}
-        <div className="p-3.5 sm:p-4 rounded-xl bg-neutral-900 border border-neutral-800 text-center text-xs text-neutral-400 flex flex-col sm:flex-row items-center justify-center gap-2 mt-8 sm:mt-12">
+        <div className="p-4 rounded-xl bg-neutral-900 border border-neutral-800 text-center text-xs sm:text-sm text-neutral-300 flex flex-col sm:flex-row items-center justify-center gap-2 mt-8 sm:mt-12 font-sans">
           <ShieldCheck className="w-4 h-4 text-green-500 shrink-0" />
           <span>{t('preparedFreshNotice')}</span>
         </div>

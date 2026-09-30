@@ -10,9 +10,10 @@ export default {
   theme: {
   	extend: {
   		fontFamily: {
-  			sans: ['var(--font-geist-sans)', 'sans-serif'],
-  			mono: ['var(--font-title)', 'OldNavyGrunge', 'var(--font-geist-mono)', 'monospace'],
-  			title: ['var(--font-title)', 'OldNavyGrunge', 'sans-serif'],
+  			sans: ['var(--font-geist-sans)', 'system-ui', '-apple-system', 'sans-serif'],
+  			mono: ['var(--font-geist-mono)', 'Consolas', 'Monaco', 'monospace'],
+  			title: ['var(--font-title)', 'OldNavyGrunge', 'var(--font-geist-sans)', 'sans-serif'],
+  			cairo: ['var(--font-cairo)', 'Cairo', 'sans-serif'],
   		},
   		colors: {
   			brand: {
