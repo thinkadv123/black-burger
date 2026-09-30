@@ -3,9 +3,12 @@
 import React from 'react';
 import { Star, MessageSquareQuote, Award, ShieldCheck, Heart, Sparkles, UserCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function BrandSection() {
-  const testimonials = [
+  const { isAr } = useLanguage();
+
+  const testimonialsEn = [
     {
       icon: Star,
       title: 'Best Smash in Faisal',
@@ -13,7 +16,6 @@ export function BrandSection() {
       quote: 'I’ve tried smash burgers all over Cairo, but Black Burger’s lacy crispy edges and secret BB sauce hit completely different. The combo with chaos fries is insane!',
       author: 'Omar Hassan',
       badge: '5.0 ★ RATING',
-      color: 'gold',
     },
     {
       icon: Sparkles,
@@ -22,7 +24,6 @@ export function BrandSection() {
       quote: 'You can genuinely taste the quality of pure 100% Angus beef chuck—zero fillers. Delivered piping hot to my doorstep in under 25 minutes!',
       author: 'Youssef Khalil',
       badge: 'VERIFIED ORDER',
-      color: 'red',
     },
     {
       icon: Heart,
@@ -31,9 +32,37 @@ export function BrandSection() {
       quote: 'The Truffle smash burger and buffalo chicken are my absolute favorites. Golden pillow brioche bun that holds together rich juices without getting soggy.',
       author: 'Nouran Mahmoud',
       badge: 'TOP REVIEWER',
-      color: 'gold',
     },
   ];
+
+  const testimonialsAr = [
+    {
+      icon: Star,
+      title: 'أفضل برجر في فيصل',
+      subtitle: 'أطراف مقرمشة ولحم طري',
+      quote: 'جربت برجر في كل القاهرة، لكن طبقة القرمشة الخارجية لـ بلاك برجر مع صوص بي بي السري خطيرة جداً! الوجبة مع بطاطس تشاوس ممتازة.',
+      author: 'عمر حسن',
+      badge: 'تقييم 5.0 ★',
+    },
+    {
+      icon: Sparkles,
+      title: 'جودة لحم ممتازة',
+      subtitle: '100% لحم أنجوس صافي',
+      quote: 'تستشعر جودة اللحم الأنجوس الصافي 100% بدون أي إضافات أو مواد مالئة. التوصيل كان سريعاً وساخناً حتى باب المنزل!',
+      author: 'يوسف خليل',
+      badge: 'طلب مؤكد',
+    },
+    {
+      icon: Heart,
+      title: 'صوصات سرية مميزة',
+      subtitle: 'ترافل أولي وخبز البريوش',
+      quote: 'برجر الترافل وساندوتش البافالو تشيكن مفضلين جداً بالنسبة لي. خبز البريوش طري ويتحمل الصوصات الغنية بدون أن يذوب.',
+      author: 'نوران محمود',
+      badge: 'مقيم مميز',
+    },
+  ];
+
+  const testimonials = isAr ? testimonialsAr : testimonialsEn;
 
   return (
     <section className="bg-black py-24 border-t border-zinc-800/80 relative overflow-hidden">
@@ -45,15 +74,25 @@ export function BrandSection() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900 border border-amber-500/40 text-amber-400 text-xs font-black tracking-widest uppercase shadow-md">
-            <MessageSquareQuote className="w-4 h-4 text-amber-400" /> REAL FEEDBACK & REVIEWS
+            <MessageSquareQuote className="w-4 h-4 text-amber-400" /> {isAr ? 'آراء وتقييمات العملاء' : 'REAL FEEDBACK & REVIEWS'}
           </div>
 
           <h2 className="text-4xl sm:text-6xl font-black text-white tracking-tight uppercase">
-            WHAT OUR <span className="text-red-gradient">CUSTOMERS SAY</span>
+            {isAr ? (
+              <>
+                ماذا يقول <span className="text-red-gradient">عملاؤنا</span>
+              </>
+            ) : (
+              <>
+                WHAT OUR <span className="text-red-gradient">CUSTOMERS SAY</span>
+              </>
+            )}
           </h2>
 
           <p className="text-zinc-400 text-base sm:text-lg leading-relaxed">
-            Don&apos;t just take our word for it. Here is what smash burger lovers across Faisal & Cairo have to say about Black Burger.
+            {isAr
+              ? 'إليك ما يقوله عشاق البرجر في فيصل والقاهرة عن تجربتهم مع بلاك برجر.'
+              : 'Don’t just take our word for it. Here is what smash burger lovers across Faisal & Cairo have to say about Black Burger.'}
           </p>
         </div>
 

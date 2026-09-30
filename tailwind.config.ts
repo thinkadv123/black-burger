@@ -9,7 +9,18 @@ export default {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			sans: ['var(--font-geist-sans)', 'sans-serif'],
+  			mono: ['var(--font-title)', 'OldNavyGrunge', 'var(--font-geist-mono)', 'monospace'],
+  			title: ['var(--font-title)', 'OldNavyGrunge', 'sans-serif'],
+  		},
   		colors: {
+  			brand: {
+  				red: '#EA1F27',
+  				white: '#FFFFFF',
+  				blue: '#03A0E5',
+  				gold: '#CDB32D',
+  			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

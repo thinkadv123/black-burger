@@ -6,9 +6,11 @@ import { toast } from 'sonner';
 
 export interface CartItemOption {
   variant: 'solo' | 'combo'; // combo price calculation: product.comboPrice or solo + 40/50 EGP
-  size?: 'Large' | 'X-Large'; // for onion rings: 60 or 80 EGP
+  size?: 'Double' | 'Triple' | 'Quad' | 'Large' | 'X-Large'; // Double, Triple, Quad for Smash Burgers; Large/X-Large for onion rings
+  flavor?: 'Normal' | 'Spicy'; // Spice level / flavor selector (Spicy, Normal)
   removedIngredients: string[];
   addedAdditions: AdditionItem[];
+  selectedSandwiches?: Record<string, string>; // e.g. { 'sandwich-1': 'Ranchavoo', 'sandwich-2': 'Chipotle' }
   specialInstructions?: string;
 }
 
@@ -70,12 +72,31 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const calculateUnitPrice = (product: ProductItem, options: CartItemOption): number => {
     let price = product.soloPrice;
 
-    // Handle Onion Rings sizes
-    if (product.id === 'onion-rings' && product.sizePrices) {
+    // Handle Smash Burgers sizes (Double, Triple, Quad) & Solo / Combo
+    if (product.category === 'Smash Burgers' || product.category === 'Exclusive') {
+      const sz = options.size || 'Double';
+      if (sz === 'Triple') {
+        price += 40;
+      } else if (sz === 'Quad') {
+        price += 80;
+      }
+
+      if (options.variant === 'combo') {
+        price += 50;
+      }
+    } else if (product.sizePrices && product.sizePrices.length > 0) {
       const sizeObj = product.sizePrices.find((s) => s.label === options.size);
-      if (sizeObj) price = sizeObj.price;
-    } else if (options.variant === 'combo' && product.comboPrice) {
-      price = product.comboPrice;
+      if (sizeObj) {
+        price = sizeObj.price;
+      } else {
+        price = product.soloPrice;
+      }
+
+      if (options.variant === 'combo') {
+        price += 50;
+      }
+    } else if (options.variant === 'combo') {
+      price = (product.soloPrice || 0) + 50;
     }
 
     // Add cost of extra additions
@@ -89,7 +110,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addToCart = (product: ProductItem, quantity: number, options: CartItemOption) => {
     const unitPrice = calculateUnitPrice(product, options);
-    const cartItemId = `${product.id}-${options.variant}-${options.size || 'reg'}-${options.removedIngredients.sort().join('-')}-${options.addedAdditions.map((a) => a.id).sort().join('-')}-${options.specialInstructions || ''}`;
+    const sandwichesKey = options.selectedSandwiches
+      ? Object.entries(options.selectedSandwiches).map(([k, v]) => `${k}:${v}`).sort().join('-')
+      : '';
+    const cartItemId = `${product.id}-${options.variant}-${options.size || 'reg'}-${options.flavor || 'norm'}-${options.removedIngredients.sort().join('-')}-${options.addedAdditions.map((a) => a.id).sort().join('-')}-${sandwichesKey}-${options.specialInstructions || ''}`;
 
     setCart((prevCart) => {
       const existingIndex = prevCart.findIndex((item) => item.cartItemId === cartItemId);
@@ -101,19 +125,31 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return [...prevCart, { cartItemId, product, quantity, options, unitPrice }];
     });
 
-    toast.success(`Added ${quantity}x ${product.name} to your order!`, {
+    const isAr = typeof window !== 'undefined' && (localStorage.getItem('bb_lang') === 'ar' || document.documentElement.lang === 'ar');
+    const productName = isAr && product.name_ar ? product.name_ar : product.name;
+    const toastMsg = isAr
+      ? `تمت إضافة ${quantity}x ${productName} إلى طلبك!`
+      : `Added ${quantity}x ${productName} to your order!`;
+
+    toast.success(toastMsg, {
       style: {
-        background: '#121214',
+        background: '#18181b',
         color: '#FFFFFF',
         border: '1px solid #DC2626',
+        borderRadius: '16px',
+        padding: '12px 16px',
+        fontWeight: '700',
+        fontSize: '14px',
+        boxShadow: '0 10px 30px rgba(220, 38, 38, 0.4)',
       },
       icon: '🔥',
     });
   };
 
   const removeFromCart = (cartItemId: string) => {
+    const isAr = typeof window !== 'undefined' && (localStorage.getItem('bb_lang') === 'ar' || document.documentElement.lang === 'ar');
     setCart((prevCart) => prevCart.filter((item) => item.cartItemId !== cartItemId));
-    toast.info('Item removed from order');
+    toast.info(isAr ? 'تم حذف العنصر من الطلب' : 'Item removed from order');
   };
 
   const updateQuantity = (cartItemId: string, newQty: number) => {

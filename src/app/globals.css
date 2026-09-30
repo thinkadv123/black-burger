@@ -2,27 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'OldNavyGrunge';
+  src: url('/fonts/the-old-navy-grunge-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6,
+  button, button *,
+  input[type="button"], input[type="submit"],
+  a, a *,
+  .btn, [role="button"],
+  .font-title, .font-mono {
+    font-family: var(--font-title), 'OldNavyGrunge', sans-serif !important;
+    letter-spacing: 0.04em;
+  }
+
+  [dir="rtl"], [dir="rtl"] body, .rtl-mode, .rtl-mode body {
+    font-family: var(--font-cairo), 'Cairo', sans-serif !important;
+  }
+
+  [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6,
+  [dir="rtl"] button, [dir="rtl"] button *,
+  [dir="rtl"] input, [dir="rtl"] textarea, [dir="rtl"] select,
+  [dir="rtl"] a, [dir="rtl"] a *,
+  [dir="rtl"] .btn, [dir="rtl"] [role="button"],
+  [dir="rtl"] .font-title, [dir="rtl"] .font-mono,
+  .rtl-mode h1, .rtl-mode h2, .rtl-mode h3, .rtl-mode h4, .rtl-mode h5, .rtl-mode h6,
+  .rtl-mode button, .rtl-mode button *,
+  .rtl-mode input, .rtl-mode textarea, .rtl-mode select,
+  .rtl-mode a, .rtl-mode a *,
+  .rtl-mode .btn, .rtl-mode [role="button"],
+  .rtl-mode .font-title, .rtl-mode .font-mono {
+    font-family: var(--font-cairo), 'Cairo', sans-serif !important;
+    letter-spacing: normal !important;
+    line-height: 1.35;
+  }
+}
+
 @layer base {
   :root {
+    --brand-red: #EA1F27;
+    --brand-white: #FFFFFF;
+    --brand-blue: #03A0E5;
+    --brand-gold: #CDB32D;
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 6.5%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 5%;
     --popover-foreground: 0 0% 98%;
-    --primary: 0 84.2% 50.2%; /* Deep Red #DC2626 */
+    --primary: 357 84% 52%; /* #EA1F27 Primary Red */
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 12%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 12%;
     --muted-foreground: 0 0% 65%;
-    --accent: 43 74% 53%; /* Metallic Gold Accent */
+    --accent: 49 64% 49%; /* #CDB32D Brand Gold */
     --accent-foreground: 0 0% 9%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
-    --ring: 0 84.2% 50.2%;
+    --ring: 357 84% 52%;
     --radius: 0.75rem;
   }
 }
@@ -58,27 +103,45 @@
 
 /* Typography styles & Custom Glows */
 .text-gold-gradient {
-  background: linear-gradient(135deg, #FEF08A 0%, #EAB308 50%, #CA8A04 100%);
+  background: linear-gradient(135deg, #FFFFFF 0%, #CDB32D 60%, #B89E23 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding-bottom: 0.18em;
+  padding-top: 0.05em;
+  overflow: visible;
 }
 
 .text-red-gradient {
-  background: linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #991B1B 100%);
+  background: linear-gradient(135deg, #FF4D53 0%, #EA1F27 50%, #B50E15 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding-bottom: 0.18em;
+  padding-top: 0.05em;
+  overflow: visible;
+}
+
+.text-blue-gradient {
+  background: linear-gradient(135deg, #38BDF8 0%, #03A0E5 50%, #0284C7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding-bottom: 0.18em;
+  padding-top: 0.05em;
+  overflow: visible;
 }
 
 .glow-red {
-  box-shadow: 0 0 25px -5px rgba(220, 38, 38, 0.4);
+  box-shadow: 0 0 25px -5px rgba(234, 31, 39, 0.5);
 }
 
-.glow-red-lg {
-  box-shadow: 0 0 40px 0px rgba(220, 38, 38, 0.5);
+.glow-blue {
+  box-shadow: 0 0 25px -5px rgba(3, 160, 229, 0.5);
 }
 
 .glow-gold {
-  box-shadow: 0 0 20px -5px rgba(234, 179, 8, 0.35);
+  box-shadow: 0 0 20px -5px rgba(205, 179, 45, 0.4);
 }
 
 .bg-radial-gradient {
@@ -99,4 +162,19 @@
 
 .animate-flame-pulse {
   animation: flamePulse 3s ease-in-out infinite;
+}
+
+/* Infinite Continuous Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+  will-change: transform;
 }

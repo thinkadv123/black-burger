@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Cairo } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+import { LanguageProvider } from "@/context/LanguageContext";
 import { MenuProvider } from "@/context/MenuContext";
 import { CartProvider } from "@/context/CartContext";
 import { Navbar } from "@/components/Navbar";
@@ -20,12 +22,29 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const cairo = Cairo({
+  variable: "--font-cairo",
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const titleFont = localFont({
+  src: "../../public/fonts/the-old-navy-grunge-regular.ttf",
+  variable: "--font-title",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "BLACK BURGER | Smash Burgers Made Different",
   description:
     "Premium urban smash burger restaurant in Faisal. 100% Angus beef smashed to crispy perfection, signature sauces, loaded chaos fries, and online ordering with Cash on Delivery.",
   icons: {
-    icon: "/images/logo.png",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favv.webp", type: "image/webp" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/favv.webp",
   },
 };
 
@@ -35,25 +54,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-black text-white antialiased min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white`}
+        suppressHydrationWarning
+        className={`${geistSans.variable} ${geistMono.variable} ${titleFont.variable} ${cairo.variable} bg-black text-white antialiased min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white`}
       >
-        <MenuProvider>
-          <CartProvider>
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
+        <LanguageProvider>
+          <MenuProvider>
+            <CartProvider>
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
 
-            {/* Interactive Modals & Drawers */}
-            <GlobalProductModal />
-            <CartDrawer />
-            <CheckoutModal />
+              {/* Interactive Modals & Drawers */}
+              <GlobalProductModal />
+              <CartDrawer />
+              <CheckoutModal />
 
-            {/* Toast Notification Provider */}
-            <Toaster position="bottom-right" theme="dark" />
-          </CartProvider>
-        </MenuProvider>
+              {/* Toast Notification Provider */}
+              <Toaster position="top-center" theme="dark" closeButton />
+            </CartProvider>
+          </MenuProvider>
+        </LanguageProvider>
       </body>
     </html>
   );
