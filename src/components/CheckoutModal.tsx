@@ -502,7 +502,7 @@ ${trackingUrl}
                           </option>
                           {FAISAL_DELIVERY_AREAS.map((area) => (
                             <option key={area.id} value={area.id} className="bg-zinc-900 text-white py-1.5">
-                              {isAr ? area.name_ar : area.name_en} — ({isAr ? `مصاريف التوصيل: ${area.fee} ج.م` : `Shipping: ${area.fee} EGP`})
+                              {isAr ? area.name_ar : area.name_en}
                             </option>
                           ))}
                         </select>
