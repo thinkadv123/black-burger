@@ -47,6 +47,8 @@ export interface OrderItem {
 
 export interface AdminOrder {
   id: string;
+  branch?: string;
+  deliveryArea?: { id: string; name_ar: string; name_en: string; fee: number } | null;
   customerName: string;
   customerPhone: string;
   customerAddress: string;
@@ -401,6 +403,12 @@ export function OrdersManager() {
                   {/* Delivery Address */}
                   <div className="space-y-1 md:col-span-2">
                     <span className="text-[10px] text-neutral-500 uppercase font-bold block">Delivery Address & Notes</span>
+                    {order.deliveryArea && (
+                      <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-mono mb-1 font-bold">
+                        <Truck className="w-3.5 h-3.5 text-amber-400" />
+                        <span>Area: {order.deliveryArea.name_ar || order.deliveryArea.name_en} (+{order.deliveryArea.fee} EGP)</span>
+                      </div>
+                    )}
                     <div className="flex items-start gap-1.5 text-zinc-300 font-sans">
                       <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0 mt-0.5" />
                       <span>{order.customerAddress}</span>

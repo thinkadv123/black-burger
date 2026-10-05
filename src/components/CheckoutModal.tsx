@@ -1,15 +1,17 @@
 "use client";
 
 import React, { useState } from 'react';
-import { X, CheckCircle2, Phone, MapPin, Send, Truck, ShieldCheck, MessageSquare } from 'lucide-react';
+import { X, CheckCircle2, Phone, MapPin, Send, Truck, ShieldCheck, MessageSquare, AlertCircle } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { getProductName, getAdditionName, getOptionSizeName } from '@/data/menu';
+import { FAISAL_DELIVERY_AREAS } from '@/data/deliveryAreas';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { db } from '@/lib/firebase';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { OrderTrackerModal, ActiveOrderData } from '@/components/OrderTrackerModal';
+import { toast } from 'sonner';
 
 export function CheckoutModal() {
   const {
@@ -17,8 +19,6 @@ export function CheckoutModal() {
     isCheckoutOpen,
     setIsCheckoutOpen,
     subtotalPrice,
-    deliveryFee,
-    totalPrice,
     clearCart,
   } = useCart();
   const { isAr, t } = useLanguage();
@@ -31,6 +31,8 @@ export function CheckoutModal() {
   });
 
   const [selectedBranch, setSelectedBranch] = useState<'faisal' | 'district9'>('faisal');
+  const [selectedAreaId, setSelectedAreaId] = useState<string>('');
+  const [areaError, setAreaError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderCompleted, setOrderCompleted] = useState(false);
   const [orderId, setOrderId] = useState('');
@@ -38,6 +40,20 @@ export function CheckoutModal() {
   const [placedActiveOrder, setPlacedActiveOrder] = useState<ActiveOrderData | null>(null);
 
   if (!isCheckoutOpen) return null;
+
+  // Selected delivery area for Faisal branch
+  const selectedArea = selectedBranch === 'faisal'
+    ? FAISAL_DELIVERY_AREAS.find((a) => a.id === selectedAreaId)
+    : null;
+
+  // Dynamic delivery fee calculation:
+  // For Faisal branch: comes directly from selected area's custom fee (0 if not chosen yet)
+  // For District 9: standard flat fee (35 EGP)
+  const activeDeliveryFee = selectedBranch === 'faisal'
+    ? (selectedArea ? selectedArea.fee : 0)
+    : 35;
+
+  const activeTotalPrice = subtotalPrice + activeDeliveryFee;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -114,15 +130,23 @@ export function CheckoutModal() {
       ? (isAr ? 'مول District 9' : 'District 9 Branch')
       : (isAr ? 'فرع فيصل' : 'Faisal Branch');
 
+    const areaName = selectedBranch === 'faisal' && selectedArea
+      ? (isAr ? selectedArea.name_ar : selectedArea.name_en)
+      : null;
+
+    const deliveryFeeLabel = selectedBranch === 'faisal' && selectedArea
+      ? `▫️ *${isAr ? 'رسوم التوصيل' : 'Delivery Fee'} (${areaName}):* ${activeDeliveryFee} ${isAr ? 'ج.م' : 'EGP'}`
+      : `▫️ *${isAr ? 'رسوم التوصيل' : 'Delivery Fee'}:* ${activeDeliveryFee} ${isAr ? 'ج.م' : 'EGP'}`;
+
     const message = `🍔🔥 *BLACK BURGER | ${isAr ? 'طلب جديد' : 'NEW ORDER'}* 🔥🍔
 🆔 *${isAr ? 'رقم الطلب' : 'Order Ref'}:* #${generatedId}
 🏪 *${isAr ? 'الفرع المستهدف' : 'Target Branch'}:* ${branchText}
-
+${areaName ? `📍 *${isAr ? 'منطقة التوصيل' : 'Delivery Area'}:* ${areaName}\n` : ''}
 👤 *${isAr ? 'بيانات العميل' : 'CUSTOMER DETAILS'}*
 ━━━━━━━━━━━━━━━━━━━━━
 ▫️ *${isAr ? 'الاسم' : 'Name'}:* ${formData.name}
 ▫️ *${isAr ? 'الهاتف' : 'Phone'}:* ${formData.phone}
-▫️ *${isAr ? 'عنوان التوصيل' : 'Delivery Address'}:* ${formData.address}
+${areaName ? `▫️ *${isAr ? 'المنطقة' : 'Area'}:* ${areaName}\n` : ''}▫️ *${isAr ? 'عنوان التوصيل بالتفصيل' : 'Delivery Address'}:* ${formData.address}
 ${formData.notes ? `▫️ *${isAr ? 'تعليمات خاصة' : 'Special Instructions'}:* ${formData.notes}\n` : ''}
 🛒 *${isAr ? 'تفاصيل الطلب' : 'ORDER BREAKDOWN'}*
 ━━━━━━━━━━━━━━━━━━━━━
@@ -131,8 +155,8 @@ ${itemsList}
 💰 *${isAr ? 'ملخص الفاتورة' : 'BILL SUMMARY'}*
 ━━━━━━━━━━━━━━━━━━━━━
 ▫️ *${isAr ? 'المجموع الفرعي' : 'Subtotal'}:* ${subtotalPrice} ${isAr ? 'ج.م' : 'EGP'}
-▫️ *${isAr ? 'رسوم التوصيل' : 'Delivery Fee'}:* ${deliveryFee} ${isAr ? 'ج.م' : 'EGP'}
-🔥 *${isAr ? 'الإجمالي الكلي' : 'TOTAL DUE'}:* *${totalPrice} ${isAr ? 'ج.م' : 'EGP'}*
+${deliveryFeeLabel}
+🔥 *${isAr ? 'الإجمالي الكلي' : 'TOTAL DUE'}:* *${activeTotalPrice} ${isAr ? 'ج.م' : 'EGP'}*
 💳 *${isAr ? 'طريقة الدفع' : 'Payment Method'}:* ${isAr ? 'الدفع نقداً عند الاستلام' : 'Cash on Delivery'}
 
 🚴‍♂️ *${isAr ? 'رابط تتبع حالة الطلب مباشرة' : 'LIVE ORDER TRACKING LINK'}:*
@@ -145,7 +169,16 @@ ${trackingUrl}
 
   const handleSubmitOrder = async (e: React.FormEvent, targetNumber = '201515821555') => {
     e.preventDefault();
-    if (!formData.name || !formData.phone || !formData.address) {
+
+    if (!formData.name.trim() || !formData.phone.trim() || !formData.address.trim()) {
+      toast.error(isAr ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all required fields');
+      return;
+    }
+
+    // Required validation for Faisal Branch Delivery Area
+    if (selectedBranch === 'faisal' && !selectedAreaId) {
+      setAreaError(true);
+      toast.error(isAr ? 'يرجى اختيار منطقة التوصيل أولاً' : 'Please select your delivery area first');
       return;
     }
 
@@ -173,16 +206,27 @@ ${trackingUrl}
       specialInstructions: item.options.specialInstructions || '',
     }));
 
+    const fullDeliveryAddress = selectedArea
+      ? `${isAr ? selectedArea.name_ar : selectedArea.name_en} - ${formData.address}`
+      : formData.address;
+
     const orderData = {
       id: newOrderId,
+      branch: selectedBranch,
+      deliveryArea: selectedArea ? {
+        id: selectedArea.id,
+        name_ar: selectedArea.name_ar,
+        name_en: selectedArea.name_en,
+        fee: selectedArea.fee,
+      } : null,
       customerName: formData.name,
       customerPhone: formData.phone,
-      customerAddress: formData.address,
+      customerAddress: fullDeliveryAddress,
       customerNotes: formData.notes || '',
       items: orderItems,
       subtotalPrice,
-      deliveryFee,
-      totalPrice,
+      deliveryFee: activeDeliveryFee,
+      totalPrice: activeTotalPrice,
       status: 'New',
       createdAt: new Date().toISOString(),
       timestamp: serverTimestamp(),
@@ -203,19 +247,19 @@ ${trackingUrl}
       console.error('Error saving backup order to localStorage:', err);
     }
 
-    // Save active order for 10-minute stage progress tracking
+    // Save active order for stage progress tracking
     const activeOrderObj: ActiveOrderData = {
       orderId: newOrderId,
       customerName: formData.name,
       phone: formData.phone,
-      address: formData.address,
+      address: fullDeliveryAddress,
       items: orderItems.map((item) => ({
         name: isAr ? (item.name_ar || item.name) : item.name,
         quantity: item.quantity,
         price: item.unitPrice,
         optionsSummary: item.variant === 'combo' ? (isAr ? 'وجبة' : 'Combo') : (isAr ? 'ساندوتش' : 'Solo'),
       })),
-      totalPrice,
+      totalPrice: activeTotalPrice,
       createdAt: Date.now(),
     };
 
@@ -307,7 +351,16 @@ ${trackingUrl}
                     <span className="text-sm font-extrabold text-amber-400">{t('minsRange')}</span>
                   </div>
 
-                  <div className="space-y-1.5 text-xs">
+                  <div className="space-y-2 text-xs">
+                    {selectedArea && (
+                      <div className="flex items-center gap-2 text-amber-400 font-bold">
+                        <Truck className="w-4 h-4 text-amber-400 shrink-0" />
+                        <span>
+                          {t('shippingTo')}: <strong className="text-white">{isAr ? selectedArea.name_ar : selectedArea.name_en}</strong>
+                          <span className="text-amber-400 ml-1 rtl:mr-1">({selectedArea.fee} {isAr ? 'ج.م' : 'EGP'})</span>
+                        </span>
+                      </div>
+                    )}
                     <div className="flex items-center gap-2 text-zinc-300">
                       <MapPin className="w-4 h-4 text-red-500 shrink-0" />
                       <span>{formData.address}</span>
@@ -320,7 +373,7 @@ ${trackingUrl}
 
                   <div className="pt-2 border-t border-zinc-800 flex justify-between items-center text-sm font-black text-white font-mono">
                     <span>{t('paymentMethod')}</span>
-                    <span className="text-emerald-400">{t('cashOnDelivery')} ({totalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
+                    <span className="text-emerald-400">{t('cashOnDelivery')} ({activeTotalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
                   </div>
                 </div>
 
@@ -368,29 +421,138 @@ ${trackingUrl}
                 <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between font-mono">
                   <div>
                     <span className="text-xs text-zinc-400 font-bold block">{t('totalToPay')}</span>
-                    <span className="text-xs text-zinc-500">
-                      {selectedBranch === 'district9' ? t('includesDeliveryNoticeDistrict9') : t('includesDeliveryNoticeFaisal')}
+                    <span className="text-xs text-zinc-400">
+                      {selectedBranch === 'district9' ? (
+                        t('includesDeliveryNoticeDistrict9')
+                      ) : selectedArea ? (
+                        <span>
+                          {isAr ? 'شامل توصيل' : 'Includes delivery to'}{' '}
+                          <strong className="text-amber-400">{isAr ? selectedArea.name_ar : selectedArea.name_en}</strong>{' '}
+                          ({selectedArea.fee} {isAr ? 'ج.م' : 'EGP'})
+                        </span>
+                      ) : (
+                        <span className="text-amber-400 font-bold">
+                          {isAr ? 'حدد منطقة التوصيل لحساب الشحن' : 'Select delivery area to calculate shipping'}
+                        </span>
+                      )}
                     </span>
                   </div>
-                  <span className="text-2xl font-black text-amber-400">{totalPrice} {isAr ? 'ج.م' : 'EGP'}</span>
+                  <div className="text-right rtl:text-left">
+                    <span className="text-2xl font-black text-amber-400">
+                      {activeTotalPrice} {isAr ? 'ج.م' : 'EGP'}
+                    </span>
+                    {selectedBranch === 'faisal' && !selectedArea && (
+                      <span className="block text-[10px] text-zinc-500">
+                        {isAr ? '+ مصاريف الشحن' : '+ Shipping Fee'}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 {/* Form Inputs */}
                 <div className="space-y-4">
-                  {/* Branch / Area Selector Dropdown */}
+                  {/* Branch Selector Dropdown */}
                   <div>
                     <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1 font-mono">
                       {t('selectBranch')}
                     </label>
                     <select
                       value={selectedBranch}
-                      onChange={(e) => setSelectedBranch(e.target.value as 'faisal' | 'district9')}
+                      onChange={(e) => {
+                        setSelectedBranch(e.target.value as 'faisal' | 'district9');
+                        setAreaError(false);
+                      }}
                       className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 font-mono cursor-pointer"
                     >
                       <option value="faisal">📍 {isAr ? 'فرع فيصل' : 'Faisal Branch'}</option>
                       <option value="district9">📍 {isAr ? 'مول District 9' : 'District 9 Branch'}</option>
                     </select>
                   </div>
+
+                  {/* Faisal Branch: Required Delivery Area Selection & Shipping Fee Showcase */}
+                  {selectedBranch === 'faisal' && (
+                    <div className="space-y-2.5 p-3.5 bg-zinc-900/60 border border-zinc-800 rounded-2xl">
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5 font-mono">
+                          <MapPin className="w-3.5 h-3.5 text-red-500" />
+                          <span>{t('selectDeliveryArea')}</span>
+                        </label>
+                        <span className="text-[10px] bg-red-950/80 text-red-400 border border-red-800/60 px-2 py-0.5 rounded-full font-mono font-bold uppercase tracking-wider">
+                          {isAr ? 'إجباري *' : 'Required *'}
+                        </span>
+                      </div>
+
+                      {/* Dropdown for Faisal Areas */}
+                      <div>
+                        <select
+                          required
+                          value={selectedAreaId}
+                          onChange={(e) => {
+                            setSelectedAreaId(e.target.value);
+                            if (e.target.value) setAreaError(false);
+                          }}
+                          className={`w-full bg-zinc-900 border rounded-xl px-4 py-3 text-sm text-white focus:outline-none font-sans cursor-pointer transition-colors ${
+                            areaError && !selectedAreaId
+                              ? 'border-red-500 ring-1 ring-red-500 bg-red-950/20'
+                              : 'border-zinc-700 focus:border-amber-500'
+                          }`}
+                        >
+                          <option value="" disabled className="text-zinc-500">
+                            {t('selectAreaPlaceholder')}
+                          </option>
+                          {FAISAL_DELIVERY_AREAS.map((area) => (
+                            <option key={area.id} value={area.id} className="bg-zinc-900 text-white py-1.5">
+                              {isAr ? area.name_ar : area.name_en} — ({isAr ? `مصاريف التوصيل: ${area.fee} ج.م` : `Shipping: ${area.fee} EGP`})
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Dedicated Shipping Fee & Price Container */}
+                      {selectedArea ? (
+                        <div className="bg-gradient-to-r from-amber-500/15 via-zinc-900 to-amber-500/15 border border-amber-500/50 rounded-xl p-3.5 flex items-center justify-between shadow-lg shadow-amber-500/5 transition-all">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0 shadow-inner">
+                              <Truck className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-amber-400">
+                                {t('shippingPriceTag')}
+                              </div>
+                              <div className="text-sm font-black text-white">
+                                {isAr ? selectedArea.name_ar : selectedArea.name_en}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-right rtl:text-left font-mono">
+                            <span className="text-[10px] uppercase text-zinc-400 block font-bold">{t('shippingFee')}</span>
+                            <span className="text-lg font-black text-amber-400">
+                              {selectedArea.fee} {isAr ? 'ج.م' : 'EGP'}
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          className={`p-3 rounded-xl border text-xs flex items-center gap-2.5 transition-colors ${
+                            areaError
+                              ? 'bg-red-950/40 border-red-500/80 text-red-300'
+                              : 'bg-zinc-900/90 border-zinc-800 text-zinc-400'
+                          }`}
+                        >
+                          {areaError ? (
+                            <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+                          ) : (
+                            <MapPin className="w-4 h-4 shrink-0 text-amber-400" />
+                          )}
+                          <span>
+                            {areaError
+                              ? (isAr ? '⚠️ برجاء اختيار منطقة التوصيل لحساب مصاريف الشحن الإلزامية' : '⚠️ Please select a delivery area to calculate required shipping')
+                              : t('selectAreaRequiredPrompt')}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   <div>
                     <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider block mb-1 font-mono">
@@ -474,7 +636,7 @@ ${trackingUrl}
                       ) : (
                         <>
                           <Send className="w-4 h-4 text-emerald-300 shrink-0" />
-                          <span>{t('sendToFaisalWhatsapp')} ({totalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
+                          <span>{t('sendToFaisalWhatsapp')} ({activeTotalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
                         </>
                       )}
                     </button>
@@ -492,7 +654,7 @@ ${trackingUrl}
                       ) : (
                         <>
                           <Send className="w-4 h-4 text-teal-300 shrink-0" />
-                          <span>{t('sendToDistrict9Whatsapp')} ({totalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
+                          <span>{t('sendToDistrict9Whatsapp')} ({activeTotalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
                         </>
                       )}
                     </button>
