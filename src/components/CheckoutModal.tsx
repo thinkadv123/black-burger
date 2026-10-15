@@ -39,6 +39,16 @@ export function CheckoutModal() {
   const [showTrackerModal, setShowTrackerModal] = useState(false);
   const [placedActiveOrder, setPlacedActiveOrder] = useState<ActiveOrderData | null>(null);
 
+  // Preserve snapshots after checkout so WhatsApp links stay valid after cart is cleared
+  const [completedMessageFaisal, setCompletedMessageFaisal] = useState('');
+  const [completedMessageDistrict9, setCompletedMessageDistrict9] = useState('');
+  const [completedSummary, setCompletedSummary] = useState<{
+    subtotal: number;
+    deliveryFee: number;
+    total: number;
+    areaName: string | null;
+  } | null>(null);
+
   if (!isCheckoutOpen) return null;
 
   // Selected delivery area for Faisal branch
@@ -72,11 +82,20 @@ export function CheckoutModal() {
     }
   };
 
-  const formatWhatsAppMessage = (generatedId: string) => {
-    const itemsList = cart
+  const buildWhatsAppMessage = (
+    generatedId: string,
+    itemsToFormat: typeof cart,
+    subtotal: number,
+    delFee: number,
+    branch: 'faisal' | 'district9',
+    area: typeof selectedArea,
+    form: typeof formData
+  ) => {
+    const total = subtotal + delFee;
+    const itemsList = itemsToFormat
       .map((item, idx) => {
         const pName = getProductName(item.product, isAr);
-        let details = `*${idx + 1}. ${pName}*  (x${item.quantity})\n   💵 *${isAr ? 'السعر' : 'Price'}:* ${item.unitPrice * item.quantity} ${isAr ? 'ج.م' : 'EGP'}`;
+        let details = `*${idx + 1}. ${pName}* (x${item.quantity})\n 💵 *${isAr ? 'السعر' : 'Price'}:* ${item.unitPrice * item.quantity} ${isAr ? 'ج.م' : 'EGP'}`;
         
         const optionTags: string[] = [];
         if (item.options.variant === 'combo') {
@@ -100,14 +119,14 @@ export function CheckoutModal() {
           optionTags.push(`🥪 *${isAr ? 'الساندوتشات المختارة' : 'Chosen Sandwiches'}:* ${choices}`);
         }
 
-        if (item.options.addedAdditions.length > 0) {
+        if (item.options.addedAdditions && item.options.addedAdditions.length > 0) {
           const adds = item.options.addedAdditions
             .map((a) => `+ ${getAdditionName(a, isAr)} (+${a.price} ${isAr ? 'ج.م' : 'EGP'})`)
-            .join('\n      ');
-          optionTags.push(`🧀 *${isAr ? 'الإضافات' : 'Extras'}:*\n      ${adds}`);
+            .join('\n ');
+          optionTags.push(`🧀 *${isAr ? 'الإضافات' : 'Extras'}:*\n ${adds}`);
         }
 
-        if (item.options.removedIngredients.length > 0) {
+        if (item.options.removedIngredients && item.options.removedIngredients.length > 0) {
           const removed = item.options.removedIngredients.map((ing) => `❌ ${isAr ? 'بدون' : 'No'} ${ing}`).join(', ');
           optionTags.push(`🚫 *${isAr ? 'الاستبعادات' : 'Customizations'}:* ${removed}`);
         }
@@ -117,7 +136,7 @@ export function CheckoutModal() {
         }
 
         if (optionTags.length > 0) {
-          details += `\n   ${optionTags.join('\n   ')}`;
+          details += `\n ${optionTags.join('\n ')}`;
         }
 
         return details;
@@ -126,17 +145,17 @@ export function CheckoutModal() {
 
     const origin = typeof window !== 'undefined' ? window.location.origin : 'https://blackburger.eg';
     const trackingUrl = `${origin}/track?id=${generatedId}`;
-    const branchText = selectedBranch === 'district9'
+    const branchText = branch === 'district9'
       ? (isAr ? 'مول District 9' : 'District 9 Branch')
       : (isAr ? 'فرع فيصل' : 'Faisal Branch');
 
-    const areaName = selectedBranch === 'faisal' && selectedArea
-      ? (isAr ? selectedArea.name_ar : selectedArea.name_en)
+    const areaName = branch === 'faisal' && area
+      ? (isAr ? area.name_ar : area.name_en)
       : null;
 
-    const deliveryFeeLabel = selectedBranch === 'faisal' && selectedArea
-      ? `▫️ *${isAr ? 'رسوم التوصيل' : 'Delivery Fee'} (${areaName}):* ${activeDeliveryFee} ${isAr ? 'ج.م' : 'EGP'}`
-      : `▫️ *${isAr ? 'رسوم التوصيل' : 'Delivery Fee'}:* ${activeDeliveryFee} ${isAr ? 'ج.م' : 'EGP'}`;
+    const deliveryFeeLabel = branch === 'faisal' && area
+      ? `▫️ *${isAr ? 'رسوم التوصيل' : 'Delivery Fee'} (${areaName}):* ${delFee} ${isAr ? 'ج.م' : 'EGP'}`
+      : `▫️ *${isAr ? 'رسوم التوصيل' : 'Delivery Fee'}:* ${delFee} ${isAr ? 'ج.م' : 'EGP'}`;
 
     const message = `🍔🔥 *BLACK BURGER | ${isAr ? 'طلب جديد' : 'NEW ORDER'}* 🔥🍔
 🆔 *${isAr ? 'رقم الطلب' : 'Order Ref'}:* #${generatedId}
@@ -144,19 +163,19 @@ export function CheckoutModal() {
 ${areaName ? `📍 *${isAr ? 'منطقة التوصيل' : 'Delivery Area'}:* ${areaName}\n` : ''}
 👤 *${isAr ? 'بيانات العميل' : 'CUSTOMER DETAILS'}*
 ━━━━━━━━━━━━━━━━━━━━━
-▫️ *${isAr ? 'الاسم' : 'Name'}:* ${formData.name}
-▫️ *${isAr ? 'الهاتف' : 'Phone'}:* ${formData.phone}
-${areaName ? `▫️ *${isAr ? 'المنطقة' : 'Area'}:* ${areaName}\n` : ''}▫️ *${isAr ? 'عنوان التوصيل بالتفصيل' : 'Delivery Address'}:* ${formData.address}
-${formData.notes ? `▫️ *${isAr ? 'تعليمات خاصة' : 'Special Instructions'}:* ${formData.notes}\n` : ''}
+▫️ *${isAr ? 'الاسم' : 'Name'}:* ${form.name}
+▫️ *${isAr ? 'الهاتف' : 'Phone'}:* ${form.phone}
+${areaName ? `▫️ *${isAr ? 'المنطقة' : 'Area'}:* ${areaName}\n` : ''}▫️ *${isAr ? 'عنوان التوصيل بالتفصيل' : 'Delivery Address'}:* ${form.address}
+${form.notes ? `▫️ *${isAr ? 'تعليمات خاصة' : 'Special Instructions'}:* ${form.notes}\n` : ''}
 🛒 *${isAr ? 'تفاصيل الطلب' : 'ORDER BREAKDOWN'}*
 ━━━━━━━━━━━━━━━━━━━━━
 ${itemsList}
 
 💰 *${isAr ? 'ملخص الفاتورة' : 'BILL SUMMARY'}*
 ━━━━━━━━━━━━━━━━━━━━━
-▫️ *${isAr ? 'المجموع الفرعي' : 'Subtotal'}:* ${subtotalPrice} ${isAr ? 'ج.م' : 'EGP'}
+▫️ *${isAr ? 'المجموع الفرعي' : 'Subtotal'}:* ${subtotal} ${isAr ? 'ج.م' : 'EGP'}
 ${deliveryFeeLabel}
-🔥 *${isAr ? 'الإجمالي الكلي' : 'TOTAL DUE'}:* *${activeTotalPrice} ${isAr ? 'ج.م' : 'EGP'}*
+🔥 *${isAr ? 'الإجمالي الكلي' : 'TOTAL DUE'}:* *${total} ${isAr ? 'ج.م' : 'EGP'}*
 💳 *${isAr ? 'طريقة الدفع' : 'Payment Method'}:* ${isAr ? 'الدفع نقداً عند الاستلام' : 'Cash on Delivery'}
 
 🚴‍♂️ *${isAr ? 'رابط تتبع حالة الطلب مباشرة' : 'LIVE ORDER TRACKING LINK'}:*
@@ -186,8 +205,26 @@ ${trackingUrl}
     const newOrderId = `BB-${Math.floor(1000 + Math.random() * 9000)}`;
     setOrderId(newOrderId);
 
+    // Snapshot totals & cart before clearing cart
+    const cartSnapshot = [...cart];
+    const subtotalSnapshot = subtotalPrice;
+    const feeSnapshot = activeDeliveryFee;
+    const totalSnapshot = activeTotalPrice;
+
+    const faisalMsg = buildWhatsAppMessage(newOrderId, cartSnapshot, subtotalSnapshot, feeSnapshot, 'faisal', selectedArea, formData);
+    const district9Msg = buildWhatsAppMessage(newOrderId, cartSnapshot, subtotalSnapshot, feeSnapshot, 'district9', selectedArea, formData);
+
+    setCompletedMessageFaisal(faisalMsg);
+    setCompletedMessageDistrict9(district9Msg);
+    setCompletedSummary({
+      subtotal: subtotalSnapshot,
+      deliveryFee: feeSnapshot,
+      total: totalSnapshot,
+      areaName: selectedArea ? (isAr ? selectedArea.name_ar : selectedArea.name_en) : null,
+    });
+
     // Prepare clean Order object for Firestore & local storage
-    const orderItems = cart.map((item) => ({
+    const orderItems = cartSnapshot.map((item) => ({
       id: item.product.id,
       name: item.product.name_en || item.product.name,
       name_ar: item.product.name_ar || '',
@@ -224,9 +261,9 @@ ${trackingUrl}
       customerAddress: fullDeliveryAddress,
       customerNotes: formData.notes || '',
       items: orderItems,
-      subtotalPrice,
-      deliveryFee: activeDeliveryFee,
-      totalPrice: activeTotalPrice,
+      subtotalPrice: subtotalSnapshot,
+      deliveryFee: feeSnapshot,
+      totalPrice: totalSnapshot,
       status: 'New',
       createdAt: new Date().toISOString(),
       timestamp: serverTimestamp(),
@@ -259,7 +296,7 @@ ${trackingUrl}
         price: item.unitPrice,
         optionsSummary: item.variant === 'combo' ? (isAr ? 'وجبة' : 'Combo') : (isAr ? 'ساندوتش' : 'Solo'),
       })),
-      totalPrice: activeTotalPrice,
+      totalPrice: totalSnapshot,
       createdAt: Date.now(),
     };
 
@@ -276,9 +313,9 @@ ${trackingUrl}
     setOrderCompleted(true);
     triggerConfetti();
 
-    // Open WhatsApp with formatted order text
-    const text = formatWhatsAppMessage(newOrderId);
-    window.open(`https://wa.me/${targetNumber}?text=${text}`, '_blank');
+    // Open WhatsApp with pre-formatted message
+    const targetMsg = selectedBranch === 'district9' ? district9Msg : faisalMsg;
+    window.open(`https://wa.me/${targetNumber}?text=${targetMsg}`, '_blank');
 
     clearCart();
   };
@@ -287,6 +324,10 @@ ${trackingUrl}
     setIsCheckoutOpen(false);
     setOrderCompleted(false);
   };
+
+  const finalTotalDisplay = completedSummary ? completedSummary.total : activeTotalPrice;
+  const finalAreaDisplay = completedSummary?.areaName || (selectedArea ? (isAr ? selectedArea.name_ar : selectedArea.name_en) : null);
+  const finalDeliveryFeeDisplay = completedSummary ? completedSummary.deliveryFee : activeDeliveryFee;
 
   return (
     <AnimatePresence>
@@ -352,12 +393,12 @@ ${trackingUrl}
                   </div>
 
                   <div className="space-y-2 text-xs">
-                    {selectedArea && (
+                    {finalAreaDisplay && (
                       <div className="flex items-center gap-2 text-amber-400 font-bold">
                         <Truck className="w-4 h-4 text-amber-400 shrink-0" />
                         <span>
-                          {t('shippingTo')}: <strong className="text-white">{isAr ? selectedArea.name_ar : selectedArea.name_en}</strong>
-                          <span className="text-amber-400 ml-1 rtl:mr-1">({selectedArea.fee} {isAr ? 'ج.م' : 'EGP'})</span>
+                          {t('shippingTo')}: <strong className="text-white">{finalAreaDisplay}</strong>
+                          <span className="text-amber-400 ml-1 rtl:mr-1">({finalDeliveryFeeDisplay} {isAr ? 'ج.م' : 'EGP'})</span>
                         </span>
                       </div>
                     )}
@@ -373,7 +414,7 @@ ${trackingUrl}
 
                   <div className="pt-2 border-t border-zinc-800 flex justify-between items-center text-sm font-black text-white font-mono">
                     <span>{t('paymentMethod')}</span>
-                    <span className="text-emerald-400">{t('cashOnDelivery')} ({activeTotalPrice} {isAr ? 'ج.م' : 'EGP'})</span>
+                    <span className="text-emerald-400">{t('cashOnDelivery')} ({finalTotalDisplay} {isAr ? 'ج.م' : 'EGP'})</span>
                   </div>
                 </div>
 
@@ -389,7 +430,7 @@ ${trackingUrl}
 
                 <div className="flex flex-col gap-2.5 pt-1">
                   <a
-                    href={`https://wa.me/201515821555?text=${formatWhatsAppMessage(orderId)}`}
+                    href={`https://wa.me/201515821555?text=${completedMessageFaisal}`}
                     target="_blank"
                     rel="noreferrer"
                     className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-2xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-lg"
@@ -398,7 +439,7 @@ ${trackingUrl}
                     <span>{t('sendToFaisalWhatsapp')}</span>
                   </a>
                   <a
-                    href={`https://wa.me/201034926555?text=${formatWhatsAppMessage(orderId)}`}
+                    href={`https://wa.me/201034926555?text=${completedMessageDistrict9}`}
                     target="_blank"
                     rel="noreferrer"
                     className="w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-3.5 px-4 rounded-2xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-lg"
